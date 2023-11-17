@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block content %}
+<ul>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>titulo</td>
+                    <td>numero</td>
+                    <td>fecha_publicacion</td>
+                    <td>manga</td>
+                    <td colspan="2">Opciones</td>
+                </tr>
+                {% for c in capitulos %}
+                        <tr>
+                            <td>{{ c.titulo }}</td>
+                            <td>{{ c.numero }}</td>
+                            <td>{{ c.fecha_publicacion }}</td>
+                            <td>{{ c.manga }}</td>
+                                <td>
+                                    <a class="btn btn-danger" href="/deleC/{{c.id}}">Borrar</a>
+                                    <a class="btn btn-danger" href="/updaC/{{c.id}}">Modificar</a>
+                                </td>
+                        </tr>
+                   {% endfor %}
+    </div>
+    
+        
+        
+</ul>
+{% endblock %}

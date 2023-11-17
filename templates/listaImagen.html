@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% block content %}
+<ul>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>capitulo</td>
+                    <td>imagenes</td>
+                    <td colspan="2">Opciones</td>
+                </tr>
+                {% for i in imagenes %}
+                        <tr>
+                            <td>{{ i.capitulo }}</td>
+                            <td><img src="{{ i.imagen.url }}" alt="{{ i.id }}" width="50"></td>
+                                <td>
+                                    <a class="btn btn-danger" href="/deleI/{{i.id}}">Borrar</a>
+                                    <a class="btn btn-danger" href="/updaI/{{i.id}}">Modificar</a>
+                                </td>
+                        </tr>
+                   {% endfor %}
+    </div>
+    
+        
+        
+</ul>
+{% endblock %}
