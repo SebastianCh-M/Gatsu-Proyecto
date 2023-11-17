@@ -31,3 +31,8 @@ class MiBibliotecaView(View):
             context = {}
             return render(request, 'MiBiblioteca.html', context)
         
+class ConfigMangas(View):
+        def get(self, request, *args, **kwargs):
+            context = {}
+            return render(request, 'ConfigMangas.html', context)
+        

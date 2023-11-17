@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        {% load static %}
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ConfigMangas</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="../static/css/styles.css">
+        <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <meta name="msapplication-TileColor" content="#2957ba">
+        <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+      
+      </head>
+      <style>
+        .list-group-item{
+            background-color: #202020;
+            color: #fff;
+        }
+      </style>
+<body style="background-color: #202020; color: #fff;">
+  <hr>
+  <ol class="list-group list-group-numbered container">
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold"> Editoriales </div>
+          <a href="formRevista"> Añadir Editoriales </a>
+          <a> | </a>
+          <a href="listaRevista"> Lista de Editoriales </a>
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold"> Mangas </div>
+            <a href="formNombreManga"> Añadir Mangas </a>
+            <a> | </a>
+            <a href="listaNombreManga"> Lista de Mangas </a>
+            <a> | </a>
+            <a href="formMangaGatsu"> Información de Mangas </a>
+            <a> | </a>
+            <a href="listaMangaGatsu"> Lista de Mangas </a>
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold"> Capítulos Mangas </div>
+            <a href="formCapitulo"> Añadir Capítulos </a>
+            <a> | </a>
+            <a href="listaCapitulo"> Lista de Capítulos </a>
+            <a> | </a>
+            <a href="formImagen"> Imagenes por Capítulos </a>
+            <a> | </a>
+            <a href="listaImagen"> Lista de Imagenes </a>
+          </div>
+          </div>
+        </li>
+    </ol>
+
+
+</body>
+</html>
+{% endblock %}

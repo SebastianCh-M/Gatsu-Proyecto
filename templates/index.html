@@ -56,9 +56,13 @@
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Home">Home</a></li>
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Recientes">Descubre</a></li>
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="SobreGatsu">Gatsu</a></li>
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link" href="ConfigMangas"
+                            style="color: #fff;">Configurar Mangas</a>
                     </ul>
                     {% if request.user.is_authenticated %}
                     <li class="dropdown ms-auto">
+
                         <a href="#" class="btn btn-secondary dropdown-toggle" style="background-color: #202020;"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <span style="color: #fff;">{{ user.username | upper }}, Bienvenido</span><span
@@ -92,7 +96,6 @@
                             <span class="navbar-toggler-icon" style="border: #fff;"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav ms-auto">
                                 <a class="nav-link logged-out" href="#" data-bs-toggle="modal"
                                     data-bs-target="#signinModal" style="color: #fff;">Iniciar sesión</a>
                                 <a class="nav-link logged-out" href="#" data-bs-toggle="modal"
