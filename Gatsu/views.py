@@ -31,12 +31,3 @@ class MiBibliotecaView(View):
             context = {}
             return render(request, 'MiBiblioteca.html', context)
         
-class RecuperarView(View):
-        def get(self, request, *args, **kwargs):
-            context = {}
-            return render(request, 'registration/Recuperar.html', context)
-        
-class LoginView(View):
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, 'registration/login.html', context)

@@ -18,8 +18,9 @@
     <link rel="stylesheet"
         href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <title>Descubre</title>
     <meta name="msapplication-TileColor" content="#2957ba">
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
@@ -69,20 +70,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="form-row">
                             <div class="col-10 col-md-8 mt-2">
                                 <input id="title_item" class="form-control order-select form-control-lg"
-                                    placeholder="Buscar..." name="title" type="text">
+                                    placeholder="Buscar..." name="title" type="text" style="background-color: rgb(19, 19, 19); color: #fff;">
                             </div>
-                            <div class="col-8 col-md-2 mt-2">
+                            <div class="col-8 col-md-2 mt-2" >
                                 <select id="order_field_select"
                                     class="order-select form-control form-control-lg extendSelect"
-                                    data-btn-class="btn-primary btn-block btn-lg">
-                                    <option value="title" selected>Título</option>
-                                    <option value="author">Autor</option>
-                                    <option value="company">Compañia</option>
+                                    data-btn-class="btn-primary btn-block btn-lg" style="background-color: rgb(19, 19, 19); color: #fff;">
+                                    <option style="background-color: rgb(19, 19, 19); color: #fff;" value="title" selected>Título</option>
+                                    <option style="background-color: rgb(19, 19, 19); color: #fff;" value="author">Autor</option>
+                                    <option style="background-color: rgb(19, 19, 19); color: #fff;" value="company">Compañia</option>
                                 </select>
                             </div>
-                            <div class="col-4 col-md-1 mt-2">
-                                <button id="search_submit" class="btn btn-success btn-lg btn-block"><i
-                                        class="fas fa-search fa-fw"></i></button>
+                            <div class="col-4 col-md-1 mt-2 ">
+                                <button id="search_submit" class="btn btn-success btn-lg btn-block" style="background-color: rgb(0, 0, 0); color: #fff; border-color: #fff;"><i
+                                        class="fas fa-search fa-fw" style="background-color: rgb(0, 0, 0); color: #fff;"></i></button>
                             </div>
                         </div>
                     </div>
@@ -96,15 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             <input id="filter_by" name="filter_by" type="hidden" value="title">
 
                             <div class="card mt-2">
-                                <div class="card-header" id="heading-books-filters">
+                                <div class="card-header" id="heading-books-filters" style="background-color: rgb(19, 19, 19); color: #fff;">
                                     <h3 class="collapsible" data-toggle="collapse" data-target="#books-filters"
                                         aria-controls="books-filters">
                                         <i class="indicator fas fa-chevron-right pull-right"></i>
-                                        <button class="btn btn-link" type="button">Filtros</button>
+                                        <button class="btn btn-link" type="button" style="color: #fff;">Filtros</button>
                                     </h3>
                                 </div>
                                 <div id="books-filters" class="collapse" aria-labelledby="heading-books-filters">
-                                    <div class="card-body">
+                                    <div class="card-body" style="background-color: rgb(19, 19, 19); color: #fff;">
                                         <div class="form-row">
                                             <div class="col">
                                                 <label for="demography" class="form-label">Demograf&iacute;a</label>
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             <div class="col">
                                                 <select name="demography" id="demography"
                                                     class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block">
+                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="seinen">Seinen</option>
                                                     <option value="shoujo">Shoujo</option>
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             </div>
                                             <div class="col">
                                                 <select name="status" id="status" class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block">
+                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="publishing">Publicándose</option>
                                                     <option value="ended">Finalizado</option>
@@ -146,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             <div class="col">
                                                 <select name="translation_status" id="translation_status"
                                                     class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block">
+                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="active">Activo</option>
                                                     <option value="finished">Finalizado</option>
@@ -161,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             </div>
                                             <div class="col">
                                                 <select name="webcomic" id="webcomic" class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block">
+                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="true">Si</option>
                                                     <option value="false">No</option>
@@ -175,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             </div>
                                             <div class="col">
                                                 <select name="yonkoma" id="yonkoma" class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block">
+                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="true">Si</option>
                                                     <option value="false">No</option>
@@ -187,19 +188,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                 </div>
                             </div>
                             <div class="card mt-2">
-                                <div class="card-header" id="heading-books-genders">
+                                <div class="card-header" id="heading-books-genders" style="background-color: rgb(19, 19, 19); color: #fff;">
 
-                                    <h3 class="collapsible" data-toggle="collapse" data-target="#books-genders"
+                                    <h3 class="collapsible" data-toggle="collapse" data-target="#books-genders" style="background-color: rgb(19, 19, 19); color: #fff;"
                                         aria-controls="books-genders">
                                         <i class="indicator fas fa-chevron-right pull-right"></i>
 
-                                        <button class="btn btn-link collapsed" type="button">Géneros</button>
+                                        <button class="btn btn-link collapsed" type="button" style="color: #fff;">Géneros</button>
 
                                     </h3>
                                 </div>
 
                                 <div id="books-genders" class="collapse" aria-labelledby="heading-books-genders">
-                                    <div class="card-body">
+                                    <div class="card-body" style="background-color: rgb(19, 19, 19); color: #fff;">
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
@@ -503,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-block btn-lg mt-2" type="submit"><i
+                            <button class="btn btn-primary btn-block btn-lg mt-2" style="background-color: rgb(0, 0, 0); color: #fff; border-color: #fff;" type="submit" ><i
                                     class="fas fa-filter fa-fw"></i> Aplicar filtros</button>
                         </form>
 
@@ -516,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="col-12 col-md-9 text-left"><span class="form-label">Ordenar por:</span></div>
                             <div class="col-2 col-md-4">
                                 <select id="order_item_select" class="order-select form-control extendSelect"
-                                    data-btn-class="btn-default btn-block">
+                                    data-btn-class="btn-default btn-block" style="background-color: rgb(19, 19, 19); color: #fff;">
                                     <option value="likes_count" selected>Me gusta</option>
                                     <option value="alphabetically">Alfabético</option>
                                     <option value="score">Puntuación</option>
@@ -527,7 +528,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="col-2 col-md-4">
                                 <select id="order_dir_select" class="order-select form-control extendSelect"
-                                    data-btn-class="btn-default btn-block">
+                                    data-btn-class="btn-default btn-block" style="background-color: rgb(19, 19, 19); color: #fff;">
                                     <option value="asc">Ascendente</option>
                                     <option value="desc" selected>Descendente</option>
                                 </select>
@@ -537,7 +538,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         <br>
                         <div class="row">
                             <style>
+                                .text-truncate{
+                                    color: #fff;
+                                }
+                                .span{
+                                    color: #fff;
+                                }
+                                .demography shounen{
+                                    color:#fff;
+
+                                }
                                 .thumbnail-image {
+                                    color: #fff;
                                     max-width: 100%;
                                     max-height: 100%;
                                     width: auto;
@@ -726,14 +738,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="col m-auto text-center">
                                 <nav aria-label="front.search_result_pgs">
                                     <nav role="navigation" aria-label="Pagination Navigation"
-                                        class="flex justify-between">
-                                        <hr>
+                                        class="flex justify-between"  >
+                                        <hr style="color: #fff;">
                                         <span
-                                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+                                            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md" style="background-color: rgb(19, 19, 19); color: black;">
                                             &laquo; Anterior
                                         </span>
 
-                                        <a href="#" rel="next"
+                                        <a href="#" rel="next"  style="background-color: rgb(19, 19, 19); color: black;"
                                             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
                                             Siguiente &raquo;
                                         </a>
