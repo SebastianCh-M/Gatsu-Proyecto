@@ -1,20 +1,41 @@
 {% extends 'index.html' %}
 {% block content %}
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+    <head>
+
+        {% load static %}
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ConfigMangas</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="../static/css/styles.css">
+        <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <meta name="msapplication-TileColor" content="#2957ba">
+        <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+      
+      </head>
     <title>Registar Nuevo Nombre Manga</title>
 </head>
-<body>
-
-<h2>Nombre Manga</h2>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-
+<body style="background-color: #202020; color: #fff;">
+    <br>
+    <h2>Nombre Manga</h2>
+    <br>
+    <div class="container container-fluid">
+        <form class="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Editorial</button>
+        </form>
+    </div>
 </body>
 </html>
 
