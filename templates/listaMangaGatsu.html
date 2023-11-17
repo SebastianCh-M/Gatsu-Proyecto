@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block content %}
+<ul>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>Nombre Manga</td>
+                    <td>Año</td>
+                    <td>tipo subida</td>
+                    <td>sinopsis</td>
+                    <td>genero</td>
+                    <td>estado</td>
+                    <td>portada</td>
+                    <td colspan="2">Opciones</td>
+                </tr>
+                {% for m in mangas %}
+                        <tr>
+                            <td>{{ m.nombre_manga }}</td>
+                            <td>{{ m.anio_publicacion }}</td>
+                            <td>{{ m.tipo_subida }}</td>
+                            <td>{{ m.sinopsis }}</td>
+                            <td>{{ m.genero }}</td>
+                            <td>{{ m.estado }}</td>
+                            <td>{{ m.portada }}</td>
+                                <td>
+                                    <a class="btn btn-danger" href="/deleM/{{m.id}}">Borrar</a>
+                                    <a class="btn btn-danger" href="/updaM/{{m.id}}">Modificar</a>
+                                </td>
+                        </tr>
+                   {% endfor %}
+    </div>
+    
+        
+        
+</ul>
+{% endblock %}
