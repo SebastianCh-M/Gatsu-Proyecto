@@ -11,7 +11,7 @@ app_name="manga"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', MangaListView.as_view(), name="home"),
+    path('', MangaListView.as_view(), name="Home"),
     path('create/', MangaCreateView.as_view(), name="create"),
     path('manga_list/', views.manga_list, name='manga_list'),
     path('manga_create', formManga),

@@ -4,20 +4,18 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
 from manga.views import formRevista, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI
-from .views import HomeView, LoginView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, RecuperarView
+from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', HomeView.as_view(), name = "home"),
-    path('login.html', LoginView.as_view(), name="login"),
-    path('Home', HomeView.as_view(), name='home'),
+    path('', HomeView.as_view(), name = "Home"),
+    path('Home', HomeView.as_view(), name='Home'),
     path('Recientes', RecientesView.as_view(), name='recientes'),
     path('TopMangas', TopMangasView.as_view(), name='TopMangas'),
     path('SobreGatsu', SobreGatsuView.as_view(), name='SobreGatsu'),
     path('MiBiblioteca', MiBibliotecaView.as_view(), name='MiBiblioteca'),
-    path('Recuperar', RecuperarView.as_view(), name='Recuperar'),
     path('', HomeView.as_view(), name='default'),  # Ruta para la página por defecto
 
     #Revisa
