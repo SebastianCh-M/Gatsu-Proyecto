@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="imagen">Imagenes:</label>
+    <input type="file" multiple name="imagen" required><br>
+    
+    <label for="capitulo">Capitulo:</label>
+    <select name="capitulo" required>
+        {% for capitulo in capitulos %}
+            <option value="{{ capitulo.id }}">{{ capitulo.info_completa }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

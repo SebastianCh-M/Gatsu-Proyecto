@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label for="idLote">idLote:</label>
+    <input type="text" name="idLote" required><br>
+
+    <label for="capitulo">capitulo:</label>
+    <input type="text" name="capitulo" required><br>
+
+    <label for="manga">manga:</label>
+    <select name="test" required>
+        {% for m in mangas %}
+            <option value="{{ m.idManga }}">{{ m.nombreManga }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label for="grupoImagen">grupoImagen:</label>
+    <input type="file" multiple name="images" required><br>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

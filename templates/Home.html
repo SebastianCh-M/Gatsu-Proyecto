@@ -1,0 +1,192 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  {% load static %}
+  
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <title>Descubre</title>
+  <meta name="msapplication-TileColor" content="#2957ba">
+  <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+  <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+
+</head>
+
+<body style="background-color: #202020; color: #fff;">
+  <style>
+    .tranding-slide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .tranding-slide .tranding-slide-img img {
+      width: 90%;
+      height: auto;
+    }
+
+    .tranding-slide .tranding-slide-content {
+      margin-top: 1rem;
+    }
+
+    .tranding-slide .tranding-slide-content-bottom {
+      margin-top: 1rem;
+    }
+
+    .Mangaka_name,
+    .Manga_name,
+    .Manga_rate,
+    .N_chp {
+      font-weight: bold;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding-bottom: 0rem;
+      display: flex;
+      gap: 0rem;
+    }
+  </style>
+  <section id="tranding">
+    <div class="container">
+      <hr>
+      <h2 class="text-center section-subheading">Tendencia</h2>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="swiper tranding-slider">
+        <div class="swiper-wrapper">
+          <!-- Slide-start -->
+          <div class="swiper-slide tranding-slide">
+            <div class="tranding-slide-img">
+              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/DBS.webp?alt=media&token=4f68035f-09ea-4525-8aee-8c4f629c45e1">
+            </div>
+            <div class="tranding-slide-content">
+              <p class="N_chp">Cap: #098</p>
+              <div class="tranding-slide-content-bottom">
+                <h2 class="Manga_name">
+                  Dragon Ball Super
+                  </h4>
+                  <p class="Mangaka_name">Akira Toriyama</p>
+                  <h3 class="Manga_rate">
+                    <span>Rate: 4</span>
+                    <div class="rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                    </div>
+                    </h4>
+              </div>
+            </div>
+          </div>
+          <!-- Slide-end -->
+          <!-- Slide-start -->
+          <div class="swiper-slide tranding-slide">
+            <div class="tranding-slide-img">
+              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Kagurabachi.jpg?alt=media&token=429e59e5-3ef5-4cb1-aca2-3996d82af370">
+            </div>
+            <div class="tranding-slide-content">
+              <h3 class="N_chp">Cap: #008</h3>
+              <div class="tranding-slide-content-bottom">
+                <h2 class="Manga_name">
+                  Kagubarachi</h2>
+                <p class="Mangaka_name">Takeru Hokazono</p>
+                <h3 class="Manga_rate">
+                  <span>Rate: 4</span>
+                  <div class="rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <!-- Slide-end -->
+          <!-- Slide-start -->
+          <div class="swiper-slide tranding-slide">
+            <div class="tranding-slide-img">
+              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/boruto.jpg?alt=media&token=1542f1c8-a108-4153-b9a1-ffb3943fa044">
+            </div>
+            <div class="tranding-slide-content">
+              <h3 class="N_chp">Cap: #003</h3>
+              <div class="tranding-slide-content-bottom">
+                <h2 class="Manga_name">
+                  Boruto Two Blue Vortex
+                </h2>
+                <p class="Mangaka_name">Masashi Kishimoto</p>
+                <h3 class="Manga_rate">
+                  <span>Rate: 4</span>
+                  <div class="rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <!-- Slide-end -->
+          <!-- Slide-start -->
+          <div class="swiper-slide tranding-slide">
+            <div class="tranding-slide-img">
+              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Chainsaw%20Man.jpg?alt=media&token=1785251c-7828-4716-b24b-35752d363715">
+            </div>
+            <div class="tranding-slide-content">
+              <h3 class="N_chp">Cap: #147</h3>
+              <div class="tranding-slide-content-bottom">
+                <h2 class="Manga_name">
+                  Chainsaw Man
+                </h2>
+                <p class="Mangaka_name">Tatsuki Fujimoto</p>
+                <h3 class="Manga_rate">
+                  <span>Rate: 4</span>
+                  <div class="rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <hr>
+    <h2 style="display: flex; padding-left: 10%;">Recientes</h2>
+    <hr>
+  </div>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+</body>
+
+</html>
+
+{% endblock %}
