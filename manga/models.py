@@ -18,21 +18,6 @@ class tipoSubida(models.Model):
 class tipoEstado(models.Model):
     estado=models.CharField(max_length=30)    
 
-#class Manga2(models.Model):
-#    idManga=models.CharField(max_length=30, primary_key=True)
-#    nombreManga=models.CharField(max_length=50)
-#    ano_publicacion = models.CharField(max_length=50)
-#    tsubida=models.ForeignKey(tipoSubida, on_delete=models.CASCADE)
-#    mangaka=models.CharField(max_length=50)
-#    sinopsis=models.CharField(max_length=500)
-#    editorial=models.CharField(max_length=50)
-#    genero=models.CharField(max_length=50)
-#    estado=models.ForeignKey(tipoEstado, on_delete=models.CASCADE)
-    #imagen = models.ImageField(upload_to='portadas/')  # configurar la ubicación de almacenamiento según tus necesidades 
-    # 
-    # 
-
-
 class Manga3(models.Model):
     idManga = models.CharField(max_length=30, primary_key=True)
     nombreManga = models.CharField(max_length=50)
@@ -178,12 +163,6 @@ class Valoracion(models.Model):
     def __str__(self):
         return f"Valoración de {self.usuario.nombre} en {self.manga.nombre}"
     
-
-
-
-
-
-
 
 #NO TOMAR EN CUENTA
 class Revista2(models.Model):

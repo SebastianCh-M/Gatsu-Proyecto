@@ -235,23 +235,6 @@ def updaI(request, id):
     context = {'form': form}
     return render(request, 'modImagen.html', context)
 
-
-    
-             
-    
-#class MangaCreateView(View):
-#    def get(self, request,*args, **kwargs):
-#        context={
-#            
-#        }
-#        return render(request, 'manga_create.html', context)
-#    
-#    def post(self, request,*args, **kwargs):
-#        context={
-            
-#        }
-#        return render(request, 'manga_create.html', context)
-    
 def formManga(request):
     tEstado=tipoEstado.objects.all()
     tSubida=tipoSubida.objects.all()
@@ -290,52 +273,3 @@ def formManga(request):
     Manga2.save(nuevo)
 
     return render(request, 'loginC.html')    
-
-
-
-
-#Formulario de Registro de Mnaga
-#def registrarManga(request):
-#    if request.method == 'POST':
-#        form = mangaForm(request.POST, request.FILES)
-#        if form.is_valid():
-#            form.save()
-#            return redirect('manga_list')
-#    else:
-#        form = mangaForm()
-#    return render(request, 'manga_create.html', {'form': form})
-
-#def manga_list(request):
-#    Man = Manga3.objects.all()
-#    return render(request, 'manga_list.html', {'mangas': Man})
-
-# Formulario de Registro de Multiples Imagenes
-
-
-
-
-#def registrarImagenes(request):
-#    if request.method == 'POST':
-#        v_idLote = request.POST.get('idLote')
-#        v_capitulo = request.POST.get('capitulo')
-#        v_manga = request.POST.get('manga')  # Assuming test is a dropdown or input field in the form
-#        v_grupoImagen = request.FILES.getlist('grupoImagen')
-
-#        manga = Manga3.objects.get(manga=v_manga)
-
-        # Create the model instance and save it
-#        nuevo=SetImagen()
-#        nuevo.idLote=v_idLote
-#        nuevo.capitulo=v_capitulo
-#        nuevo.manga=manga
-#        nuevo.grupoImagen=v_grupoImagen
-
-#        SetImagen.save(nuevo)
-        
-
-#        return redirect('manga_list')
-#    else:
-        # Render the form page
-#        mangas = Manga3.objects.all()
-#        return render(request, 'capitulos_form.html', {'mangas': mangas})
-
