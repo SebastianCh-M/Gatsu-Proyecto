@@ -147,7 +147,7 @@ class Imagen(models.Model):
 
     def __str__(self):
         return self.imagen.url  # O alguna otra representación de la imagen
-
+    
 class RegistroPago(models.Model):
     tipo_usuario = models.CharField(max_length=50)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

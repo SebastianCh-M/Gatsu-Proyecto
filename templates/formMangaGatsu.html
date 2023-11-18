@@ -22,18 +22,18 @@
         <meta name="msapplication-config" content="/favicon/browserconfig.xml">
       
       </head>
-    <title>Registar Nuevo Nombre Manga</title>
+    <title>Registar información Manga</title>
 </head>
 <body style="background-color: #202020; color: #fff;">
     <br>
-    <h2>Nombre Manga</h2>
+    <h2>Información Manga</h2>
     <br>
     <div class="container container-fluid">
         <form class="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <br>
-            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Editorial</button>
+            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir infomración del manga</button>
         </form>
     </div>
 </body>

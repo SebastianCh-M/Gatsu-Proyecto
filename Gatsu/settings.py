@@ -128,7 +128,7 @@ USE_TZ = True
 DEBUG = True  # Asegúrate de que DEBUG esté configurado en True durante el desarrollo
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "Gatsu-proyecto/static"),
 ]
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')  
