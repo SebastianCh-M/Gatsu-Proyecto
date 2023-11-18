@@ -1,1 +1,0 @@
-# Gatsu-Proyecto
