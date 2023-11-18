@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capitulo</title>
+</head>
+<body>
+
+<h2>Titulo: {{capitulos.titulo}} Cap_Numero: {{capitulos.numero}} </h2>
+
+{%for i in imagenes %}
+
+    <p><img src="{{ i.imagen.url }}" alt="{{ i.id }}" width="100"></td></p>
+
+{% endfor %}    
+
+</body>
+</html>
+
+{% endblock %}

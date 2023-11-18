@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block content %}
+<ul>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>Editorial</td>
+                    <td>Nombre</td>
+                    <td>Mangaka</td>
+                    <td colspan="2">Opciones</td>
+                </tr>
+                {% for n in nombres %}
+                        <tr>
+                            <td>{{ n.revista }}</td>
+                            <td>{{ n.nombreManga }}</td>
+                            <td>{{ n.mangaka }}</td>
+                                <td>
+                                    <a class="btn btn-danger" href="/deleN/{{n.id}}">Borrar</a>
+                                    <a class="btn btn-danger" href="/updaN/{{n.id}}">Modificar</a>
+                                </td>
+                        </tr>
+                   {% endfor %}
+    </div>
+    
+        
+        
+</ul>
+{% endblock %}

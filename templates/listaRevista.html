@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+{% block content %}
+<ul>
+    {% for e in editoriales %}
+        <td>{{ e.id }}</td>
+        <td>{{ e.editoriales }}</td>
+        <td>
+            <a class="btn btn-danger" href="/deleR/{{e.id}}">Borrar</a>
+            <a class="btn btn-danger" href="/updaR/{{e.id}}">Modificar</a>
+        </td>
+        
+    {% endfor %}
+</ul>
+{% endblock %}
