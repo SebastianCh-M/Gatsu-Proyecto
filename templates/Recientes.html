@@ -50,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <body style="background-color: #202020; color: #fff;">
-    <h1>Descubre</h2>
+    <br>
+    <hr>
         <div id="app" class="pb-5">
             <header>
             </header>
@@ -60,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <div class="pbl pbl_top text-center col-12 col-md-8 offset-md-2">
                             <div class="col-12 col-md-4 offset-md-4">
-
                             </div>
                         </div>
                     </div>
@@ -108,28 +108,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <div class="card-body" style="background-color: rgb(19, 19, 19); color: #fff;">
                                         <div class="form-row">
                                             <div class="col">
-                                                <label for="demography" class="form-label">Demograf&iacute;a</label>
+                                                <label for="demography" class="form-label">Estado</label>
                                             </div>
                                             <div class="col">
                                                 <select name="demography" id="demography"
                                                     class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
-                                                    <option value="">Ver todo</option>
-                                                    <option value="seinen">Seinen</option>
-                                                    <option value="shoujo">Shoujo</option>
-                                                    <option value="shounen">Shounen</option>
-                                                    <option value="josei">Josei</option>
-                                                    <option value="kodomo">Kodomo</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="form-row" id="status_filter" style="display: none;">
-                                            <div class="col">
-                                                <label for="status" class="form-label">Estado</label>
-                                            </div>
-                                            <div class="col">
-                                                <select name="status" id="status" class="form-control extendSelect"
                                                     data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
                                                     <option value="">Ver todo</option>
                                                     <option value="publishing">Publicándose</option>
@@ -139,50 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 </select>
                                             </div>
                                         </div>
-                                        <hr id="status_filter_line" style="display: none;">
-                                        <div class="form-row" id="translation_status_filter" style="display: none;">
-                                            <div class="col">
-                                                <label for="status" class="form-label">Traducciones</label>
-                                            </div>
-                                            <div class="col">
-                                                <select name="translation_status" id="translation_status"
-                                                    class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
-                                                    <option value="">Ver todo</option>
-                                                    <option value="active">Activo</option>
-                                                    <option value="finished">Finalizado</option>
-                                                    <option value="abandoned">Abandonado</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <hr id="translation_status_filter_line" style="display: none;">
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="webcomic" class="form-label">Webcomic</label>
-                                            </div>
-                                            <div class="col">
-                                                <select name="webcomic" id="webcomic" class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
-                                                    <option value="">Ver todo</option>
-                                                    <option value="true">Si</option>
-                                                    <option value="false">No</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <hr>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <label for="yonkoma" class="form-label">Yonkoma</label>
-                                            </div>
-                                            <div class="col">
-                                                <select name="yonkoma" id="yonkoma" class="form-control extendSelect"
-                                                    data-btn-class="btn-default btn-block" style="background-color: rgb(54, 54, 54); color: #fff;">
-                                                    <option value="">Ver todo</option>
-                                                    <option value="true">Si</option>
-                                                    <option value="false">No</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <hr id="status_filter_line" style="display: none;">
+                                        <hr id="translation_status_filter_line" style="display: none;">
                                         <hr>
                                     </div>
                                 </div>
@@ -219,292 +161,55 @@ document.addEventListener("DOMContentLoaded", function () {
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_3" value="3">
-                                                <label class="custom-control-label" for="gender_3">Comedia</label>
+                                                <label class="custom-control-label" for="gender_3">Ciencia Ficción</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_4" value="4">
-                                                <label class="custom-control-label" for="gender_4">Drama</label>
+                                                <label class="custom-control-label" for="gender_4">Comedia</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_5" value="5">
-                                                <label class="custom-control-label" for="gender_5">Recuentos de la
-                                                    vida</label>
+                                                <label class="custom-control-label" for="gender_5">Drama</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_6" value="6">
-                                                <label class="custom-control-label" for="gender_6">Ecchi</label>
+                                                <label class="custom-control-label" for="gender_6">Fantasía</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_7" value="7">
-                                                <label class="custom-control-label" for="gender_7">Fantasia</label>
+                                                <label class="custom-control-label" for="gender_7">Harem</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
                                                     name="genders[]" id="gender_8" value="8">
-                                                <label class="custom-control-label" for="gender_8">Magia</label>
+                                                <label class="custom-control-label" for="gender_8">Horror</label>
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
                                                 <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_9" value="9">
-                                                <label class="custom-control-label" for="gender_9">Sobrenatural</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_10" value="10">
-                                                <label class="custom-control-label" for="gender_10">Horror</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_11" value="11">
-                                                <label class="custom-control-label" for="gender_11">Misterio</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_12" value="12">
-                                                <label class="custom-control-label" for="gender_12">Psicológico</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_13" value="13">
-                                                <label class="custom-control-label" for="gender_13">Romance</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_14" value="14">
-                                                <label class="custom-control-label" for="gender_14">Ciencia
-                                                    Ficción</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_15" value="15">
-                                                <label class="custom-control-label" for="gender_15">Thriller</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_16" value="16">
-                                                <label class="custom-control-label" for="gender_16">Deporte</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_17" value="17">
-                                                <label class="custom-control-label" for="gender_17">Girls Love</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_18" value="18">
-                                                <label class="custom-control-label" for="gender_18">Boys Love</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_19" value="19">
-                                                <label class="custom-control-label" for="gender_19">Harem</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_20" value="20">
-                                                <label class="custom-control-label" for="gender_20">Mecha</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_21" value="21">
-                                                <label class="custom-control-label"
-                                                    for="gender_21">Supervivencia</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_22" value="22">
-                                                <label class="custom-control-label"
-                                                    for="gender_22">Reencarnación</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_23" value="23">
-                                                <label class="custom-control-label" for="gender_23">Gore</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_24" value="24">
-                                                <label class="custom-control-label" for="gender_24">Apocalíptico</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_25" value="25">
-                                                <label class="custom-control-label" for="gender_25">Tragedia</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_26" value="26">
-                                                <label class="custom-control-label" for="gender_26">Vida Escolar</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_28" value="28">
-                                                <label class="custom-control-label" for="gender_28">Militar</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_29" value="29">
-                                                <label class="custom-control-label" for="gender_29">Policiaco</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_30" value="30">
-                                                <label class="custom-control-label" for="gender_30">Crimen</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_31" value="31">
-                                                <label class="custom-control-label" for="gender_31">Superpoderes</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_32" value="32">
-                                                <label class="custom-control-label" for="gender_32">Vampiros</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_33" value="33">
-                                                <label class="custom-control-label" for="gender_33">Artes
-                                                    Marciales</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_34" value="34">
-                                                <label class="custom-control-label" for="gender_34">Samurái</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_36" value="36">
-                                                <label class="custom-control-label" for="gender_36">Realidad
-                                                    Virtual</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_37" value="37">
-                                                <label class="custom-control-label" for="gender_37">Ciberpunk</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_38" value="38">
-                                                <label class="custom-control-label" for="gender_38">Musica</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_39" value="39">
-                                                <label class="custom-control-label" for="gender_39">Parodia</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_41" value="41">
-                                                <label class="custom-control-label" for="gender_41">Demonios</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_43" value="43">
-                                                <label class="custom-control-label" for="gender_43">Extranjero</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_44" value="44">
-                                                <label class="custom-control-label" for="gender_44">Niños</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_45" value="45">
-                                                <label class="custom-control-label" for="gender_45">Realidad</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto my-1">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input gender-checkbox"
-                                                    name="genders[]" id="gender_47" value="47">
-                                                <label class="custom-control-label" for="gender_47">Guerra</label>
+                                                    name="genders[]" id="gender_8" value="8">
+                                                <label class="custom-control-label" for="gender_8">Mecha</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-block btn-lg mt-2" style="background-color: rgb(0, 0, 0); color: #fff; border-color: #fff;" type="submit" ><i
+                            <button class="btn btn-primary btn-block btn-lg mt-2" style="background-color: rgb(0, 0, 0); color: #fff; border-color: #fff;" type="#" ><i
                                     class="fas fa-filter fa-fw"></i> Aplicar filtros</button>
                         </form>
 
@@ -643,90 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <span class="score"><i class="fas fa-star fa-fw"></i><span>8.90</span></span>
                                     <span class="book-type badge badge-manga">MANGA</span>
                                     <span class="demography seinen"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9996">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Kagurabachi.jpg?alt=media&token=429e59e5-3ef5-4cb1-aca2-3996d82af370"
-                                        alt="Kugabarachi" class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Kugabarachi">Kugabarachi</h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>9.33</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography shoujo"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9999">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/DBS.webp?alt=media&token=4f68035f-09ea-4525-8aee-8c4f629c45e1"
-                                        alt="Dragon Ball Super" class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Dragon Ball Super">Dragon Ball Super</h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography shounen"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9998">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/boruto.jpg?alt=media&token=1542f1c8-a108-4153-b9a1-ffb3943fa044"
-                                        alt="Boruto Two Blue " class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Boruto Two Blue ">Boruto Two Blue </h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>7.85</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography shounen"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9997">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Chainsaw%20Man.jpg?alt=media&token=1785251c-7828-4716-b24b-35752d363715"
-                                        alt="Chainsaw Man" class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Chainsaw Man">Chainsaw Man</h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>8.90</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography seinen"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9996">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Kagurabachi.jpg?alt=media&token=429e59e5-3ef5-4cb1-aca2-3996d82af370"
-                                        alt="Kugabarachi" class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Kugabarachi">Kugabarachi</h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>9.33</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography shoujo"
-                                        title="Shounen: dirigido a chicos adolescentes">Shounen</span>
-                                </a>
-                            </div>
-                            <div class="element col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2 d-flex"
-                                data-identifier="9998">
-                                <a href="#">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/boruto.jpg?alt=media&token=1542f1c8-a108-4153-b9a1-ffb3943fa044"
-                                        alt="Boruto Two Blue " class="thumbnail-image">
-                                    <div class="thumbnail-title">
-                                        <h4 class="text-truncate" title="Boruto Two Blue ">Boruto Two Blue </h4>
-                                    </div>
-                                    <span class="score"><i class="fas fa-star fa-fw"></i><span>7.85</span></span>
-                                    <span class="book-type badge badge-manga">MANGA</span>
-                                    <span class="demography shounen"
                                         title="Shounen: dirigido a chicos adolescentes">Shounen</span>
                                 </a>
                             </div>
