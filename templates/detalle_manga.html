@@ -1,0 +1,21 @@
+<h2>Capítuloaaaaas</h2>
+<ul>
+    {% for capitulo in capitulos %}
+        <li>
+            <a href="{% url 'manga:detalle_capitulo' capitulo.id %}">
+                Capítulo {{ capitulo.numero }} - {{ capitulo.titulo }}
+            </a>
+            <ul>
+                {% if capitulo.imagenes.all %}
+                    {% for imagen in capitulo.imagenes.all %}
+                        <li>
+                            <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No hay imágenes asociadas a este capítulo.</li>
+                {% endif %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>

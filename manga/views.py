@@ -4,7 +4,9 @@ from .forms import revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, man
 from .models import tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
+from .models import MangaGatsu
 
 # Create your views here.
 
@@ -116,6 +118,56 @@ def listaMangaGatsu(request):
     datos ={'mangas': mangas}
     return render(request, 'listaMangaGatsu.html', datos)
 
+
+#METODO GET Para Libreria Gatsu
+def libreriaGatsu(request):
+    mangas = MangaGatsu.objects.all()
+    paginator = Paginator(mangas, 10)  # Muestra 10 mangas por página
+    page = request.GET.get('page')
+
+    try:
+        page = int(page)
+    except (TypeError, ValueError):
+        page = 1  # Establece la página a 1 si no es un número entero válido
+
+    try:
+        mangas = paginator.page(page)
+    except PageNotAnInteger:
+        mangas = paginator.page(1)
+    except EmptyPage:
+        mangas = paginator.page(paginator.num_pages)
+
+    return render(request, 'LibreriaGatsu.html', {'mangas': mangas})
+
+#METODO GET Para ver todos los capitulos por manga
+def detalle_manga(request, manga_id):
+    manga = get_object_or_404(MangaGatsu, id=manga_id)
+    capitulos = Capitulo.objects.filter(manga=manga)
+    imagenes_por_capitulo = {}
+
+    for capitulo in capitulos:
+        imagenes_por_capitulo[capitulo] = Imagen.objects.filter(capitulo=capitulo)
+
+    return render(request, 'detalle_manga.html', {'manga': manga, 'capitulos': capitulos, 'imagenes_por_capitulo': imagenes_por_capitulo})
+
+#METODO GET Para poder leer el capitulo por manga.
+def detalle_capitulo(request, capitulo_id):
+    try:
+        capitulo = Capitulo.objects.get(pk=capitulo_id)
+    except Capitulo.DoesNotExist:
+        raise Http404("Capítulo no encontrado.")
+
+    return render(request, 'detalle_capitulo.html', {'capitulo': capitulo})
+
+
+def detalle_capitulos(request, manga_id):
+    try:
+        manga = MangaGatsu.objects.get(pk=manga_id)
+        capitulos = Capitulo.objects.filter(manga=manga)
+    except MangaGatsu.DoesNotExist:
+        raise Http404("Manga no encontrado.")
+
+    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos})
 
 
 #Metodo DELETE nombreManga    
