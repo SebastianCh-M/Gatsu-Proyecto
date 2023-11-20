@@ -116,17 +116,6 @@
 
     padding-left: 5px;
 }
-
-.imagenes-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;  /* Espaciado entre imágenes */
-}
-
-.imagen-capitulo {
-    max-width: 100%;  /* Ajusta el tamaño máximo de la imagen */
-    height: auto;     /* Mantiene la proporción original de la imagen */
-}
 </style>
 
 <body style="background-color: #202020; color: #fff;">
@@ -150,34 +139,18 @@
             </div>
         <br>
         <section>
-            <div class="">
+            <div class="box">
                 <h3>Capitulos</h3>
                 {% for capitulo in capitulos %}
                 <div class="list">
                     <div class="content">
-                        <a href="{% url 'manga:detalle_capitulo' capitulo.id %}">
-                            <small>Cap: {{ capitulo.numero }}</small>
-                            <h4>{{ capitulo.titulo }}</h4>
+                        <a href="{% url 'manga:detalle_manga' manga.id %}">
+                            <small>Cap: {{capitulo.numero}}</small><!-- numero cap -->
+                            <h4>{{ capitulo.titulo }}</h4><!-- titulo -->
                         </a>
                     </div>
                 </div>
                 {% endfor %}
-        
-                <!-- Agregar esta sección para mostrar las imágenes del capítulo seleccionado -->
-                {% if imagenes %}
-                <div class="list">
-                    <div class="content">
-                        <h4>Imágenes del Capítulo</h4>
-                        <div class="imagenes-container">
-                            {% for imagen in imagenes %}
-                                <img class="imagen-capitulo" src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                <!-- Fin de la sección de imágenes -->
-        
             </div>
         </section>
         </div>

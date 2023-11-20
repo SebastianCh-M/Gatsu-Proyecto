@@ -52,7 +52,7 @@ urlpatterns = [
     path('updaI/<int:id>', updaI),
 
     #Libreria Manga
-    path('libreria', libreriaGatsu, name='libreria_gatsu'),
+    path('LibreriaGatsu', libreriaGatsu, name='LibreriaGatsu'),
 
 
     #path('delete_revista/<int:revista_id>', delete_Revista),

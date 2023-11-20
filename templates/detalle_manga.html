@@ -63,9 +63,7 @@
                         {% for imagen in capitulo.imagenes.all %}
                         <br>
                             <h1 style="text-align: center;">{{ capitulo.titulo }}, Cap: {{capitulo.numero}}</h1><!-- titulo -->
-                        <br>
                             <li>
-                        
                                 <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
                             </li>
                         {% endfor %}
