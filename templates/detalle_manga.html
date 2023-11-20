@@ -1,21 +1,91 @@
-<h2>Capítuloaaaaas</h2>
-<ul>
-    {% for capitulo in capitulos %}
-        <li>
-            <a href="{% url 'manga:detalle_capitulo' capitulo.id %}">
-                Capítulo {{ capitulo.numero }} - {{ capitulo.titulo }}
-            </a>
-            <ul>
-                {% if capitulo.imagenes.all %}
-                    {% for imagen in capitulo.imagenes.all %}
-                        <li>
-                            <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
-                        </li>
-                    {% endfor %}
-                {% else %}
-                    <li>No hay imágenes asociadas a este capítulo.</li>
-                {% endif %}
-            </ul>
-        </li>
-    {% endfor %}
-</ul>
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ manga.nombre_manga.nombreManga }} - Cap: {{c.numero}}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+</head>
+<style>
+    /* Estilo para las imágenes */
+    ul.image-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul.image-list li {
+        width: 70%;
+        /* Ajusta según tus necesidades */
+        margin: 0 auto;
+        /* Centra el contenido en la página */
+    }
+
+    ul.image-list li img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        /* Asegura que la imagen no se estire más allá de su tamaño original */
+        display: block;
+        /* Elimina cualquier espacio adicional debajo de las imágenes */
+        margin-bottom: 0;
+        /* Elimina cualquier margen inferior */
+        border: 1px solid #ddd;
+        /* Añade un borde para mayor claridad */
+    }
+</style>
+
+
+
+<body style="background-color: #202020; color: #fff;">
+
+    <ul>
+        {% if capitulo %}
+            <li>
+                <ul class="image-list">
+                    {% if capitulo.imagenes.all %}
+                        {% for imagen in capitulo.imagenes.all %}
+                        <br>
+                            <h1 style="text-align: center;">{{ capitulo.titulo }}, Cap: {{capitulo.numero}}</h1><!-- titulo -->
+                        <br>
+                            <li>
+                        
+                                <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No hay imágenes asociadas a este capítulo.</li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% else %}
+            <li>No hay capítulos disponibles.</li>
+        {% endif %}
+    </ul>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+</body>
+
+</html>
+
+{% endblock %}

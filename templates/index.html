@@ -53,11 +53,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav" style="color: #fff;">
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Recientes">Descubre</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="SobreGatsu">Gatsu</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'Home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'recientes' %}">Descubre</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'SobreGatsu' %}">Gatsu</a></li>
                         <div class="navbar-nav ms-auto">
-                            <a class="nav-link" href="ConfigMangas"
+                            <a class="nav-link" href="{% url 'ConfigMangas' %}"
                             style="color: #fff;">Configurar Mangas</a>
                     </ul>
                     {% if request.user.is_authenticated %}

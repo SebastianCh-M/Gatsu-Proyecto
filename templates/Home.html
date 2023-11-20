@@ -66,109 +66,36 @@
       <h2 class="text-center section-subheading">Tendencia</h2>
       <hr>
     </div>
-    <div class="container">
-      <div class="swiper tranding-slider">
-        <div class="swiper-wrapper">
-          <!-- Slide-start -->
-          <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
-              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/DBS.webp?alt=media&token=4f68035f-09ea-4525-8aee-8c4f629c45e1">
-            </div>
-            <div class="tranding-slide-content">
-              <p class="N_chp">Cap: #098</p>
-              <div class="tranding-slide-content-bottom">
-                <h2 class="Manga_name">
-                  Dragon Ball Super
-                  </h4>
-                  <p class="Mangaka_name">Akira Toriyama</p>
-                  <h3 class="Manga_rate">
-                    <span>Rate: 4</span>
-                    <div class="rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                    </div>
-                    </h4>
-              </div>
-            </div>
+    <div class="container"> 
+      <div class="swiper tranding-slider"> 
+          <div class="swiper-wrapper"> 
+              {% for manga in mangas|slice:":5" %}
+              <!-- Slide-start --> 
+              <div class="swiper-slide tranding-slide"> 
+                  <div class="tranding-slide-img"> 
+                      <img src="{{ manga.portada.url }}"> 
+                  </div> 
+                  <div class="tranding-slide-content"> 
+                      <h3 class="N_chp">Cap: #001</h3> <!-- Puedes ajustar esto según tus necesidades -->
+                      <div class="tranding-slide-content-bottom"> 
+                          <h2 class="Manga_name">{{ manga.nombre_manga.nombreManga }}</h2> 
+                          <p class="Mangaka_name">Autor: {{ manga.nombre_manga.mangaka }}</p> <!-- Accede al autor a través de la relación -->
+                          <h3 class="Manga_rate"> 
+                              <span>Rate: {{ manga.rating }}</span> <!-- Ajusta esto según tu modelo MangaGatsu -->
+                              <div class="rating"> 
+                                  <!-- Agrega aquí tus estrellas según el rating -->
+                              </div> 
+                          </h3> 
+                      </div> 
+                  </div> 
+              </div> 
+              <!-- Slide-end -->
+              {% endfor %}
           </div>
-          <!-- Slide-end -->
-          <!-- Slide-start -->
-          <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
-              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Kagurabachi.jpg?alt=media&token=429e59e5-3ef5-4cb1-aca2-3996d82af370">
-            </div>
-            <div class="tranding-slide-content">
-              <h3 class="N_chp">Cap: #008</h3>
-              <div class="tranding-slide-content-bottom">
-                <h2 class="Manga_name">
-                  Kagubarachi</h2>
-                <p class="Mangaka_name">Takeru Hokazono</p>
-                <h3 class="Manga_rate">
-                  <span>Rate: 4</span>
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                  </div>
-                </h3>
-              </div>
-            </div>
-          </div>
-          <!-- Slide-end -->
-          <!-- Slide-start -->
-          <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
-              <img src="{% static 'images/boruto.jpg' %}">
-            </div>
-            <div class="tranding-slide-content">
-              <h3 class="N_chp">Cap: #003</h3>
-              <div class="tranding-slide-content-bottom">
-                <h2 class="Manga_name">
-                  Boruto Two Blue Vortex
-                </h2>
-                <p class="Mangaka_name">Masashi Kishimoto</p>
-                <h3 class="Manga_rate">
-                  <span>Rate: 4</span>
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                  </div>
-                </h3>
-              </div>
-            </div>
-          </div>
-          <!-- Slide-end -->
-          <!-- Slide-start -->
-          <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
-              <img src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Chainsaw%20Man.jpg?alt=media&token=1785251c-7828-4716-b24b-35752d363715">
-            </div>
-            <div class="tranding-slide-content">
-              <h3 class="N_chp">Cap: #147</h3>
-              <div class="tranding-slide-content-bottom">
-                <h2 class="Manga_name">
-                  Chainsaw Man
-                </h2>
-                <p class="Mangaka_name">Tatsuki Fujimoto</p>
-                <h3 class="Manga_rate">
-                  <span>Rate: 4</span>
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                  </div>
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
+      </div>
+  </div>
+  
+  
 
       </div>
     </div>
