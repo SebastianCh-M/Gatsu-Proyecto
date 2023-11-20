@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Librería de Mangas</title>
+</head>
+<body>
+    <h1>Librería de Mangas</h1>
+    <ul>
+        {% for manga in mangas %}
+            <li>
+                <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                    <!-- Contenido del manga -->
+
+                
+                    <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
+                    <h2>{{ manga.nombre_manga.nombreManga }}</h2>
+                    <p>{{ manga.sinopsis }}</p>
+                    <!-- Puedes agregar más campos según tus necesidades -->
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

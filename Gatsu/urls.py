@@ -3,12 +3,13 @@ from django.urls import path, include
 from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
-from manga.views import formRevista, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI
+from manga.views import formRevista, libreriaGatsu, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas,Filtroprueba
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('manga/', include('manga.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
@@ -50,9 +51,8 @@ urlpatterns = [
     path('deleI/<int:id>', deleI),
     path('updaI/<int:id>', updaI),
 
-
-
-
+    #Libreria Manga
+    path('libreria', libreriaGatsu, name='libreria_gatsu'),
 
 
     #path('delete_revista/<int:revista_id>', delete_Revista),
