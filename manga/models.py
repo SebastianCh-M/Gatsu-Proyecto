@@ -85,7 +85,7 @@ class MangaGatsu(models.Model):
     ]
     tipo_subida = models.CharField(max_length=20, choices=OPCIONES_SUBIDA)
     sinopsis = models.TextField()
-
+    
     OPCIONES_GENERO = [
     ('Accion', 'Acción'),
     ('Aventura', 'Aventura'),

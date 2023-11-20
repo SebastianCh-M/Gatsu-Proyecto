@@ -21,7 +21,7 @@ export class ManageAccount {
 register(email, password) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((_) => {
-      window.location.href = "Home.html";
+      window.location.href = "{% url 'Home' %}";
       // Mostrar alerta de registro exitoso
       alert("Registro exitoso. Serás redirigido a la página de inicio de sesión.");
     })
@@ -35,7 +35,7 @@ register(email, password) {
 authenticate(email, password) {
   signInWithEmailAndPassword(auth, email, password)
     .then((_) => {
-      window.location.href = "Home.html";
+      window.location.href = "{% url 'Home' %}";
       // Mostrar alerta de inicio de sesión exitoso
       alert("Has iniciado sesión correctamente. Serás redirigido a la página principal.");
     })
@@ -49,7 +49,7 @@ authenticate(email, password) {
 signOut() {
   signOut(auth)
     .then((_) => {
-      window.location.href = "Home.html";
+      window.location.href = "{% url 'Home' %}";
     })
     .catch((error) => {
       console.error(error.message);
@@ -57,27 +57,27 @@ signOut() {
 }
 }
 
-var TrandingSlider = new Swiper('.tranding-slider', {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    loop: true,
-    slidesPerView: 'auto',
-    coverflowEffect: {
-      rotate: 0,
-      stretch: 0,
-      depth: 100,
-      modifier: 2.5,
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    }
-  });
+//* var TrandingSlider = new Swiper('.tranding-slider', {
+  //  effect: 'coverflow',
+    //grabCursor: true,
+    //centeredSlides: true,
+    //loop: true,
+    //slidesPerView: 'auto',
+    //coverflowEffect: {
+    //  rotate: 0,
+    //  stretch: 0,
+    //  depth: 100,
+    //  modifier: 2.5,
+    //},
+    //pagination: {
+    //  el: '.swiper-pagination',
+    //  clickable: true,
+    //},
+    //navigation: {
+    //  nextEl: '.swiper-button-next',
+    //  prevEl: '.swiper-button-prev',
+    //}
+  //});
   console.log('Holaaaaa')
 
 

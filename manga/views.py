@@ -143,21 +143,18 @@ def libreriaGatsu(request):
 def detalle_manga(request, manga_id):
     manga = get_object_or_404(MangaGatsu, id=manga_id)
     capitulos = Capitulo.objects.filter(manga=manga)
-    imagenes_por_capitulo = {}
 
-    for capitulo in capitulos:
-        imagenes_por_capitulo[capitulo] = Imagen.objects.filter(capitulo=capitulo)
+    # Asegurémonos de obtener solo el primer capítulo para este ejemplo
+    primer_capitulo = capitulos.first() if capitulos else None
 
-    return render(request, 'detalle_manga.html', {'manga': manga, 'capitulos': capitulos, 'imagenes_por_capitulo': imagenes_por_capitulo})
+    return render(request, 'detalle_manga.html', {'manga': manga, 'capitulo': primer_capitulo})
 
 #METODO GET Para poder leer el capitulo por manga.
 def detalle_capitulo(request, capitulo_id):
-    try:
-        capitulo = Capitulo.objects.get(pk=capitulo_id)
-    except Capitulo.DoesNotExist:
-        raise Http404("Capítulo no encontrado.")
+    capitulo = get_object_or_404(Capitulo, id=capitulo_id)
+    imagenes = capitulo.imagenes.all()  # Utiliza el related_name 'imagenes' para obtener todas las imágenes del capítulo
 
-    return render(request, 'detalle_capitulo.html', {'capitulo': capitulo})
+    return render(request, 'detalle_capitulo.html', {'capitulo': capitulo, 'imagenes': imagenes})
 
 
 def detalle_capitulos(request, manga_id):

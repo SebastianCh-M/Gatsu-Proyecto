@@ -1,23 +1,77 @@
-<html>
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Librería de Mangas</title>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librería Gatsu</title>
+    <!-- Agregamos tus scripts y estilos -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
 </head>
-<body>
-    <h1>Librería de Mangas</h1>
-    <ul>
-        {% for manga in mangas %}
-            <li>
+<style>
+    .card {
+        background-color: black;
+        color: #fff;
+        max-width: 150px;
+        max-height: 250px;
+        width: 100%;
+        height: 100%;
+        border: 1px solid gray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: ease-in-out .2s;
+        margin: auto;
+    }
+
+    .card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
+    }
+
+    .card:hover {
+        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    }
+</style>
+<body style="background-color: #202020; color: #fff;">
+    <br>
+    <h1 style="text-align: center;">Librería de Mangas</h1>
+    <br>
+    <hr>
+    <div class="container container-fluid">
+        <div class="row">
+            {% for manga in mangas %}
+            <div class="col-md-2">
                 <a href="{% url 'manga:detalle_capitulos' manga.id %}">
                     <!-- Contenido del manga -->
-
-                
-                    <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
-                    <h2>{{ manga.nombre_manga.nombreManga }}</h2>
-                    <p>{{ manga.sinopsis }}</p>
+                    <div class="card" id="card1">
+                        <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
+                        <h2>{{ manga.nombre_manga.nombreManga }}</h2>
+                    </div>
                     <!-- Puedes agregar más campos según tus necesidades -->
                 </a>
-            </li>
-        {% endfor %}
-    </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Agregamos tus scripts -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 </body>
 </html>
+{% endblock %}

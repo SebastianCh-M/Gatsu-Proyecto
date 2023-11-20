@@ -1,23 +1,167 @@
+{% extends 'index.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Manga</title>
-</head>
-<body>
-    <h1>{{ manga.nombre_manga.nombreManga }}</h1>
-    <p>{{ manga.sinopsis }}</p>
 
-    <h2>Capítuloas</h2>
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <!-- Bootstrap CSS -->
+    <title>Detalle del Manga</title>
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+
+</head>
+<style>
+    .img{
+        width: 220px;
+        height: 270px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+                display: flex;
+    }
+    section {
+        position: relative;
+        background: #202020;
+        min-height: 1vh;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    section::before {
+        content: "";
+        position: absolute;
+        width: auto;
+        height: auto;
+        background: #202020;
+        border-radius: 50%;
+        transform: translate(-250px, -120px);
+    }
+
+    section::after {
+        content: "";
+        position: absolute;
+        width: auto;
+        height: auto;
+        background: rgb(70, 67, 67);
+        border-radius: 50%;
+        transform: translate(-250px, -120px);
+    }
+
+    .box {
+        position: relative;
+        min-width: 90%;
+        min-height: 90%;
+        background: #202020;
+        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 10;
+        padding: 20px;
+        backdrop-filter: blur(25px);
+    }
+
+    .box .list {
+        position: relative;
+        display: flex;
+        padding: 10px;
+        background: #202020;
+        border-radius: 10px;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: 0.5s;
+        overflow: hidden;
+    }
+
+    .box .list:hover {
+        background: #202020;
+        box-shadow: -15px 30px 50px rgba(0, 0, 0, 0.5);
+        transform: scale(1.15) translateX(30px) translateY(-15px);
+        z-index: 1000;
+    }
+    .box .list .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #fff;
+    }
+    .box .list .content .h4 {
+        line-height: 1.2em;
+        font-weight: 600;
+        transition: 0.5s;
+    }
+    .box .list :hover .content h4{
+        color: black   ;
+    }
+    .box2 {
+    display: flex;
+
+}   
+.sinopsis{
+
+    padding-left: 5px;
+}
+</style>
+
+<body style="background-color: #202020; color: #fff;">
+    <br>
+    <br>
     <ul>
-        {% for capitulo in capitulos %}
-            <li>
-                <a href="{% url 'manga:detalle_manga' manga.id %}">
-                    "{{ capitulo.titulo }}"
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+        <div class="container">
+            <div class="box2">
+                <div class="content">
+                    <img class="img" src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
+                    
+                </div>
+                <div class="sinopsis">
+                    <h1 style="text-align: center;">{{ manga.nombre_manga.nombreManga }}</h1>
+                    <h2>Sinopsis:</h2>
+                    <p>{{ manga.sinopsis }}</p>
+                    <p class="Mangaka_name">Mangaka: {{ manga.nombre_manga.mangaka }}</p>
+                    <p class ="Genero">Género: {{ manga.genero }}</p>
+
+                </div>
+            </div>
+        <br>
+        <section>
+            <div class="box">
+                <h3>Capitulos</h3>
+                {% for capitulo in capitulos %}
+                <div class="list">
+                    <div class="content">
+                        <a href="{% url 'manga:detalle_manga' manga.id %}">
+                            <small>Cap: {{capitulo.numero}}</small><!-- numero cap -->
+                            <h4>{{ capitulo.titulo }}</h4><!-- titulo -->
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        </div>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 </body>
+
 </html>
+
+{% endblock %}
