@@ -2,6 +2,7 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -13,56 +14,162 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <meta name="msapplication-TileColor" content="#2957ba">
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
-</head>
-<style>
-    .card {
-        background-color: black;
-        color: #fff;
-        max-width: 150px;
-        max-height: 250px;
-        width: 100%;
-        height: 100%;
-        border: 1px solid gray;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: ease-in-out .2s;
-        margin: auto;
-    }
+    <style>
+        #manga-library {
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
 
-    .card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
-    }
+        #main-content {
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
 
-    .card:hover {
-        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    }
-</style>
+        .card {
+            height: 290px;
+            /* Establece la altura fija */
+            background-color: black;
+            color: #fff;
+            max-width: 150px;
+            border: 1px solid gray;
+            transition: ease-in-out .2s;
+            margin: 10px;
+            text-align: center;
+            overflow: hidden;
+            /* Evita que las imágenes sobresalgan */
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            /* Establece la altura fija para todas las imágenes */
+            object-fit: cover;
+            border: 1px solid gray;
+            transition: ease-in-out .2s;
+        }
+
+
+        h2 {
+            color: white;
+            font-size: 14px;
+            margin-top: 10px;
+            /* Ajusta el margen superior */
+        }
+
+        .card:hover {
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        }
+
+        .grid {
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-auto-rows: AUTO;
+            grid-gap: 20px;
+        }
+
+        .card p {
+            display: none;
+            /* Hace que las líneas <p> estén ocultas por defecto */
+        }
+
+        .card:hover p {
+            display: none;
+            /* Muestra las líneas <p> cuando se hace hover en la tarjeta */
+        }
+    </style>
+</head><script>
+    $(document).ready(function () {
+        var $grid = $('.grid').isotope({
+            itemSelector: '.card',
+            layoutMode: 'fitRows'
+        });
+
+        $('#search-input').on('input', function () {
+            var searchTerm = $(this).val().toLowerCase();
+            applyFilters(searchTerm);
+        });
+
+        $('#apply-filters').on('click', function () {
+            applyFilters();
+        });
+
+        $('#clear-filters').on('click', function () {
+            // Limpiar los filtros y actualizar la cuadrícula
+            $('input[name="genre"]:checked').prop('checked', false);
+            applyFilters();
+        });
+
+        function applyFilters(searchTerm) {
+            var selectedGenres = [];
+            $('input[name="genre"]:checked').each(function () {
+                selectedGenres.push($(this).val());
+            });
+
+            $grid.isotope({
+                filter: function () {
+                    var title = $(this).find('h2').text().toLowerCase();
+                    var genre = $(this).find('p:contains("Género:")').text().toLowerCase().split(':')[1].trim();
+
+var titleMatch = searchTerm ? title.includes(searchTerm) : true;
+var genreMatch = selectedGenres.length === 0 || selectedGenres.includes(genre);
+
+return titleMatch && genreMatch;
+
+                }
+            });
+        }
+    });
+</script>
+
 <body style="background-color: #202020; color: #fff;">
     <br>
     <h1 style="text-align: center;">Librería de Mangas</h1>
     <br>
     <hr>
-    <div class="container container-fluid">
-        <div class="row">
+    <div class="container row col-3" style="margin-left: 50px;">
+        <input type="text" id="search-input" placeholder="Buscar por título">
+        <br>
+        <div class="container" style="margin-left: 50px;">
+            <form id="genre-filter-form">
+                {% for genre in genres %}
+                    <label>
+                        <input type="checkbox" name="genre" value="{{ genre }}" {% if genre in selected_genres %}checked{% endif %}>
+                        {{ genre }}
+                    </label>
+                {% endfor %}
+                <button type="button" id="apply-filters">Aplicar Filtros</button>
+                <button type="button" id="clear-filters">Limpiar Filtros</button>
+            </form>
+        </div>
+    </div>
+    <div class="library-container" style="margin-left: 50px;">
+        <div class="grid">
             {% for manga in mangas %}
-            <div class="col-md-2">
-                <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-                    <!-- Contenido del manga -->
-                    <div class="card" id="card1">
+                <div class="card">
+                    <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                        <!-- Contenido del manga -->
                         <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
                         <h2>{{ manga.nombre_manga.nombreManga }}</h2>
-                    </div>
-                    <!-- Puedes agregar más campos según tus necesidades -->
-                </a>
-            </div>
+                        <p>Género: {{ manga.genero }}</p>
+                        <p>Editorial: {{ manga.editorial }}</p>
+                        <p>Mangaka: {{ manga.mangaka }}</p>
+                        <!-- Puedes agregar más campos según tus necesidades -->
+                    </a>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -71,7 +178,28 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var $grid = $('.grid').isotope({
+                itemSelector: '.card',
+                layoutMode: 'fitRows'
+            });
+
+            $('#search-input').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                $grid.isotope({
+                    filter: function () {
+                        var title = $(this).find('h2').text().toLowerCase();
+                        return title.includes(searchTerm);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+
 </html>
 {% endblock %}

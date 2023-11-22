@@ -23,6 +23,29 @@
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
+        toggle: false
+    });
+
+    document.getElementById('heading-books-genders').addEventListener('click', function () {
+        myCollapse.toggle();
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
+        toggle: false
+    });
+
+    document.getElementById('heading-books-filters').addEventListener('click', function () {
+        myCollapse.toggle();
+    });
+});
+</script>
+</script>
 <style>
     /* Estilo para las imágenes */
     ul.image-list {
