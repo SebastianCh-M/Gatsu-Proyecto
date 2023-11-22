@@ -45,8 +45,4 @@ class ConfigMangas(View):
             context = {}
             return render(request, 'ConfigMangas.html', context)
 
-class Filtroprueba(View):
-        def get(self, request, *args, **kwargs):
-            context = {}
-            return render(request, 'Filtroprueba.html', context)
         
