@@ -4,13 +4,11 @@
 <html lang="en">
 
 <head>
-
     {% load static %}
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ manga.nombre_manga.nombreManga }} - Cap: {{c.numero}}</title>
+    <title>{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
@@ -25,32 +23,44 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
-        toggle: false
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
+            toggle: false
+        });
+
+        document.getElementById('heading-books-genders').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
     });
 
-    document.getElementById('heading-books-genders').addEventListener('click', function () {
-        myCollapse.toggle();
-    });
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
-        toggle: false
+    document.addEventListener("DOMContentLoaded", function () {
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
+            toggle: false
+        });
+
+        document.getElementById('heading-books-filters').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
     });
 
-    document.getElementById('heading-books-filters').addEventListener('click', function () {
-        myCollapse.toggle();
-    });
-});
-</script>
+    function changeImageSize(factor) {
+        var images = document.querySelectorAll('.image-list img');
+        images.forEach(function (image) {
+            var currentWidth = image.width;
+            var newWidth = currentWidth * factor;
+            image.style.width = newWidth + 'px';
+        });
+    }
 </script>
 <style>
+    
     /* Estilo para las imágenes */
     ul.image-list {
         list-style: none;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Centra las imágenes horizontalmente */
     }
 
     ul.image-list li {
@@ -58,6 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
         /* Ajusta según tus necesidades */
         margin: 0 auto;
         /* Centra el contenido en la página */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Centra las imágenes verticalmente */
     }
 
     ul.image-list li img {
@@ -73,16 +87,87 @@ document.addEventListener("DOMContentLoaded", function () {
         /* Añade un borde para mayor claridad */
     }
 </style>
+<SCRipt>
+    function changeView(viewType) {
+        var imageList = document.querySelector('.image-list');
 
+        if (viewType === 'cascada') {
+            imageList.style.flexDirection = 'column';
+            destroySwiper();
+        } else if (viewType === 'libro') {
+            imageList.style.flexDirection = 'row';
+            initializeSwiper();
+        }
+    }
+
+    var mySwiper;
+
+    function changeView(viewType) {
+        var cascadaView = document.querySelector('.cascada-view');
+        var libroView = document.querySelector('.libro-view');
+
+        if (viewType === 'cascada') {
+            cascadaView.style.display = 'block';
+            libroView.style.display = 'none';
+        } else if (viewType === 'libro') {
+            cascadaView.style.display = 'none';
+            libroView.style.display = 'block';
+            initializeSwiper();
+        } else {
+            // Manejar otros tipos de vista si es necesario
+        }
+    }
+
+    var mySwiper;
+
+    function initializeSwiper() {
+        if (mySwiper) {
+            mySwiper.destroy(true, true);
+        }
+
+        mySwiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+</script>
 <body style="background-color: #202020; color: #fff;">
     <h1 style="text-align: center;">{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</h1>
+
+<div class="container align-items-center" style="align-items: center; align-content: center;">
+    <button type="button" onclick="changeImageSize(1.2)" style="background-color: black ; color: #fff; border-color: #fff;">Aumentar Tamaño</button>
+    <button type="button" onclick="changeImageSize(0.8)"style="background-color: black ; color: #fff; border-color: #fff;">Disminuir Tamaño</button>
+    <button type="button" onclick="changeView('cascada')"style="background-color: black ; color: #fff; border-color: #fff;">Vista Cascada</button>
+    <button type="button" onclick="changeView('libro')"style="background-color: black ; color: #fff; border-color: #fff;">Vista Libro</button>
+</div>
+<br>
+<div class="cascada-view">
     <ul class="image-list">
-        {%for i in imagenes %}
-        <li>
-            <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
-        </li>
-        {% endfor %}    
+        {% for i in imagenes %}
+            <li>
+                <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+            </li>
+        {% endfor %}
     </ul>
+</div>
+
+<div class="libro-view">
+    <div class="swiper-container">
+        <div class="swiper-wrapper image-list">
+            {% for i in imagenes %}
+                <li class="swiper-slide ">
+                    <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+                </li>
+            {% endfor %}
+        </div>
+        <!-- Agrega botones de navegación -->
+    </div>
+</div>
+    
 </body>
 </html>
 

@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ manga.nombre_manga.nombreManga }} - Cap: {{c.numero}}</title>
+    <title>{{ capitulo.titulo }}, Cap: {{capitulo.numero}}</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
@@ -25,25 +25,25 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
-        toggle: false
-    });
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
+            toggle: false
+        });
 
-    document.getElementById('heading-books-genders').addEventListener('click', function () {
-        myCollapse.toggle();
+        document.getElementById('heading-books-genders').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
     });
-});
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
-        toggle: false
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
+            toggle: false
+        });
 
-    document.getElementById('heading-books-filters').addEventListener('click', function () {
-        myCollapse.toggle();
+        document.getElementById('heading-books-filters').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
     });
-});
 </script>
 </script>
 <style>
@@ -79,27 +79,27 @@ document.addEventListener("DOMContentLoaded", function () {
 <body style="background-color: #202020; color: #fff;">
     <h1 style="text-align: center;">{{ capitulo.titulo }}, Cap: {{capitulo.numero}}</h1>
     {% if capitulo %}
-        <ul>
-            {% for cap in capitulos %}
-                <li>
-                    <a href="{% url 'manga:detalle_capitulo' cap.id %}">{{ cap.numero }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-        <ul class="image-list">
-            {% if capitulo.imagenes.all %}
-                {% for imagen in capitulo.imagenes.all %}
-                    <br>
-                    <li>
-                        <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
-                    </li>
-                {% endfor %}
-            {% else %}
-                <li>No hay imágenes asociadas a este capítulo.</li>
-            {% endif %}
-        </ul>
+    <ul>
+        {% for cap in capitulos %}
+        <li>
+            <a href="{% url 'manga:detalle_capitulo' cap.id %}">{{ cap.numero }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <ul class="image-list">
+        {% if capitulo.imagenes.all %}
+        {% for imagen in capitulo.imagenes.all %}
+        <br>
+        <li>
+            <img src="{{ imagen.imagen.url }}" alt="Imagen del capítulo">
+        </li>
+        {% endfor %}
+        {% else %}
+        <li>No hay imágenes asociadas a este capítulo.</li>
+        {% endif %}
+    </ul>
     {% else %}
-        <p>No hay capítulos disponibles.</p>
+    <p>No hay capítulos disponibles.</p>
     {% endif %}
     </ul>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
