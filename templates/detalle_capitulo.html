@@ -144,7 +144,7 @@
                 {% for capitulo in capitulos %}
                 <div class="list">
                     <div class="content">
-                        <a href="{% url 'manga:detalle_manga' manga.id %}">
+                        <a class="btn btn-danger" href="/verCapitulo/{{capitulo.id}}">Ver
                             <small>Cap: {{capitulo.numero}}</small><!-- numero cap -->
                             <h4>{{ capitulo.titulo }}</h4><!-- titulo -->
                         </a>
