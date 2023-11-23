@@ -126,6 +126,8 @@ def libreriaGatsu(request):
     genres = MangaGatsu.OPCIONES_GENERO
     paginator = Paginator(mangas, 10)
     page = request.GET.get('page')
+    editoriales = Revista.objects.all()
+    Estado = MangaGatsu.OPCIONES_ESTADO
 
     try:
         page = int(page)
@@ -143,7 +145,7 @@ def libreriaGatsu(request):
     context = {'mangas': mangas, 'genres': genres}
     
 
-    return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres})
+    return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
 
 
 #METODO GET Para ver todos los capitulos por manga
