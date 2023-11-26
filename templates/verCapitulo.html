@@ -20,6 +20,7 @@
     <meta name="msapplication-TileColor" content="#2957ba">
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    
 </head>
 
 <script>
@@ -201,7 +202,7 @@
 
 <body style="background-color: #202020; color: #fff;">
 
-
+<br>
     <h1 style="text-align: center;">{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</h1>
 
     <div class="container align-items-center" style="align-items: center; align-content: center;">
@@ -217,6 +218,7 @@
     <br>
     <div class="cascada-view">
         <ul class="image-list">
+            <br>
             {% for i in imagenes %}
             <li>
                 <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">

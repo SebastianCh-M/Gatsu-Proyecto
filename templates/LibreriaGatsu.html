@@ -22,97 +22,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
 
     <!-- Tu script personalizado -->
-    <script
-        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 
-</head>
-<script>
-    $(document).ready(function () {
-        var $grid = $('.grid').isotope({
-            itemSelector: '.card',
-            layoutMode: 'fitRows'
-        });
-
-        $('#search-input').on('input', function () {
-            var searchTerm = $(this).val().toLowerCase();
-            applyFilters(searchTerm);
-        });
-
-        $('#apply-filters').on('click', function () {
-            var searchTerm = $('#search-input').val().toLowerCase();
-
-            applyFilters();
-
-        });
-
-        $('#clear-filters').on('click', function () {
-            // Limpiar los filtros y actualizar la cuadrícula
-            $('input[name="genre"]:checked').prop('checked', false);
-            $('input[name="Estado"]:checked').prop('checked', false);
-            $('input[name="editoriales"]:checked').prop('checked', false);
-
-            applyFilters();
-        });
-
-        function applyFilters(searchTerm) {
-            var selectedGenres = [];
-            $('input[name="genre"]:checked').each(function () {
-                selectedGenres.push($(this).val());
-            });
-            var selectedEstado = [];
-            $('input[name="Estado"]:checked').each(function () {
-                selectedEstado.push($(this).val());
-            });
-            var selectedEditoriales = [];
-            $('input[name="editoriales"]:checked').each(function () {
-                selectedEditoriales.push($(this).val());
-            });
-
-
-            $grid.isotope({
-                filter: function () {
-                    var title = $(this).find('p').text().toLowerCase();
-                    var genre = $(this).find('p:contains("Género:")').text().toLowerCase().split(':')[1].trim();
-                    var genre = $(this).find('.genre').text().toLowerCase();
-                    var estado = $(this).find('.estado').text().toLowerCase();
-                    var editorial = $(this).find('.editorial').text().toLowerCase();
-                    var titleMatch = searchTerm ? title.includes(searchTerm) : true;
-                    var genreMatch = selectedGenres.length === 0 || selectedGenres.includes(genre);
-                    var estadoMatch = selectedEstado.length === 0 || selectedEstado.includes(estado);
-                    var editorialMatch = selectedEditoriales.length === 0 || selectedEditoriales.includes(editorial);
-                    return titleMatch && genreMatch && estadoMatch && editorialMatch;
-                }
-            });
-        }
-    });
-
-
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('.collapse').on('hidden.bs.collapse', function () {
-            localStorage.setItem($(this).attr('id'), 'hidden');
-        });
-
-        $('.collapse').on('shown.bs.collapse', function () {
-            localStorage.setItem($(this).attr('id'), 'shown');
-        });
-
-        $('.collapse').each(function () {
-            var state = localStorage.getItem($(this).attr('id'));
-            if (state === 'shown') {
-                $(this).addClass('show');
-            }
-        });
-    });
-</script>
 </head>
 
 <body style="background-color: #202020; color: #fff;">
@@ -131,12 +46,12 @@
             <div class="row container container-fluid">
                 <div class="col-2">
                     <button type="button"
-                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff;  "
+                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff;"
                         class="btn btn-primary" data-toggle="collapse" data-target="#genre-filter-form-collapse">Filtros
-                        por
-                        géneros</button>
+                        por géneros</button>
                     <div class="collapse" id="genre-filter-form-collapse">
                         <form id="genre-filter-form">
+                            <br>
                             {% for genre in genres %}
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ genre }}" name="genre"
@@ -151,16 +66,16 @@
 
                 <div class="col-2">
                     <button type="button"
-                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff; "
-                        class="btn btn-primary" data-toggle="collapse"
-                        data-target="#editorial-filter-form-collapse">Filtros por
-                        Editorial</button>
+                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff;"
+                        class="btn btn-primary" data-toggle="collapse" data-target="#editorial-filter-form-collapse">Filtros
+                        por Editorial</button>
                     <div class="collapse" id="editorial-filter-form-collapse">
                         <form id="editorial-filter-form">
+                            <br>
                             {% for editorial in editoriales %}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ editorial }}" name="editorial"
-                                    id="{{ editorial }}">
+                                <input class="form-check-input" type="checkbox" value="{{ editorial }}"
+                                    name="editorial" id="{{ editorial }}">
                                 <label class="form-check-label" for="{{ editorial }}">{{ editorial }}</label>
                             </div>
                             {% endfor %}
@@ -171,12 +86,12 @@
 
                 <div class="col-2 ">
                     <button type="button"
-                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff; "
-                        class="btn btn-primary" data-toggle="collapse"
-                        data-target="#estado-filter-form-collapse">Filtros por
-                        Estado</button>
+                        style="background-color: rgb(19, 19, 19); border-color: #ffffff; color: #fff;"
+                        class="btn btn-primary" data-toggle="collapse" data-target="#estado-filter-form-collapse">Filtros
+                        por Estado</button>
                     <div class="collapse" id="estado-filter-form-collapse">
                         <form id="estado-filter-form">
+                            <br>
                             {% for Estado in Estado %}
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ Estado }}" name="Estado"
@@ -192,17 +107,13 @@
             <br>
             <div class="Col-2 container container-fluid" style="margin-right: 20px;">
                 <button type="button" class="btn btn-primary"
-                    style="background-color: rgb(19, 19, 19); border-color: #fff; color: #fff;"
-                    id="apply-filters">Aplicar
+                    style="background-color: rgb(19, 19, 19); border-color: #fff; color: #fff;" id="apply-filters">Aplicar
                     Filtros</button>
                 <button type="button" class="btn btn-primary"
                     style="background-color: rgb(19, 19, 19); border-color: #fff; color: #fff;"
-                    id="clear-filters">Limpiar
-                    Filtros</button>
+                    id="clear-filters">Limpiar Filtros</button>
             </div>
         </div>
-    </div>
-    </div>
     </div>
     <div class="container">
         <div class="grid">
@@ -222,13 +133,90 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Filtrado y Búsqueda Scripts -->
     <script>
+        $(document).ready(function () {
+            $('.collapse').on('hidden.bs.collapse', function () {
+                localStorage.setItem($(this).attr('id'), 'hidden');
+            });
+
+            $('.collapse').on('shown.bs.collapse', function () {
+                localStorage.setItem($(this).attr('id'), 'shown');
+            });
+
+            $('.collapse').each(function () {
+                var state = localStorage.getItem($(this).attr('id'));
+                if (state === 'shown') {
+                    $(this).addClass('show');
+                }
+            });
+
+            // Script para el filtrado por géneros, editoriales y estado
+            $("#apply-filters").on("click", function () {
+                var selectedGenres = $("input[name='genre']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                var selectedEditoriales = $("input[name='editorial']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                var selectedEstados = $("input[name='Estado']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                // Lógica de filtrado
+                $(".grid .card").each(function () {
+                    var mangaGenre = $(this).find("p:contains('Género')").text().toLowerCase();
+                    var mangaEditorial = $(this).find("p:contains('Editorial')").text().toLowerCase();
+                    var mangaEstado = $(this).find("p:contains('Estado')").text().toLowerCase();
+
+                    // Verifica si el manga cumple con los filtros seleccionados
+                    var showManga = true;
+
+                    if (selectedGenres.length > 0 && !selectedGenres.includes(mangaGenre)) {
+                        showManga = false;
+                    }
+
+                    if (selectedEditoriales.length > 0 && !selectedEditoriales.includes(mangaEditorial)) {
+                        showManga = false;
+                    }
+
+                    if (selectedEstados.length > 0 && !selectedEstados.includes(mangaEstado)) {
+                        showManga = false;
+                    }
+
+                    // Muestra u oculta el manga según los filtros
+                    if (showManga) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+
+                    console.log("mangaGenre:", mangaGenre);
+                    console.log("mangaEditorial:", mangaEditorial);
+                    console.log("mangaEstado:", mangaEstado);
+                });
+            });
+
+            // Script para limpiar los filtros
+            $("#clear-filters").on("click", function () {
+                $("input[name='genre']").prop("checked", false);
+                $("input[name='editorial']").prop("checked", false);
+                $("input[name='Estado']").prop("checked", false);
+
+                // Lógica de filtrado
+                $(".grid .card").show();
+            });
+        });
+
+        // Script para la búsqueda
         $(document).ready(function () {
             var $grid = $('.grid').isotope({
                 itemSelector: '.card',
                 layoutMode: 'fitRows'
             });
-            // busqueda
             $('#search-input').on('input', function () {
                 var searchTerm = $(this).val().toLowerCase();
                 $grid.isotope({
@@ -247,6 +235,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>
