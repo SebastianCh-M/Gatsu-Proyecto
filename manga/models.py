@@ -1,10 +1,44 @@
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from multiselectfield import MultiSelectField
+from django.contrib.auth.models import AbstractUser
+from datetime import timedelta
 
-# Create your models here.
+class UsuarioPersonalizado(AbstractUser):
+    email = models.EmailField(unique=True)
+    edad = models.IntegerField(null=True, blank=True)
 
+    ROLES = (
+        ('NR', 'No Registrado'),
+        ('RNP', 'Registrado No Premium'),
+        ('RP', 'Registrado Premium'),
+        ('Admin', 'Administrador'),
+    )
+
+    rol = models.CharField(max_length=10, choices=ROLES, default='NR')
+
+    # Añade related_name para evitar conflictos
+    groups = models.ManyToManyField(Group, related_name='usuarios')
+    user_permissions = models.ManyToManyField(Permission, related_name='usuarios_permissions')
+
+    def __str__(self):
+        return self.username
+
+class PreferenciasLectura(models.Model):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    preferencias_lectura = models.TextField(blank=True, null=True)
+
+class EstadisticasLectura(models.Model):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    total_capitulos_leidos = models.IntegerField(default=0)
+    tiempo_total_lectura = models.DurationField(default=timedelta())
+
+class HistorialCompras(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    fecha_compra = models.DateTimeField(auto_now_add=True)
+    # Otros campos relacionados con la compra
 class Post(models.Model):
     title=models.CharField(max_length=250)
     content=models.TextField()
@@ -78,14 +112,16 @@ class NombreManga(models.Model):
 class MangaGatsu(models.Model):
     nombre_manga = models.ForeignKey(NombreManga, on_delete=models.CASCADE, default=1)
     anio_publicacion = models.DateField()
+
     OPCIONES_SUBIDA = [
         ('Semanal', 'Semanal'),
         ('Mensual', 'Mensual'),
         ('Otro', 'Otro'),
     ]
+    
     tipo_subida = models.CharField(max_length=20, choices=OPCIONES_SUBIDA)
     sinopsis = models.TextField()
-
+    
     OPCIONES_GENERO = [
     ('Accion', 'Acción'),
     ('Aventura', 'Aventura'),

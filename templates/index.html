@@ -45,16 +45,19 @@
         </symbol>
     </svg>
     <div class="d-flex flex-column">
-        <nav class="navbar navbar-expand-lg" style="background-color: #181818; color: #fff;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #000000; color: #fff;">
             <div class="container-fluid">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse"
                     data-bs-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <a class="navbar-brand" href="{% url 'Home' %}" >
+                    <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}" alt="Logo" height="30">
+                </a>
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav" style="color: #fff;">
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'Home' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'recientes' %}">Descubre</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'LibreriaGatsu' %}">Librería</a></li>
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'SobreGatsu' %}">Gatsu</a></li>
                         <div class="navbar-nav ms-auto">
                             <a class="nav-link" href="{% url 'ConfigMangas' %}"
@@ -71,7 +74,7 @@
                         <div class="dropdown">
                             <ul class="dropdown-menu" style="background-color: #202020;">
                                 <li><a href="#" style="color: #fff;">Mi Cuenta</a></li>
-                                <li><a href="MiBiblioteca" style="color: #fff;">Mi Biblioteca</a></li>
+                                <li><a href="{% url 'MiBiblioteca' %}" style="color: #fff;">Mi Biblioteca</a></li>
                                 <li><a href="#" style="color: #fff;">Subscripción</a></li>
                                 <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
                             </ul>
@@ -149,7 +152,7 @@
                                         <input type="password" id="login-password" class="form-control mb-3"
                                             placeholder="Contraseña" required>
 
-                                        <button type="submit" style="background-color: black; border-color: #fff;" class="btn btn-success w-100 mb-4">Iniciar Sesióon</button>
+                                        <button type="submit" style="background-color: black; border-color: #fff;" class="btn btn-success w-100 mb-4">Iniciar Sesión</button>
                                         <p style="text-align: center;">O</p>
                                         <p>iniciar sesión con:</p>
                                         <button type="button" class="btn btn-info" id="googleLogin">Google</button>
@@ -191,7 +194,7 @@
             <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">
                         <use xlink:href="#twitter" />
                     </svg></a></li>
-            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">
+            <li class="ms-3"><a class="text-muted" href="https://www.instagram.com/gatsu_project/?utm_source=ig_web_button_share_sheet&igshid=OGQ5ZDc2ODk2ZA=="><svg class="bi" width="24" height="24">
                         <use xlink:href="#instagram" />
                     </svg></a></li>
             <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">

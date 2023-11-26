@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from manga.models import MangaGatsu
+from manga.models import MangaGatsu, Manga3
+
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
@@ -16,8 +17,7 @@ class HomeView(View):
 
         context = {'mangas': mangas}
         return render(request, 'Home.html', context)
-
-
+    
 class RecientesView(View):
     def get(self, request, *args, **kwargs):
         context = {}
@@ -45,8 +45,4 @@ class ConfigMangas(View):
             context = {}
             return render(request, 'ConfigMangas.html', context)
 
-class Filtroprueba(View):
-        def get(self, request, *args, **kwargs):
-            context = {}
-            return render(request, 'Filtroprueba.html', context)
         

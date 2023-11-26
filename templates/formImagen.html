@@ -24,12 +24,21 @@
       </head>
     <title>Formulario de Imagenes</title>
 </head>
+<style>
+    button{
+        background-color: #202020;
+        color: #fff;
+    }
+</style>
 <body style="background-color: #202020; color: #fff;">
-    <br>
-    <h2>Imagenes de capítulos</h2>
-    <br>
-    <div class="container container-fluid">
-        <form method="post" enctype="multipart/form-data">
+    <br>    <br>    <br>    <br>
+    <h2 style="text-align: center;">Imagenes de capítulos</h2>
+    <br>    <br>    <br>    <br>
+    <div class="d-flex justify-content-center">
+        <div class="card" style="background-color: #161616; color: #fff; border-color: #fff;">
+            <br>
+            <form class="container" method="post" enctype="multipart/form-data">
+
             {% csrf_token %}
 
             <label for="imagen">Imagenes:</label>
@@ -42,10 +51,15 @@
                 {% endfor %}
             </select><br>
                 <br>
-            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Imagenes</button>
-        </form>
+                <div class="d-flex justify-content-start">
+                    <button style="width: 70%;" type="submit">Añadir Imagen</button>
+                    <button style="width: 70%;" onclick="window.location.href='{% url 'ConfigMangas' %}'">Cancelar</button>
+                </div>
+            </form>
+            <br>
+        </div>
     </div>
-</div>
+    <br><br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>
 
