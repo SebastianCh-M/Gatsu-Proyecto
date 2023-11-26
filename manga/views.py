@@ -120,15 +120,19 @@ def listaMangaGatsu(request):
 
 
 #METODO GET Para Libreria Gatsu
+# Asegúrate de que tu vista envía los géneros disponibles a la plantilla
 def libreriaGatsu(request):
     mangas = MangaGatsu.objects.all()
-    paginator = Paginator(mangas, 10)  # Muestra 10 mangas por página
+    genres = MangaGatsu.OPCIONES_GENERO
+    paginator = Paginator(mangas, 10)
     page = request.GET.get('page')
+    editoriales = Revista.objects.all()
+    Estado = MangaGatsu.OPCIONES_ESTADO
 
     try:
         page = int(page)
     except (TypeError, ValueError):
-        page = 1  # Establece la página a 1 si no es un número entero válido
+        page = 1
 
     try:
         mangas = paginator.page(page)
@@ -136,10 +140,21 @@ def libreriaGatsu(request):
         mangas = paginator.page(1)
     except EmptyPage:
         mangas = paginator.page(paginator.num_pages)
+        context = {'mangas': mangas, 'genres': genres}
+        return render(request, 'libreriaGatsu.html', context)
+    context = {'mangas': mangas, 'genres': genres}
+    
 
-    return render(request, 'LibreriaGatsu.html', {'mangas': mangas})
+    return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
+
 
 #METODO GET Para ver todos los capitulos por manga
+def verCapitulo(request, id):
+    capitulo = Capitulo.objects.get(id=id)
+    imagen = capitulo.imagenes.all()
+    
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
 def detalle_manga(request, manga_id):
     manga = get_object_or_404(MangaGatsu, id=manga_id)
     capitulos = Capitulo.objects.filter(manga=manga)

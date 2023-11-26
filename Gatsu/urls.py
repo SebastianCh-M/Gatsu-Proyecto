@@ -3,8 +3,8 @@ from django.urls import path, include
 from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
-from manga.views import formRevista, libreriaGatsu, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI
-from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas,Filtroprueba
+from manga.views import formRevista, libreriaGatsu, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
+from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas
 
 urlpatterns = [
 
@@ -13,7 +13,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
-    path('Filtroprueba', Filtroprueba.as_view(), name='Filtroprueba'),
     path('ConfigMangas', ConfigMangas.as_view(), name='ConfigMangas'),
     path('Recientes', RecientesView.as_view(), name='recientes'),
     path('TopMangas', TopMangasView.as_view(), name='TopMangas'),
@@ -54,7 +53,7 @@ urlpatterns = [
     #Libreria Manga
     path('LibreriaGatsu', libreriaGatsu, name='LibreriaGatsu'),
 
-
+    path('verCapitulo/<int:id>', verCapitulo),
     #path('delete_revista/<int:revista_id>', delete_Revista),
     #path('eliminarR/<int:pk>', eliminarRevista),
     #path('manga_create', registrarManga),

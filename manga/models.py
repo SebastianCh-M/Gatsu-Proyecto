@@ -112,11 +112,13 @@ class NombreManga(models.Model):
 class MangaGatsu(models.Model):
     nombre_manga = models.ForeignKey(NombreManga, on_delete=models.CASCADE, default=1)
     anio_publicacion = models.DateField()
+
     OPCIONES_SUBIDA = [
         ('Semanal', 'Semanal'),
         ('Mensual', 'Mensual'),
         ('Otro', 'Otro'),
     ]
+    
     tipo_subida = models.CharField(max_length=20, choices=OPCIONES_SUBIDA)
     sinopsis = models.TextField()
     
