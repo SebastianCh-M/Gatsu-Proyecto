@@ -1,0 +1,174 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librería Gatsu</title>
+
+    <!-- Enlaces a bibliotecas externas -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/stylesLibreria.css">
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- Scripts externos -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+    <!-- Tu script personalizado -->
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+
+</head>
+
+<body style="background-color: #202020; color: #fff;">
+    <br>
+    <h1 style="text-align: center;">Librería de Mangas</h1>
+    <div class="row container-fluid container">
+        <div class="col-12 container container-fluid">
+            <div class="form-row container container-fluid">
+                <div class="col-10 col-md-8 mt-2">
+                    <input type="text" class="form-control order-select form-control-lg"
+                        style="background-color: rgb(19, 19, 19);border-color: #fff; color: #fff;" id="search-input"
+                        placeholder="Buscar por Título, Mangaka, Editorial, Estado o Genero">
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="grid">
+            {% for manga in mangas %}
+            <div class="card">
+                <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                    <!-- Contenido del manga -->
+                    <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
+                    <h2 style="color: #fff;">{{ manga.nombre_manga.nombreManga }}</h2>
+                    <p>Género: {{ manga.genero }}</p>
+                    <p>Editorial: {{ manga.nombre_manga.revista.editoriales }}</p>
+                    <p>Mangaka: {{ manga.nombre_manga.mangaka }}</p>
+                    <p>Estado: {{ manga.estado }}</p>
+                    <!-- Puedes agregar más campos según tus necesidades -->
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Filtrado y Búsqueda Scripts -->
+    <script>
+        $(document).ready(function () {
+            $('.collapse').on('hidden.bs.collapse', function () {
+                localStorage.setItem($(this).attr('id'), 'hidden');
+            });
+
+            $('.collapse').on('shown.bs.collapse', function () {
+                localStorage.setItem($(this).attr('id'), 'shown');
+            });
+
+            $('.collapse').each(function () {
+                var state = localStorage.getItem($(this).attr('id'));
+                if (state === 'shown') {
+                    $(this).addClass('show');
+                }
+            });
+
+            // Script para el filtrado por géneros, editoriales y estado
+            $("#apply-filters").on("click", function () {
+                var selectedGenres = $("input[name='genre']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                var selectedEditoriales = $("input[name='editorial']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                var selectedEstados = $("input[name='Estado']:checked").map(function () {
+                    return this.value;
+                }).get();
+
+                // Lógica de filtrado
+                $(".grid .card").each(function () {
+                    var mangaGenre = $(this).find("p:contains('Género')").text().toLowerCase();
+                    var mangaEditorial = $(this).find("p:contains('Editorial')").text().toLowerCase();
+                    var mangaEstado = $(this).find("p:contains('Estado')").text().toLowerCase();
+
+                    // Verifica si el manga cumple con los filtros seleccionados
+                    var showManga = true;
+
+                    if (selectedGenres.length > 0 && !selectedGenres.includes(mangaGenre)) {
+                        showManga = false;
+                    }
+
+                    if (selectedEditoriales.length > 0 && !selectedEditoriales.includes(mangaEditorial)) {
+                        showManga = false;
+                    }
+
+                    if (selectedEstados.length > 0 && !selectedEstados.includes(mangaEstado)) {
+                        showManga = false;
+                    }
+
+                    // Muestra u oculta el manga según los filtros
+                    if (showManga) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+
+                    console.log("mangaGenre:", mangaGenre);
+                    console.log("mangaEditorial:", mangaEditorial);
+                    console.log("mangaEstado:", mangaEstado);
+                });
+            });
+
+            // Script para limpiar los filtros
+            $("#clear-filters").on("click", function () {
+                $("input[name='genre']").prop("checked", false);
+                $("input[name='editorial']").prop("checked", false);
+                $("input[name='Estado']").prop("checked", false);
+
+                // Lógica de filtrado
+                $(".grid .card").show();
+            });
+        });
+
+        // Script para la búsqueda
+        $(document).ready(function () {
+            var $grid = $('.grid').isotope({
+                itemSelector: '.card',
+                layoutMode: 'fitRows'
+            });
+            $('#search-input').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                $grid.isotope({
+                    filter: function () {
+                        var title = $(this).find('h2').text().toLowerCase();
+                        var mangaka = $(this).find('p').text().toLowerCase();
+                        var editorial = $(this).find('p').text().toLowerCase();
+                        var genre = $(this).find('p').text().toLowerCase();
+
+                        return title.indexOf(searchTerm) > -1 || mangaka.indexOf(
+                            searchTerm) > -1 || editorial.indexOf(searchTerm) > -1 || genre
+                                .indexOf(
+                                    searchTerm) > -1;
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+{% endblock %}
