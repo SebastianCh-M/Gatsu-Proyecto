@@ -200,7 +200,9 @@ def updaC(request, id):
 
 #Metodo POST Imagen
 def formImagen(request):
-    if request.method == 'POST':
+
+    if request.method == 'POST':   
+        v_manga = request.GET.get('manga_id')
         v_imagen = request.FILES.getlist('imagen')
         v_capitulo = request.POST.get('capitulo')  
         capitulo = Capitulo.objects.get(id=v_capitulo)
@@ -223,6 +225,33 @@ def formImagen(request):
             for capitulo in capitulos
         ]
         return render(request, 'formImagen.html', {'capitulos': capitulos_con_info,})
+    
+
+#Backup    
+def formImagen2(request):
+    if request.method == 'POST':
+        v_imagen = request.FILES.getlist('imagen')
+        v_capitulo = request.POST.get('capitulo')  
+        capitulo = Capitulo.objects.get(id=v_capitulo)
+
+        for imagen in v_imagen:
+            nuevo = Imagen(imagen=imagen)
+            nuevo.capitulo = capitulo
+            nuevo.save()
+
+        return redirect('/listaImagen')
+    else:
+        # Render the form page
+        capitulos = Capitulo.objects.all()
+        capitulos_con_info = [
+            {
+                'id': capitulo.id,
+                'numero': capitulo.numero,
+                'info_completa': f"{capitulo.manga.nombre_manga.nombreManga} - Capítulo {capitulo.numero} - {capitulo.titulo}"
+            }
+            for capitulo in capitulos
+        ]
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info,})    
     
 
 #Metodo GET Imagen

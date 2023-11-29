@@ -36,23 +36,45 @@
             <label for="imagen">Imagenes:</label>
             <input type="file" multiple name="imagen" required><br>
             <br>
-            <label for="capitulo">Manga:</label>
-            <select name="capitulo" required>
-                {% for capitulo in capitulos %}
-                    <option value="{{ capitulo.id }}">{{ capitulo.info_completa }}</option>
+            <label for="manga">Manga:</label>
+            <select name="manga" required>
+                {% for manga in mangas %}
+                    <option value="{{ manga.id }}">{{ manga.nombre_manga }}</option>
                 {% endfor %}
             </select><br>
 
-            <label for="capitulo">Capitulo:</label>
-            <select name="capitulo" required>
-                {% for capitulo in capitulos %}
-                    <option value="{{ capitulo.id }}">{{ capitulo.info_completa2}}</option>
-                {% endfor %}
+            <label for="capitulo">Capítulo:</label>
+            <select id="capitulo" name="capitulo">
             </select><br>
             
                 <br>
             <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Imagenes</button>
         </form>
+
+        <script>
+            
+            $(document).ready(function() {
+              // Al cambiar la selección de manga, cargar los capítulos correspondientes
+              $('#manga').change(function() {
+                var mangaId = $(this).val();
+                $.ajax({
+                  url: '/cargar_capitulos/',
+                  data: { 'manga_id': mangaId },
+                  success: function(data) {
+                    // Limpiar la lista de capítulos y agregar los nuevos
+                    $('#capitulo').empty();
+                    $.each(data.capitulos, function(index, capitulo) {
+                      $('#capitulo').append($('<option>', {
+                        value: capitulo.id,
+                        text: capitulo.info_completa
+                      }));
+                    });
+                  }
+                });
+              });
+            });
+          </script>
+
     </div>
     <a class="btn btn-danger" href="listaMangaGatsu">Ver Mangas</a>
 </div>
