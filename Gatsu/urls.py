@@ -9,8 +9,8 @@ from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBib
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('manga/', include('manga.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('manga.urls')),
+    path('', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
     path('ConfigMangas', ConfigMangas.as_view(), name='ConfigMangas'),
