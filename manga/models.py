@@ -165,7 +165,6 @@ class HistorialCompras(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - ${self.monto} - {self.fecha_compra}"
-    
 
 class PreferenciasLectura(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

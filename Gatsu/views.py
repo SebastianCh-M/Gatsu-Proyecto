@@ -1,3 +1,10 @@
+
+from django.shortcuts import render
+from django.views import View
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from manga.models import MangaGatsu, Manga3
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
