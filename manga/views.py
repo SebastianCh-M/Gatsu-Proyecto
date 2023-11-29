@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView
-from .forms import revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
@@ -9,8 +9,26 @@ from django.http import Http404
 from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 import mercadopago
+from django.contrib.auth.decorators import user_passes_test
 
 
+# Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
+def is_admin(user):
+    return user.groups.filter(name='Administrador').exists()
+
+
+#Vista para Sign-up (Registrarse)
+def sign_up(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user =  form.save()
+            login(request, user)
+            return redirect('Home')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'registration/sign_up.html', {"form": form})
 
 class MangaListView(View):
     def get(self, request, *args, **kwargs):
