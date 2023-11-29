@@ -1,8 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from manga.models import MangaGatsu, Manga3
+from manga.models import MangaGatsu, Manga3, Valoracion
+from manga.models import Valoracion
+from manga.models import HistorialCompras
+from django.http import HttpResponse
+from django.urls import reverse
+import mercadopago
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from mercadopago import SDK
 
 
 class HomeView(View):
@@ -45,4 +59,52 @@ class ConfigMangas(View):
             context = {}
             return render(request, 'ConfigMangas.html', context)
 
-        
+class pagoView(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, 'pago.html', context)
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            email = request.user.email
+        else:
+            email = None
+
+        mp = SDK(access_token='APP_USR-7720091870954518-111620-f24bc7f6bf86befca39f3f6bc7f88a5a-1551574777')  # Initialize the Mercado Pago SDK with your access token
+        mp.client_id = '7720091870954518'
+        mp.client_secret = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
+
+        subscription_data = {
+            "payer_email": email,
+            "back_url": reverse('Home'),  # Adjust the return URL according to your configuration
+            "auto_recurring": {
+                "frequency": 1,
+                "frequency_type": "months",
+                "transaction_amount": 4000.00,
+                "currency": "CLP",
+            }
+        }
+
+        try:
+            response = mp.post("/preapproval", subscription_data)
+
+            if response["status"] == 201:
+                monto = 4000.00
+
+                HistorialCompras.objects.create(
+                    usuario=request.user,
+                    monto=monto,
+                )
+
+                return redirect('página_de_confirmación_de_suscripción')
+            else:
+                error_message = "La suscripción no se creó correctamente."
+                # You can send an error message or redirect to an error page
+                # return render(request, 'error.html', {'error_message': error_message})
+
+        except Exception as e:
+            error_message = f"Error al procesar la suscripción: {str(e)}"
+            # You can log the error details or display an error message to the user
+            # return render(request, 'error.html', {'error_message': error_message})
+
+        return render(request, 'pago.html')
