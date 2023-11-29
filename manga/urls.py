@@ -6,11 +6,11 @@ from manga.views import detalle_capitulo, detalle_capitulos, detalle_manga, form
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
-
 app_name="manga"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #Login y Registrar
+    path('sign-up', views.sign_up, name='sign_up'),
     #path('', MangaListView.as_view(), name="Home"),
     #path('create/', MangaCreateView.as_view(), name="create"),
     #path('manga_list/', views.manga_list, name='manga_list'),
