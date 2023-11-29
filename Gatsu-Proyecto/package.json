@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@mercadopago/sdk-react": "^0.0.15",
-    "@popperjs/core": "^2.11.8",
-    "jquery": "^3.7.1"
-  }
-}
