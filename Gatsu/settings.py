@@ -52,10 +52,7 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-# settings.py
-
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,3 +154,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'Home'
 
 LOGOUT_REDIRECT_URL = 'Home'
+
+MERCADO_PAGO_CLIENT_ID = '7720091870954518'
+MERCADO_PAGO_CLIENT_SECRET = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
