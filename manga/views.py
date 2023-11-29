@@ -1,14 +1,34 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView
-from .forms import revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .forms import revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm, RegisterForm
 from .models import tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
 from .models import MangaGatsu
+from django.contrib.auth  import  login, logout,  authenticate
+from django.contrib.auth.decorators import user_passes_test
 
-# Create your views here.
+
+# Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
+def is_admin(user):
+    return user.groups.filter(name='Administrador').exists()
+
+#Vista para Sign-up (Registrarse)
+def sign_up(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user =  form.save()
+            login(request, user)
+            return redirect('Home')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'registration/sign_up.html', {"form": form})
+
+
 
 class MangaListView(View):
     def get(self, request, *args, **kwargs):
@@ -17,6 +37,7 @@ class MangaListView(View):
         }
         return render(request, 'manga_list.html', context )
     
+@user_passes_test(is_admin)
 #Metodo POST REVISTA
 def formRevista(request):
     if request.method == 'POST':
@@ -30,18 +51,21 @@ def formRevista(request):
 
     return render(request, 'formRevista.html',{'form': form})    
 
+@user_passes_test(is_admin)
 #METODO GET REVISTA
 def listaRevista(request):  
     editoriales = Revista.objects.all()
     datos ={'editoriales': editoriales}
     return render(request, 'listaRevista.html', datos)  
 
+@user_passes_test(is_admin)
 #Metodo DELETE REVISTA    
 def deleR(request, id):
     dele = Revista.objects.get(id=id)
     dele.delete()
     return redirect('/listaRevista')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
     data = Revista.objects.get(id=id)
@@ -56,7 +80,7 @@ def updaR(request, id):
     context = {'form': form}
     return render(request, 'modRevista.html', context)  
 
-
+@user_passes_test(is_admin)
 #Metodo POST nombreManga
 def formNombreManga(request):
     if request.method == 'POST':
@@ -70,6 +94,7 @@ def formNombreManga(request):
 
     return render(request, 'formNombreManga.html',{'form': form})
 
+@user_passes_test(is_admin)
 #METODO GET nombreManga
 def listaNombreManga(request):  
     nombres = NombreManga.objects.all()
@@ -77,12 +102,14 @@ def listaNombreManga(request):
     return render(request, 'listaNombreManga.html', datos)
 
 
+@user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleN(request, id):
     dele = NombreManga.objects.get(id=id)
     dele.delete()
     return redirect('/listaNombreManga')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE nombreManga 
 def updaN(request, id):
     data = NombreManga.objects.get(id=id)
@@ -98,7 +125,7 @@ def updaN(request, id):
     return render(request, 'modNombreManga.html', context)
 
 
-
+@user_passes_test(is_admin)
 #Metodo POST MangaGatsu
 def formMangaGatsu(request):
     if request.method == 'POST':
@@ -147,13 +174,14 @@ def libreriaGatsu(request):
 
     return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
 
-
+@user_passes_test(is_admin)
 #METODO GET Para ver todos los capitulos por manga
 def verCapitulo(request, id):
     capitulo = Capitulo.objects.get(id=id)
     imagen = capitulo.imagenes.all()
     
     return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
 
 def detalle_manga(request, manga_id):
     manga = get_object_or_404(MangaGatsu, id=manga_id)
@@ -181,13 +209,14 @@ def detalle_capitulos(request, manga_id):
 
     return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos})
 
-
+@user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleM(request, id):
     dele = MangaGatsu.objects.get(id=id)
     dele.delete()
     return redirect('/listaMangaGatsu')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE nombreManga 
 def updaM(request, id):
     data = MangaGatsu.objects.get(id=id)
@@ -203,7 +232,7 @@ def updaM(request, id):
     return render(request, 'modNombreManga.html', context)
 
 
-
+@user_passes_test(is_admin)
 #Metodo POST Capitulo
 def formCapitulo(request):
     if request.method == 'POST':
@@ -217,19 +246,21 @@ def formCapitulo(request):
 
     return render(request, 'formCapitulo.html',{'form': form})
 
-
+@user_passes_test(is_admin)
 #METODO GET Capitulo
 def listaCapitulo(request):  
     capitulos = Capitulo.objects.all()
     datos ={'capitulos': capitulos}
     return render(request, 'listaCapitulo.html', datos)
 
+@user_passes_test(is_admin)
 #Metodo DELETE Capitulo    
 def deleC(request, id):
     dele = Capitulo.objects.get(id=id)
     dele.delete()
     return redirect('/listaCapitulo')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE Capitulo 
 def updaC(request, id):
     data = Capitulo.objects.get(id=id)
@@ -244,7 +275,7 @@ def updaC(request, id):
     context = {'form': form}
     return render(request, 'modCapitulo.html', context)
 
-
+@user_passes_test(is_admin)
 #Metodo POST Imagen
 def formImagen(request):
     if request.method == 'POST':
@@ -278,13 +309,14 @@ def listaImagen(request):
     datos ={'imagenes': imagenes}
     return render(request, 'listaImagen.html', datos)
 
-
+@user_passes_test(is_admin)
 #Metodo DELETE Imagen    
 def deleI(request, id):
     dele = Imagen.objects.get(id=id)
     dele.delete()
     return redirect('/listaImagen')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE Imagen 
 def updaI(request, id):
     data = Imagen.objects.get(id=id)
