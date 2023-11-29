@@ -10,6 +10,7 @@ from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 import mercadopago
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login, logout
 
 
 # Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
