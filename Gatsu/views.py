@@ -17,7 +17,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from mercadopago import SDK
+from django.contrib.auth.mixins import UserPassesTestMixin
 
+
+def is_admin(user):
+    return user.groups.filter(name='Administrador').exists()
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
@@ -53,11 +57,15 @@ class MiBibliotecaView(View):
         def get(self, request, *args, **kwargs):
             context = {}
             return render(request, 'MiBiblioteca.html', context)
-        
-class ConfigMangas(View):
-        def get(self, request, *args, **kwargs):
-            context = {}
-            return render(request, 'ConfigMangas.html', context)
+
+class ConfigMangas(UserPassesTestMixin, View):
+    def test_func(self):
+        # Esta función debe devolver True si el usuario tiene acceso, de lo contrario, False.
+        return self.request.user.groups.filter(name='Administrador').exists()
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, 'ConfigMangas.html', context)
 
 class pagoView(View):
     def get(self, request, *args, **kwargs):

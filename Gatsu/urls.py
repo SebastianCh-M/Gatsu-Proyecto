@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('pago/', pagoView.as_view(), name='pago'),
-    path('manga/', include('manga.urls')),
+    path('', include('manga.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
