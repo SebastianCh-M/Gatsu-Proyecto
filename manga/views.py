@@ -15,30 +15,44 @@ class MangaListView(View):
         }
         return render(request, 'manga_list.html', context )
     
-#Metodo POST REVISTA
+#Metodo POST y GET REVISTA
 def formRevista(request):
+    editoriales = Revista.objects.all()
     if request.method == 'POST':
         form = revistaForm(request.POST)
         if form.is_valid():
             # Si el formulario es valido, se guardan los datos en la tabla
             form.save()
-            return redirect('/listaRevista')
+            return redirect('/formRevista')
     else:
         form = revistaForm()
 
-    return render(request, 'formRevista.html',{'form': form})    
+    return render(request, 'formRevista.html',{'form': form, 'editoriales': editoriales})    
+    
+#Metodo POST REVISTA
+#def formRevista2(request):
+#    if request.method == 'POST':
+#        form = revistaForm(request.POST)
+#        if form.is_valid():
+#            # Si el formulario es valido, se guardan los datos en la tabla
+#            form.save()
+#            return redirect('/listaRevista')
+#    else:
+#        form = revistaForm()
+
+#    return render(request, 'formRevista.html',{'form': form})    
 
 #METODO GET REVISTA
-def listaRevista(request):  
-    editoriales = Revista.objects.all()
-    datos ={'editoriales': editoriales}
-    return render(request, 'listaRevista.html', datos)  
+#def listaRevista(request):  
+#    editoriales = Revista.objects.all()
+#    datos ={'editoriales': editoriales}
+#    return render(request, 'listaRevista.html', datos)  
 
 #Metodo DELETE REVISTA    
 def deleR(request, id):
     dele = Revista.objects.get(id=id)
     dele.delete()
-    return redirect('/listaRevista')   
+    return redirect('/formRevista')   
 
 #METODO UPDATE REVISTA 
 def updaR(request, id):
@@ -49,37 +63,38 @@ def updaR(request, id):
         form = m_revistaForm(request.POST, instance= data)
         if form.is_valid():
             form.save()
-        return redirect('/listaRevista')    
+        return redirect('/formRevista')    
 
     context = {'form': form}
     return render(request, 'modRevista.html', context)  
 
 
-#Metodo POST nombreManga
+#Metodo POST Y Get nombreManga
 def formNombreManga(request):
+    nombres = NombreManga.objects.all()
     if request.method == 'POST':
         form = nomMangaForm(request.POST)
         if form.is_valid():
             # Si el formulario es valido, se guardan los datos en la tabla
             form.save()
-            return redirect('/listaNombreManga')
+            return redirect('/formNombreManga')
     else:
         form = nomMangaForm()
 
-    return render(request, 'formNombreManga.html',{'form': form})
+    return render(request, 'formNombreManga.html',{'form': form, 'nombres': nombres})
 
 #METODO GET nombreManga
-def listaNombreManga(request):  
-    nombres = NombreManga.objects.all()
-    datos ={'nombres': nombres}
-    return render(request, 'listaNombreManga.html', datos)
+#def listaNombreManga(request):  
+#    nombres = NombreManga.objects.all()
+#    datos ={'nombres': nombres}
+#    return render(request, 'listaNombreManga.html', datos)
 
 
 #Metodo DELETE nombreManga    
 def deleN(request, id):
     dele = NombreManga.objects.get(id=id)
     dele.delete()
-    return redirect('/listaNombreManga')   
+    return redirect('/formNombreManga')   
 
 #METODO UPDATE nombreManga 
 def updaN(request, id):
@@ -90,25 +105,26 @@ def updaN(request, id):
         form = m_nomMangaForm(request.POST, instance= data)
         if form.is_valid():
             form.save()
-        return redirect('/listaNombreManga')    
+        return redirect('/formNombreManga')    
 
     context = {'form': form}
     return render(request, 'modNombreManga.html', context)
 
 
 
-#Metodo POST MangaGatsu
+#Metodo POST Y GET MangaGatsu
 def formMangaGatsu(request):
+    mangas = MangaGatsu.objects.all()
     if request.method == 'POST':
         form = mangaGatsuForm(request.POST, request.FILES)
         if form.is_valid():
             # Si el formulario es valido, se guardan los datos en la tabla
             form.save()
-            return redirect('/listaMangaGatsu')
+            return redirect('/formMangaGatsu')
     else:
         form = mangaGatsuForm()
 
-    return render(request, 'formMangaGatsu.html',{'form': form})
+    return render(request, 'formMangaGatsu.html',{'form': form, 'mangas': mangas})
 
 #METODO GET MangaGatsu
 def listaMangaGatsu(request):  
@@ -118,13 +134,13 @@ def listaMangaGatsu(request):
 
 
 
-#Metodo DELETE nombreManga    
+#Metodo DELETE MangaGatsu    
 def deleM(request, id):
     dele = MangaGatsu.objects.get(id=id)
     dele.delete()
-    return redirect('/listaMangaGatsu')   
+    return redirect('/formMangaGatsu')   
 
-#METODO UPDATE nombreManga 
+#METODO UPDATE MangaGatsu 
 def updaM(request, id):
     data = MangaGatsu.objects.get(id=id)
     form = m_mangaGatsuForm(instance=data)
@@ -133,7 +149,7 @@ def updaM(request, id):
         form = m_mangaGatsuForm(request.POST, request.FILES ,instance= data)
         if form.is_valid():
             form.save()
-        return redirect('/listaMangaGatsu')    
+        return redirect('/formMangaGatsu')    
 
     context = {'form': form}
     return render(request, 'modNombreManga.html', context)
@@ -142,29 +158,30 @@ def updaM(request, id):
 
 #Metodo POST Capitulo
 def formCapitulo(request):
+    capitulos = Capitulo.objects.all()
     if request.method == 'POST':
         form = capituloForm(request.POST)
         if form.is_valid():
             # Si el formulario es valido, se guardan los datos en la tabla
             form.save()
-            return redirect('/listaCapitulo')
+            return redirect('/formCapitulo')
     else:
         form = capituloForm()
 
-    return render(request, 'formCapitulo.html',{'form': form})
+    return render(request, 'formCapitulo.html',{'form': form,  'capitulos': capitulos})
 
 
 #METODO GET Capitulo
-def listaCapitulo(request):  
-    capitulos = Capitulo.objects.all()
-    datos ={'capitulos': capitulos}
-    return render(request, 'listaCapitulo.html', datos)
+#def listaCapitulo(request):  
+#    capitulos = Capitulo.objects.all()
+#    datos ={'capitulos': capitulos}
+#    return render(request, 'listaCapitulo.html', datos)
 
 #Metodo DELETE Capitulo    
 def deleC(request, id):
     dele = Capitulo.objects.get(id=id)
     dele.delete()
-    return redirect('/listaCapitulo')   
+    return redirect('/formCapitulo')   
 
 #METODO UPDATE Capitulo 
 def updaC(request, id):
@@ -175,7 +192,7 @@ def updaC(request, id):
         form = m_CapituloForm(request.POST, instance= data)
         if form.is_valid():
             form.save()
-        return redirect('/listaCapitulo')    
+        return redirect('/formCapitulo')    
 
     context = {'form': form}
     return render(request, 'modCapitulo.html', context)
@@ -205,7 +222,7 @@ def formImagen(request):
             }
             for capitulo in capitulos
         ]
-        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info,})
     
 
 #Metodo GET Imagen
@@ -235,12 +252,38 @@ def updaI(request, id):
     context = {'form': form}
     return render(request, 'modImagen.html', context)
 
+
+#METODO ver Imagen
+def verCapitulo(request, id):
+    capitulo = Capitulo.objects.get(id=id)
+    imagen = capitulo.imagenes.all()
+    
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
+#Metodo ver Capitulo
+def verManga(request, id):
+    manga = MangaGatsu.objects.get(id=id)
+    capitulo = manga.capitulos.all()
+
+    return render(request, 'verManga.html', {'mangas': manga, 'capitulos': capitulo}) 
+
+
 def formManga(request):
     tEstado=tipoEstado.objects.all()
     tSubida=tipoSubida.objects.all()
     datos = {'tipoEstados':tEstado,'tipoSubidas': tSubida}
 
     return render(request, 'registrarM.html', datos)
+
+#def verManga(request):
+#    mangas = MangaGatsu.objects.all()
+
+#    if request.method == 'GET':
+#        form = filtroManga(request.GET)
+#        if form.is_valid() and form.cleaned_data['genero']:
+#            mangas = mangas.filter(genre__in=form.cleaned_data['genero'])
+
+#    return render(request, 'verManga.html', {'mangas': mangas, 'form': form})
 
 
 #def guardarManga(request):

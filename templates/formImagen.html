@@ -11,6 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>ConfigMangas</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
         <link rel="stylesheet" href="../static/css/styles.css">
@@ -35,18 +36,28 @@
             <label for="imagen">Imagenes:</label>
             <input type="file" multiple name="imagen" required><br>
             <br>
-            <label for="capitulo">Capitulo:</label>
+            <label for="capitulo">Manga:</label>
             <select name="capitulo" required>
                 {% for capitulo in capitulos %}
                     <option value="{{ capitulo.id }}">{{ capitulo.info_completa }}</option>
                 {% endfor %}
             </select><br>
+
+            <label for="capitulo">Capitulo:</label>
+            <select name="capitulo" required>
+                {% for capitulo in capitulos %}
+                    <option value="{{ capitulo.id }}">{{ capitulo.info_completa2}}</option>
+                {% endfor %}
+            </select><br>
+            
                 <br>
             <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Imagenes</button>
         </form>
     </div>
+    <a class="btn btn-danger" href="listaMangaGatsu">Ver Mangas</a>
 </div>
 </body>
+
 </html>
 
 {% endblock %}

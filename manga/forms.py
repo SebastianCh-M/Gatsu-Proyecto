@@ -59,6 +59,9 @@ class imagenForm(forms.ModelForm):
     class Meta:
         model = Imagen
         fields = ['imagen', 'capitulo']
+
+
+         
         
 
 

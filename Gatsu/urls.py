@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
-from manga.views import formRevista, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI
+from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas,Filtroprueba
 
 urlpatterns = [
@@ -22,13 +22,13 @@ urlpatterns = [
 
     #Revisa
     path('formRevista',formRevista),
-    path('listaRevista',listaRevista),
+   #path('listaRevista',listaRevista),
     path('deleR/<int:id>', deleR),
     path('updaR/<int:id>', updaR),
 
     #Nombre Manga
     path('formNombreManga',formNombreManga),
-    path('listaNombreManga',listaNombreManga),
+    #path('listaNombreManga',listaNombreManga),
     path('deleN/<int:id>', deleN),
     path('updaN/<int:id>', updaN),
 
@@ -40,7 +40,7 @@ urlpatterns = [
 
     #Capitulo
     path('formCapitulo',formCapitulo),
-    path('listaCapitulo',listaCapitulo),
+    #path('listaCapitulo',listaCapitulo),
     path('deleC/<int:id>', deleC),
     path('updaC/<int:id>', updaC),
 
@@ -49,6 +49,9 @@ urlpatterns = [
     path('listaImagen',listaImagen),
     path('deleI/<int:id>', deleI),
     path('updaI/<int:id>', updaI),
+
+    path('verCapitulo/<int:id>', verCapitulo),
+    path('verManga/<int:id>', verManga),
 
 
 
