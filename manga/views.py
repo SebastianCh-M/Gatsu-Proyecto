@@ -9,6 +9,8 @@ from django.http import Http404
 from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 import mercadopago
+from django.http import JsonResponse
+
 
 # Create your views here.
 
@@ -267,31 +269,25 @@ def updaC(request, id):
 
 #Metodo POST Imagen
 def formImagen(request):
+    mangas = MangaGatsu.objects.all()
+    capitulos = Capitulo.objects.none()
 
-    if request.method == 'POST':   
-        v_manga = request.GET.get('manga_id')
+    if request.method == 'POST':
         v_imagen = request.FILES.getlist('imagen')
-        v_capitulo = request.POST.get('capitulo')  
-        capitulo = Capitulo.objects.get(id=v_capitulo)
+        manga = request.POST.get('manga')
+        seleccionar_manga = MangaGatsu.objects.get(id=manga) if manga else None
+
+        #Actualizar queryset
+        capitulos = Capitulo.objects.filter(manga=seleccionar_manga)
 
         for imagen in v_imagen:
             nuevo = Imagen(imagen=imagen)
-            nuevo.capitulo = capitulo
+            nuevo.capitulo = capitulos
             nuevo.save()
 
         return redirect('/listaImagen')
     else:
-        # Render the form page
-        capitulos = Capitulo.objects.all()
-        capitulos_con_info = [
-            {
-                'id': capitulo.id,
-                'numero': capitulo.numero,
-                'info_completa': f"{capitulo.manga.nombre_manga.nombreManga} - Capítulo {capitulo.numero} - {capitulo.titulo}"
-            }
-            for capitulo in capitulos
-        ]
-        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info,})
+        return render(request, 'formImagen.html', {'mangas': mangas, 'capitulos': capitulos})  
     
 
 #Backup    
@@ -318,7 +314,7 @@ def formImagen2(request):
             }
             for capitulo in capitulos
         ]
-        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info,})    
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})    
     
 
 #Metodo GET Imagen
