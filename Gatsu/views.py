@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from mercadopago import SDK
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 def is_admin(user):
