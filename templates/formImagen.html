@@ -11,7 +11,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>ConfigMangas</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
         <link rel="stylesheet" href="../static/css/styles.css">
@@ -36,50 +35,19 @@
             <label for="imagen">Imagenes:</label>
             <input type="file" multiple name="imagen" required><br>
             <br>
-            <label for="manga">Manga:</label>
-            <select name="manga" required>
-                {% for manga in mangas %}
-                    <option value="{{ manga.id }}">{{ manga.nombre_manga }}</option>
+            <label for="capitulo">Capitulo:</label>
+            <select name="capitulo" required>
+                {% for capitulo in capitulos %}
+                    <option value="{{ capitulo.id }}">{{ capitulo.info_completa }}</option>
                 {% endfor %}
             </select><br>
-
-            <label for="capitulo">Capítulo:</label>
-            <select id="capitulo" name="capitulo">
-            </select><br>
-            
                 <br>
             <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Imagenes</button>
         </form>
-
-        <script>
-            
-            $(document).ready(function() {
-              // Al cambiar la selección de manga, cargar los capítulos correspondientes
-              $('#manga').change(function() {
-                var mangaId = $(this).val();
-                $.ajax({
-                  url: '/cargar_capitulos/',
-                  data: { 'manga_id': mangaId },
-                  success: function(data) {
-                    // Limpiar la lista de capítulos y agregar los nuevos
-                    $('#capitulo').empty();
-                    $.each(data.capitulos, function(index, capitulo) {
-                      $('#capitulo').append($('<option>', {
-                        value: capitulo.id,
-                        text: capitulo.info_completa
-                      }));
-                    });
-                  }
-                });
-              });
-            });
-          </script>
-
     </div>
     <a class="btn btn-danger" href="listaMangaGatsu">Ver Mangas</a>
 </div>
 </body>
-
 </html>
 
 {% endblock %}

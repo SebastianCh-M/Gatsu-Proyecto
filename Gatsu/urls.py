@@ -46,11 +46,14 @@ urlpatterns = [
 
     #Imagen
     path('formImagen',formImagen),
+    #path('cargar_capitulos/', cargar_capitulos, name='cargar_capitulos'),
+
     path('listaImagen',listaImagen),
     path('deleI/<int:id>', deleI),
     path('updaI/<int:id>', updaI),
 
     path('verCapitulo/<int:id>', verCapitulo),
+
     path('verManga/<int:id>', verManga),
 
 
