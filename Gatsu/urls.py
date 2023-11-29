@@ -5,14 +5,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas,Filtroprueba
+from manga.views import formRevista, libreriaGatsu, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
+from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas, pagoView
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('pago/', pagoView.as_view(), name='pago'),
+    path('manga/', include('manga.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
-    path('Filtroprueba', Filtroprueba.as_view(), name='Filtroprueba'),
     path('ConfigMangas', ConfigMangas.as_view(), name='ConfigMangas'),
     path('Recientes', RecientesView.as_view(), name='recientes'),
     path('TopMangas', TopMangasView.as_view(), name='TopMangas'),
@@ -53,16 +56,17 @@ urlpatterns = [
     path('verCapitulo/<int:id>', verCapitulo),
     path('verManga/<int:id>', verManga),
 
+    #Libreria Manga
+    path('LibreriaGatsu', libreriaGatsu, name='LibreriaGatsu'),
 
-
-
-
-
+    path('verCapitulo/<int:id>', verCapitulo),
     #path('delete_revista/<int:revista_id>', delete_Revista),
     #path('eliminarR/<int:pk>', eliminarRevista),
     #path('manga_create', registrarManga),
     #path('manga_list', manga_list),
     #path('capitulos_form',registrarImagenes)
+
+
 ] 
 
 

@@ -14,7 +14,8 @@
     <!-- Toastify CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- Your custom styles -->
-    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <!-- Other meta tags -->
     <link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -23,7 +24,7 @@
 </head>
 
 <body>
-    
+
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="bootstrap" viewBox="0 0 118 94">
 
@@ -45,33 +46,40 @@
         </symbol>
     </svg>
     <div class="d-flex flex-column">
-        <nav class="navbar navbar-expand-lg" style="background-color: #181818; color: #fff;">
+        <nav class="navbar navbar-expand-lg" style="background-color: #000000; color: #fff;">
             <div class="container-fluid">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse"
                     data-bs-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <a class="navbar-brand" href="{% url 'Home' %}">
+                    <img src="../static/images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png"
+                        alt="Logo" height="30">
+                </a>
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav" style="color: #fff;">
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="Recientes">Descubre</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="SobreGatsu">Gatsu</a></li>
-                        <div class="navbar-nav ms-auto">
-                            <a class="nav-link" href="ConfigMangas"
-                            style="color: #fff;">Configurar Mangas</a>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" 
+                                href="{% url 'Home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
+                                href="{% url 'LibreriaGatsu' %}">Librería</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
+                                href="{% url 'SobreGatsu' %}">Gatsu</a></li>
+                                <!-- SOLO ADMIN -->
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
+                                href="{% url 'ConfigMangas' %}">Configurar</a></li>
                     </ul>
                     {% if request.user.is_authenticated %}
                     <li class="dropdown ms-auto">
-
                         <a href="#" class="btn btn-secondary dropdown-toggle" style="background-color: #202020;"
                             data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- AGREGAR AVATAR USUARIO-->
                             <span style="color: #fff;">{{ user.username | upper }}, Bienvenido</span><span
                                 class="caret"></span>
                         </a>
                         <div class="dropdown">
                             <ul class="dropdown-menu" style="background-color: #202020;">
                                 <li><a href="#" style="color: #fff;">Mi Cuenta</a></li>
-                                <li><a href="MiBiblioteca" style="color: #fff;">Mi Biblioteca</a></li>
+                                <li><a href="{% url 'MiBiblioteca' %}" style="color: #fff;">Mi Biblioteca</a></li>
                                 <li><a href="#" style="color: #fff;">Subscripción</a></li>
                                 <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
                             </ul>
@@ -87,27 +95,29 @@
                         </div>
                     </div>
 
-                    <!-- Modal -->
-                    <div class="container "style="background-color: #181818; color: #fff;">
-
-                        <button class="navbar-toggler navbar-nav ms-auto" style="background-color: #585858; border-color: #fff;" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-                            aria-expanded="false" aria-label="Toggle navigation" >
+                    <!-- MODALS INICIAR - REGISTRAR  -->
+                    <div class="container" style="background-color: #000000; color: #fff;">
+                        <button class="navbar-toggler navbar-nav" style="background-color: #202020; border-color: #fff;"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon" style="border: #fff;"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                                <a class="nav-link logged-out" href="#" data-bs-toggle="modal"
+                            <div class="d-flex justify-content-end ms-auto">
+                                <a class="nav-item logged-out ml-5" href="#" data-bs-toggle="modal"
                                     data-bs-target="#signinModal" style="color: #fff;">Iniciar sesión</a>
-                                <a class="nav-link logged-out" href="#" data-bs-toggle="modal"
+                                <a class="nav-item logged-out ml-5" href="#" data-bs-toggle="modal"
                                     data-bs-target="#signupModal" style="color: #fff;">Registrarse</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <!-- REGISTRAR-->
+                    <div class="modal fade" id="signupModal" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content bg-dark" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
+                            <div class="modal-content bg-dark"
+                                style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
                                 <div class="modal-header" style="background-color: rgb(19, 19, 19);">
                                     <h3>Registrarse</h3>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -124,24 +134,29 @@
                                         <input type="password" id="signup-password" class="form-control mb-3"
                                             placeholder="Contraseña" required>
 
-                                        <button type="submit" class="btn btn-primary" style="background-color: #000000; border-color: #fff;">Registrarse</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            style="background-color: #000000; border-color: #fff;">Registrarse</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <!-- INICIAR SESIÓN -->
                     <div class="modal fade" id="signinModal" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalSignin" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content bg-dark" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
-                                <div class="modal-header" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
+                            <div class="modal-content bg-dark"
+                                style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
+                                <div class="modal-header"
+                                    style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
                                     <h3>Iniciar sesión</h3>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
-                                    <form id="login-form" style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
+                                <div class="modal-body"
+                                    style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
+                                    <form id="login-form"
+                                        style="background-color: rgb(19, 19, 19); color: rgb(255, 255, 255);">
                                         <label for="email">Correo</label>
                                         <input type="text" id="login-email" class="form-control mb-3"
                                             placeholder="Correo" required>
@@ -149,12 +164,8 @@
                                         <input type="password" id="login-password" class="form-control mb-3"
                                             placeholder="Contraseña" required>
 
-                                        <button type="submit" style="background-color: black; border-color: #fff;" class="btn btn-success w-100 mb-4">Iniciar Sesióon</button>
-                                        <p style="text-align: center;">O</p>
-                                        <p>iniciar sesión con:</p>
-                                        <button type="button" class="btn btn-info" id="googleLogin">Google</button>
-                                        <button type="button" class="btn btn-primary"
-                                            id="facebookLogin">Facebook</button>
+                                        <button type="submit" style="background-color: black; border-color: #fff;"
+                                            class="btn btn-success w-100 mb-4">Iniciar Sesión</button>
                                     </form>
                                 </div>
                             </div>
@@ -172,16 +183,14 @@
     </div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Toastify JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <!-- Tu otro script de main.js -->
 </body>
 <br>
 <div class="container">
+    <!-- FOOTER -->
     <footer class="py-3 my-4 border-top" style="background-color: #202020; color: #fff;">
-        <div class="col-md-4"> <!-- Modificado para centrar el contenido -->
+        <div class="col-md-4">
             <span class="mb-3 mb-md-0" style="color: #fff;">
                 &copy; 2023 Gatsu, Inc
             </span>
@@ -191,7 +200,9 @@
             <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">
                         <use xlink:href="#twitter" />
                     </svg></a></li>
-            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">
+            <li class="ms-3"><a class="text-muted"
+                    href="https://www.instagram.com/gatsu_project/?utm_source=ig_web_button_share_sheet&igshid=OGQ5ZDc2ODk2ZA=="><svg
+                        class="bi" width="24" height="24">
                         <use xlink:href="#instagram" />
                     </svg></a></li>
             <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24">
