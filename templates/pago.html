@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="{% static 'javascript/main.js' %}"></script>
+</head>
+<body>
+    <h1>Suscripción</h1>
+
+    <form id="subscription-form" method="post" action="{% url 'pago' %}">
+        {% csrf_token %}
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" required>
+        <!-- Otros campos y parámetros del formulario -->
+
+        <button type="submit">Suscribirse</button>
+    </form>
+
+    <script>
+        document.getElementById('subscription-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita que el formulario se envíe realmente
+
+            // Simula una solicitud POST usando JavaScript (usarías datos de prueba)
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // La solicitud fue exitosa, redirigir a la página de confirmación
+                    window.location.href = "{% url 'Home' %}";
+                } else {
+                    // Manejar errores o mostrar mensajes de error
+                    console.error('Error al crear la suscripción');
+                }
+            })
+            .catch(error => {
+                console.error('Error de red:', error);
+            });
+        });
+    </script>
+</body>
+</html>

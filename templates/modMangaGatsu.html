@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registar Nuevo Manga</title>
+</head>
+<body>
+
+<h2>Nuevo Manga</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Modificar</button>
+</form>
+
+</body>
+</html>
+
+{% endblock %}
