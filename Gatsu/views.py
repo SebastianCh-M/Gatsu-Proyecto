@@ -1,4 +1,4 @@
-
+ 
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -73,6 +73,9 @@ class ConfigMangas(UserPassesTestMixin, View):
     def get(self, request, *args, **kwargs):
         context = {}
         return render(request, 'ConfigMangas.html', context)
+
+def hola(request):
+    return HttpResponse("Hola, Mundo!")
 
 class pagoView(View):
     def get(self, request, *args, **kwargs):
