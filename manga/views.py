@@ -11,11 +11,11 @@ from django.contrib.auth.decorators import login_required
 import mercadopago
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib import messages
 
 # Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
 def is_admin(user):
-    return user.groups.filter(name='Administrador').exists()
+    return user.is_authenticated and user.groups.filter(name='Administrador').exists()
 
 
 #Vista para Sign-up (Registrarse)
@@ -175,13 +175,24 @@ def libreriaGatsu(request):
 
     return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
 
-@user_passes_test(is_admin)
 #METODO GET Para ver todos los capitulos por manga
+@login_required
 def verCapitulo(request, id):
     capitulo = Capitulo.objects.get(id=id)
     imagen = capitulo.imagenes.all()
-    
-    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
+    # Verifica si el usuario pertenece al grupo "UsuarioRegistrado"
+    usuario_registrado = request.user.groups.filter(name='UsuarioRegistrado').exists()
+
+    # Verifica si es el primer capítulo
+    primer_capitulo = capitulo.numero == 1
+
+# Si pertenece al grupo y no es el primer capítulo, muestra un mensaje de advertencia
+    if usuario_registrado and not primer_capitulo: 
+        return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': True}) 
+    # Si todo está bien, muestra el capítulo 
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': False})
+
 
 
 def detalle_manga(request, manga_id):
@@ -201,6 +212,7 @@ def detalle_capitulo(request, capitulo_id):
     return render(request, 'detalle_capitulo.html', {'capitulo': capitulo, 'imagenes': imagenes})
 
 
+
 def detalle_capitulos(request, manga_id):
     try:
         manga = MangaGatsu.objects.get(pk=manga_id)
@@ -208,8 +220,14 @@ def detalle_capitulos(request, manga_id):
     except MangaGatsu.DoesNotExist:
         raise Http404("Manga no encontrado.")
 
-    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos})
+    # Verificar si el usuario ha pagado la suscripción
+    user_is_subscribed = False
+    if request.user.is_authenticated:
+        user_is_subscribed = request.user.groups.filter(name='UsuarioSuscrito').exists()
 
+    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos, 'user_is_subscribed': user_is_subscribed})
+
+    
 @user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleM(request, id):

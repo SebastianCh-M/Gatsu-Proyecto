@@ -25,6 +25,8 @@
 
 <body>
 
+    
+
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="bootstrap" viewBox="0 0 118 94">
 
@@ -53,21 +55,20 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="{% url 'Home' %}">
-                    <img src="../static/images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png"
+                    <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}"
                         alt="Logo" height="30">
                 </a>
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav" style="color: #fff;">
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'Home' %}">Home</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
-                                href="{% url 'LibreriaGatsu' %}">Librería</a></li>
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
-                                href="{% url 'SobreGatsu' %}">Gatsu</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'Home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'LibreriaGatsu' %}">Librería</a></li>
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'SobreGatsu' %}">Gatsu</a></li>
                         <!-- SOLO ADMIN -->
-                        <li class="nav-item"><a class="nav-link" style="color: #fff;"
-                                href="{% url 'ConfigMangas' %}">Configurar</a></li>
                     </ul>
+                    {% if request.user.is_authenticated and is_admin %}
+                        <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'ConfigMangas' %}">Configurar</a></li>
+                    {% endif %}
+                </div>
                     {% if request.user.is_authenticated %}
                     <li class="dropdown ms-auto">
                         <a href="#" class="btn btn-secondary dropdown-toggle" style="background-color: #202020;"
@@ -114,7 +115,7 @@
     <!-- Toastify JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
-<br>
+
 <div class="container">
     <!-- FOOTER -->
     <footer class="py-3 my-4 border-top" style="background-color: #202020; color: #fff;">
