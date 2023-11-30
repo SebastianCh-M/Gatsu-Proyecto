@@ -1,13 +1,37 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView
-from .forms import revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
-from .models import tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
+from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
+from .models import MangaGatsu
+from django.contrib.auth.decorators import login_required
+import mercadopago
 from django.http import JsonResponse
 
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login, logout
 
-# Create your views here.
+
+# Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
+def is_admin(user):
+    return user.groups.filter(name='Administrador').exists()
+
+
+#Vista para Sign-up (Registrarse)
+def sign_up(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user =  form.save()
+            login(request, user)
+            return redirect('Home')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'registration/sign_up.html', {"form": form})
 
 class MangaListView(View):
     def get(self, request, *args, **kwargs):
@@ -17,6 +41,8 @@ class MangaListView(View):
         return render(request, 'manga_list.html', context )
     
 #Metodo POST y GET REVISTA
+@user_passes_test(is_admin)
+#Metodo POST REVISTA
 def formRevista(request):
     editoriales = Revista.objects.all()
     if request.method == 'POST':
@@ -43,18 +69,21 @@ def formRevista(request):
 
 #    return render(request, 'formRevista.html',{'form': form})    
 
+@user_passes_test(is_admin)
 #METODO GET REVISTA
 #def listaRevista(request):  
 #    editoriales = Revista.objects.all()
 #    datos ={'editoriales': editoriales}
 #    return render(request, 'listaRevista.html', datos)  
 
+@user_passes_test(is_admin)
 #Metodo DELETE REVISTA    
 def deleR(request, id):
     dele = Revista.objects.get(id=id)
     dele.delete()
     return redirect('/formRevista')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
     data = Revista.objects.get(id=id)
@@ -71,6 +100,8 @@ def updaR(request, id):
 
 
 #Metodo POST Y Get nombreManga
+@user_passes_test(is_admin)
+#Metodo POST nombreManga
 def formNombreManga(request):
     nombres = NombreManga.objects.all()
     if request.method == 'POST':
@@ -84,6 +115,7 @@ def formNombreManga(request):
 
     return render(request, 'formNombreManga.html',{'form': form, 'nombres': nombres})
 
+@user_passes_test(is_admin)
 #METODO GET nombreManga
 #def listaNombreManga(request):  
 #    nombres = NombreManga.objects.all()
@@ -91,12 +123,14 @@ def formNombreManga(request):
 #    return render(request, 'listaNombreManga.html', datos)
 
 
+@user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleN(request, id):
     dele = NombreManga.objects.get(id=id)
     dele.delete()
     return redirect('/formNombreManga')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE nombreManga 
 def updaN(request, id):
     data = NombreManga.objects.get(id=id)
@@ -114,6 +148,8 @@ def updaN(request, id):
 
 
 #Metodo POST Y GET MangaGatsu
+@user_passes_test(is_admin)
+#Metodo POST MangaGatsu
 def formMangaGatsu(request):
     mangas = MangaGatsu.objects.all()
     if request.method == 'POST':
@@ -134,14 +170,81 @@ def listaMangaGatsu(request):
     return render(request, 'listaMangaGatsu.html', datos)
 
 
+#METODO GET Para Libreria Gatsu
+# Asegúrate de que tu vista envía los géneros disponibles a la plantilla
+def libreriaGatsu(request):
+    mangas = MangaGatsu.objects.all()
+    genres = MangaGatsu.OPCIONES_GENERO
+    paginator = Paginator(mangas, 10)
+    page = request.GET.get('page')
+    editoriales = Revista.objects.all()
+    Estado = MangaGatsu.OPCIONES_ESTADO
+
+    try:
+        page = int(page)
+    except (TypeError, ValueError):
+        page = 1
+
+    try:
+        mangas = paginator.page(page)
+    except PageNotAnInteger:
+        mangas = paginator.page(1)
+    except EmptyPage:
+        mangas = paginator.page(paginator.num_pages)
+        context = {'mangas': mangas, 'genres': genres}
+        return render(request, 'libreriaGatsu.html', context)
+    context = {'mangas': mangas, 'genres': genres}
+    
+
+    return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
+
+@user_passes_test(is_admin)
+#METODO GET Para ver todos los capitulos por manga
+def verCapitulo(request, id):
+    capitulo = Capitulo.objects.get(id=id)
+    imagen = capitulo.imagenes.all()
+    
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
+
+def detalle_manga(request, manga_id):
+    manga = get_object_or_404(MangaGatsu, id=manga_id)
+    capitulos = Capitulo.objects.filter(manga=manga)
+
+    # Asegurémonos de obtener solo el primer capítulo para este ejemplo
+    primer_capitulo = capitulos.first() if capitulos else None
+
+    return render(request, 'detalle_manga.html', {'manga': manga, 'capitulo': primer_capitulo})
+
+#METODO GET Para poder leer el capitulo por manga.
+def detalle_capitulo(request, capitulo_id):
+    capitulo = get_object_or_404(Capitulo, id=capitulo_id)
+    imagenes = capitulo.imagenes.all()  # Utiliza el related_name 'imagenes' para obtener todas las imágenes del capítulo
+
+    return render(request, 'detalle_capitulo.html', {'capitulo': capitulo, 'imagenes': imagenes})
+
+
+def detalle_capitulos(request, manga_id):
+    try:
+        manga = MangaGatsu.objects.get(pk=manga_id)
+        capitulos = Capitulo.objects.filter(manga=manga)
+    except MangaGatsu.DoesNotExist:
+        raise Http404("Manga no encontrado.")
+
+    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos})
+
 
 #Metodo DELETE MangaGatsu    
+@user_passes_test(is_admin)
+#Metodo DELETE nombreManga    
 def deleM(request, id):
     dele = MangaGatsu.objects.get(id=id)
     dele.delete()
     return redirect('/formMangaGatsu')   
 
 #METODO UPDATE MangaGatsu 
+@user_passes_test(is_admin)
+#METODO UPDATE nombreManga 
 def updaM(request, id):
     data = MangaGatsu.objects.get(id=id)
     form = m_mangaGatsuForm(instance=data)
@@ -156,7 +259,7 @@ def updaM(request, id):
     return render(request, 'modNombreManga.html', context)
 
 
-
+@user_passes_test(is_admin)
 #Metodo POST Capitulo
 def formCapitulo(request):
     capitulos = Capitulo.objects.all()
@@ -171,19 +274,21 @@ def formCapitulo(request):
 
     return render(request, 'formCapitulo.html',{'form': form,  'capitulos': capitulos})
 
-
+@user_passes_test(is_admin)
 #METODO GET Capitulo
 #def listaCapitulo(request):  
 #    capitulos = Capitulo.objects.all()
 #    datos ={'capitulos': capitulos}
 #    return render(request, 'listaCapitulo.html', datos)
 
+@user_passes_test(is_admin)
 #Metodo DELETE Capitulo    
 def deleC(request, id):
     dele = Capitulo.objects.get(id=id)
     dele.delete()
     return redirect('/formCapitulo')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE Capitulo 
 def updaC(request, id):
     data = Capitulo.objects.get(id=id)
@@ -198,7 +303,7 @@ def updaC(request, id):
     context = {'form': form}
     return render(request, 'modCapitulo.html', context)
 
-
+@user_passes_test(is_admin)
 #Metodo POST Imagen
 def formImagen(request, m_id):
     manga = MangaGatsu.objects.get(id=m_id)
@@ -262,13 +367,14 @@ def listaImagen(request):
     datos ={'imagenes': imagenes}
     return render(request, 'listaImagen.html', datos)
 
-
+@user_passes_test(is_admin)
 #Metodo DELETE Imagen    
 def deleI(request, id):
     dele = Imagen.objects.get(id=id)
     dele.delete()
     return redirect('/listaImagen')   
 
+@user_passes_test(is_admin)
 #METODO UPDATE Imagen 
 def updaI(request, id):
     data = Imagen.objects.get(id=id)
@@ -347,3 +453,54 @@ def formManga(request):
     Manga2.save(nuevo)
 
     return render(request, 'loginC.html')    
+
+#vista para gestionar subscripcion
+
+def suscribirse(request):
+    if request.method == 'POST':
+
+        # Crear instancia del SDK de Mercado Pago
+        mercadopago = mercadopago()
+        mercadopago.client_id = 7720091870954518
+        mercadopago.client_secret = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
+        # Datos de la suscripción
+        subscription_data = {
+            "payer_email": request.user.email,
+            "back_url": "Home.html",
+            # Otros datos necesarios para la suscripción
+            # Ejemplo: 
+             "auto_recurring": {
+                 "frequency": 1,
+                 "frequency_type": "months",
+                 "transaction_amount": 4000.00,
+                 "currency": "CLP",}
+        }
+
+        try:
+            # Realizar la solicitud de creación de la suscripción a Mercado Pago
+            response = mercadopago.post("/preapproval", subscription_data)
+
+            if response["status"] == 201:  # Verificar si la suscripción fue creada exitosamente
+                monto = 4000.00  # Definir el monto de la suscripción (esto puede variar según tu lógica)
+                
+                # Crear un registro en HistorialCompras
+                HistorialCompras.objects.create(
+                    usuario=request.user,
+                    monto=monto,
+                )
+
+                return redirect('página_de_confirmación_de_suscripción')
+            else:
+                # Manejar el caso si la suscripción no se creó correctamente
+                # Puedes mostrar un mensaje de error o redirigir a otra página
+                error_message = "La suscripción no se creó correctamente."
+                # Aquí puedes enviar un mensaje de error o redirigir a una página de error
+                # return render(request, 'error.html', {'error_message': error_message})
+
+        except Exception as e:
+            # Manejar excepciones en caso de errores durante la solicitud a Mercado Pago
+            error_message = f"Error al procesar la suscripción: {str(e)}"
+            # Aquí puedes registrar los detalles del error en algún registro o mostrar un mensaje de error al usuario
+            # return render(request, 'error.html', {'error_message': error_message})
+
+    return render(request, 'pago.html')

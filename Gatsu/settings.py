@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+from crispy_forms.bootstrap import *
+from crispy_forms.layout import *
 
 env = environ.Env()
 environ.Env.read_env()
@@ -44,8 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'Gatsu',
-    'manga',
+    'manga.apps.MangaConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Gatsu.context_processors.is_admin',
             ],
         },
     },
@@ -114,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -147,3 +155,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'Home'
 
 LOGOUT_REDIRECT_URL = 'Home'
+
+MERCADO_PAGO_CLIENT_ID = '7720091870954518'
+MERCADO_PAGO_CLIENT_SECRET = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'

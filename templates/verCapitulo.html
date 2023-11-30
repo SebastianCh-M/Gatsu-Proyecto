@@ -1,20 +1,263 @@
 {% extends 'index.html' %}
 {% block content %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Capitulo</title>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet"
+        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    
 </head>
-<body>
 
-<h2>Titulo: {{capitulos.titulo}} Cap_Numero: {{capitulos.numero}} </h2>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-genders'), {
+            toggle: false
+        });
 
-{%for i in imagenes %}
+        document.getElementById('heading-books-genders').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
 
-    <p><img src="{{ i.imagen.url }}" alt="{{ i.id }}" width="100"></td></p>
+        var myCollapse = new bootstrap.Collapse(document.getElementById('books-filters'), {
+            toggle: false
+        });
 
-{% endfor %}    
+        document.getElementById('heading-books-filters').addEventListener('click', function () {
+            myCollapse.toggle();
+        });
 
+        // Llamada a la función para activar la vista de libro por defecto
+        changeView();  // Sin especificar tipo de vista, por defecto será 'libro'
+    });
+
+    var mySwiper;
+
+    function changeImageSize(factor) {
+        var images = document.querySelectorAll('.image-list img');
+        images.forEach(function (image) {
+            var currentWidth = image.width;
+            var newWidth = currentWidth * factor;
+            image.style.width = newWidth + 'px';
+        });
+    }
+
+    function changeView(viewType) {
+        var cascadaView = document.querySelector('.cascada-view');
+        var libroView = document.querySelector('.libro-view');
+        var cascadaButton = document.querySelector('#cascada-button');
+        var libroButton = document.querySelector('#libro-button');
+
+        if (viewType === 'cascada') {
+            cascadaView.style.display = 'block';
+            libroView.style.display = 'none';
+            cascadaButton.classList.add('active');
+            libroButton.classList.remove('active');
+            destroySwiper();
+        } else {
+            // Si no se especifica un tipo de vista, se establece por defecto la vista de libro
+            cascadaView.style.display = 'none';
+            libroView.style.display = 'block';
+            cascadaButton.classList.remove('active');
+            libroButton.classList.add('active');
+            initializeSwiper();
+        }
+    }
+
+    function destroySwiper() {
+        if (mySwiper) {
+            mySwiper.destroy(true, true);
+        }
+    }
+
+    function initializeSwiper() {
+        if (mySwiper) {
+            mySwiper.destroy(true, true);
+        }
+
+        mySwiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+</script>
+
+<style>
+    .swiper-container {
+        overflow: hidden;
+    }
+
+    .swiper-container img {
+        max-width: 100%;
+    }
+
+    .libro-view li {
+        width: 70%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .libro-view li img {
+        width: 70%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+        margin-bottom: 0;
+        border: 1px solid #ddd;
+    }
+
+    .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .cascada-view {
+        display: block;
+    }
+
+    .libro-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Oculta las flechas de navegación del slider */
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none;
+    }
+
+    .cascada-view {
+        display: block;
+        overflow-x: auto;
+    }
+
+    ul.image-list li img {
+        max-width: 100%;
+    }
+
+    .slider {
+        display: none;
+        /* Oculta el slider */
+    }
+
+    ul.image-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    ul.image-list li {
+        width: 70%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    ul.image-list li img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+        margin-bottom: 0;
+        border: 1px solid #ddd;
+    }
+
+    .swiper-slide-hidden {
+        display: none;
+    }
+
+    /* Estilos para el botón activo */
+    button.active {
+        background-color: black;
+        color: #fff;
+        border-color: #fff;
+    }
+</style>
+
+<body style="background-color: #202020; color: #fff;">
+
+    <br>
+    <h1 style="text-align: center;">{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</h1>
+
+    <div class="container align-items-center" style="align-items: center; align-content: center;">
+        <button id="aumentar-button" type="button" onclick="changeImageSize(1.2)"
+            style="background-color: black ; color: #fff; border-color: #fff;">Aumentar Tamaño</button>
+        <button id="disminuir-button" type="button" onclick="changeImageSize(0.8)"
+            style="background-color: black ; color: #fff; border-color: #fff;">Disminuir Tamaño</button>
+        <button id="cascada-button" type="button" onclick="changeView('cascada')"
+            style="background-color: black;  color: #fff; border-color: #fff;">Vista Cascada</button>
+        <button id="libro-button" type="button"  onclick="changeView('libro')"
+            style="background-color:  black; color: #fff; border-color: #fff;">Vista Libro</button>
+    </div>
+
+    <br>
+    <div class="cascada-view">
+        <ul class="image-list">
+            <br>
+            {% if request.user.is_authenticated %}
+                {% if advertencia %}
+                    <div class="alert alert-warning" role="alert"> 
+                        Debes suscribirte para acceder a capítulos adicionales. 
+                    </div>
+                {% else %}
+                    {% for i in imagenes %}
+                        <li>
+                            <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning" role="alert"> 
+                    Debes iniciar sesión para acceder a este contenido. 
+                </div>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="libro-view">
+        <div class="swiper-container">
+            <div class="swiper-wrapper image-list">
+                {% if usuario_registrado and not primer_capitulo %}
+                    <div style="color: red; text-align: center; font-size: 18px;">
+                        Solo puedes acceder al primer capítulo. ¡Suscríbete para disfrutar de todo el catálogo!
+                    </div>
+                {% endif %}
+                {% for i in imagenes %}
+                    <li class="swiper-slide">
+                        <img style="display: block;" src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+                    </li>
+                {% endfor %}
+            </div>
+            <div class="swiper-button-next" style="color: white;"></div>
+            <div class="swiper-button-prev" style="color: white;"></div>
+        </div>
+    </div>
 </body>
 </html>
 

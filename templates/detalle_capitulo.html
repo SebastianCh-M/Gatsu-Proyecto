@@ -138,12 +138,75 @@
 
         padding-left: 5px;
     }
+
+    .capitulo-bloqueado {
+        opacity: 0.6; /* Hace que el capítulo se vea más oscuro */
+        pointer-events: none; /* Evita que el botón sea clickeable */
+        position: relative; /* Para que el icono de candado se posicione correctamente */
+    }
+
+    .icono-candado {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px; /* Puedes ajustar el tamaño según sea necesario */
+        color: #fff;
+    }
+
+
+
+    /* Estilos para la ventana emergente */
+    .ventana-emergente {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+        justify-content: center;
+        align-items: center;
+        z-index: 999; /* Asegura que esté en la parte superior */
+    }
+
+    .ventana-contenido {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .botones button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-pagar {
+        background-color: #ff9900; /* Color de pago */
+        color: #fff;
+        border: none;
+    }
+
+    .btn-denegar {
+        background-color: #333; /* Color para denegar */
+        color: #fff;
+        border: none;
+    }
+
 </style>
 
 <body style="background-color: #202020; color: #fff;">
     <br>
     <br>
     <div class="container">
+        {% if messages %}
+            <div class="alert alert-info" role="alert">
+                {{ messages }}
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-4">
                 <!-- Contenido de la primera columna (imagen y sinopsis) -->
@@ -171,20 +234,62 @@
                     <h3>Capitulos</h3>
                     <br>
                     {% for capitulo in capitulos %}
-                    <div class="list">
-                        <div class="content">
-                            <a class="btn btn-danger" style="background-color: black; border-color: #fff;"
-                                href="/verCapitulo/{{capitulo.id}}">
-                                <small>Cap: {{capitulo.numero}}</small><!-- numero cap -->
-                                <h4>{{ capitulo.titulo }}</h4><!-- titulo -->
-                            </a>
+                        <div class="list">
+                            <div class="content">
+                                {% if capitulo.numero == 1 or user_is_subscribed %}
+                                    <!-- Permitir acceso a primer capítulo o si el usuario está suscrito -->
+                                    <a class="btn btn-danger" style="background-color: black; border-color: #fff;"
+                                        href="/verCapitulo/{{capitulo.id}}">
+                                        <small>Cap: {{capitulo.numero}}</small>
+                                        <h4>{{ capitulo.titulo }}</h4>
+                                    </a>
+                                {% else %}
+                                    <!-- Mostrar ventana emergente solo cuando se selecciona un capítulo -->
+                                    <button class="btn btn-danger" style="background-color: black; border-color: #fff;"
+                                        onclick="mostrarVentanaEmergente('{{capitulo.id}}')">
+                                        <small>Cap: {{capitulo.numero}}</small>
+                                        <h4>{{ capitulo.titulo }}</h4>
+                                    </button>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Ventana emergente mejorada -->
+    <div id="ventanaEmergente" class="ventana-emergente">
+        <div class="ventana-contenido">
+            <p>Lo siento, el contenido desde aquí en adelante es parte del contenido premium de Gatsu.</p>
+            <div class="botones">
+                <button class="btn-pagar" onclick="redirigirAPago()">Paga aquí</button>
+                <button class="btn-denegar" onclick="cerrarVentanaEmergente()">No por ahora</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para mostrar y cerrar la ventana emergente -->
+    <script>
+        function mostrarVentanaEmergente(capituloId) {
+            var ventanaEmergente = document.getElementById("ventanaEmergente");
+            ventanaEmergente.style.display = "flex";
+            // Puedes hacer algo con el capítulo seleccionado si es necesario
+            // Por ejemplo, almacenarlo en una variable JavaScript o realizar alguna acción específica
+            console.log("Capítulo seleccionado:", capituloId);
+        }
+    
+        function cerrarVentanaEmergente() {
+            var ventanaEmergente = document.getElementById("ventanaEmergente");
+            ventanaEmergente.style.display = "none";
+        }
+    
+        function redirigirAPago() {
+            // Redirige a la URL de pago
+            window.location.href = "/url-de-pago";
+        }
+    </script>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -193,7 +298,6 @@
     <script
         src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 </body>
-
 </html>
 
 {% endblock %}

@@ -177,6 +177,3 @@ def asignar_grupo_por_defecto(sender, instance, created, **kwargs):
     if created:
         grupo_usuario_registrado = Group.objects.get(name='UsuarioRegistrado')
         instance.groups.add(grupo_usuario_registrado)
-
-
-
