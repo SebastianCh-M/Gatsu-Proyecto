@@ -45,7 +45,7 @@ urlpatterns = [
     path('updaC/<int:id>', updaC),
 
     #Imagen
-    path('formImagen',formImagen),
+    path('formImagen/<int:m_id>',formImagen),
     #path('cargar_capitulos/', cargar_capitulos, name='cargar_capitulos'),
 
     path('listaImagen',listaImagen),
