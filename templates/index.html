@@ -4,7 +4,7 @@
 <head>
 
     {% load static %}
-
+    <link rel="shortcut icon" href="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,7 +53,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="{% url 'Home' %}">
-                    <img src="../static/images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png"
+                    <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}"
                         alt="Logo" height="30">
                 </a>
                 <div class="collapse navbar-collapse" id="navbar-collapse">

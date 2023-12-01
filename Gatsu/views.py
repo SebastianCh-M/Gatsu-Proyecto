@@ -27,8 +27,6 @@ from mercadopago import SDK
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 
-def is_admin(user):
-    return user.groups.filter(name='Administrador').exists()
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):

@@ -175,7 +175,7 @@ def libreriaGatsu(request):
 
     return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
 
-@user_passes_test(is_admin)
+
 #METODO GET Para ver todos los capitulos por manga
 def verCapitulo(request, id):
     capitulo = Capitulo.objects.get(id=id)
