@@ -19,6 +19,7 @@
     
 
 
+  <h2>Your Favorite Mangas user</h2>
     <table class="table">
       <tr>
           <td>Manga</td>
@@ -30,6 +31,8 @@
           <td>{{ f.manga.nombre_manga }}</td>
           <td>{{ f.user }}</td>
           <td>
+              <a class="btn btn-danger" href="/deleC/{{c.id}}">Borrar</a>
+              <a class="btn btn-danger" href="/updaC/{{c.id}}">Modificar</a>
               <a class="btn btn-danger" href="/verCapitulo/{{c.id}}">Ver</a>
           </td>
       </tr>

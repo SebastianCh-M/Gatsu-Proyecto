@@ -4,7 +4,7 @@
 <head>
 
     {% load static %}
-
+    <link rel="shortcut icon" href="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -80,7 +80,7 @@
                         <div class="dropdown">
                             <ul class="dropdown-menu" style="background-color: #202020;">
                                 <li><a href="#" style="color: #fff;">Mi Cuenta</a></li>
-                                <li><a href="{% url 'MiBiblioteca' %}" style="color: #fff;">Mi Biblioteca</a></li>
+                                <li><a href="{% url 'manga:listaFavoritos' %}" style="color: #fff;">Mi Biblioteca</a></li>
                                 <li><a href="#" style="color: #fff;">Subscripción</a></li>
                                 <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
                             </ul>
