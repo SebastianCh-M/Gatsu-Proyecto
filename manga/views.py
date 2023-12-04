@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View, DeleteView, ListView
+from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
+from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
 from django.views.generic import View, DeleteView
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 import mercadopago
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
@@ -352,29 +356,6 @@ def updaC(request, id):
 @user_passes_test(is_admin)
 #Metodo POST Imagen
 def formImagen(request):
-    mangas = MangaGatsu.objects.all()
-    capitulos = Capitulo.objects.none()
-
-    if request.method == 'POST':
-        v_imagen = request.FILES.getlist('imagen')
-        manga = request.POST.get('manga')
-        seleccionar_manga = MangaGatsu.objects.get(id=manga) if manga else None
-
-        #Actualizar queryset
-        capitulos = Capitulo.objects.filter(manga=seleccionar_manga)
-
-        for imagen in v_imagen:
-            nuevo = Imagen(imagen=imagen)
-            nuevo.capitulo = capitulos
-            nuevo.save()
-
-        return redirect('/listaImagen')
-    else:
-        return render(request, 'formImagen.html', {'mangas': mangas, 'capitulos': capitulos})  
-    
-
-#Backup    
-def formImagen2(request):
     if request.method == 'POST':
         v_imagen = request.FILES.getlist('imagen')
         v_capitulo = request.POST.get('capitulo')  
@@ -397,7 +378,159 @@ def formImagen2(request):
             }
             for capitulo in capitulos
         ]
-        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})    
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})
+    
+
+
+def mangaFavorito(request, id):
+    manga = get_object_or_404(MangaGatsu, id=id)
+    if manga.favorito.filter(id=request.user.id).exists():
+        manga.favorito.remove(request.user)
+    else:
+        manga.favorito.add(request.user)
+    return redirect('/Home')        
+
+
+#def favorite_manga(request):
+#    user_favorites = MangaGatsu.objects.filter(favorito=request.user)
+#    return render(request, 'favoritos.html', {'user_favorites': user_favorites})
+
+
+class FavoriteMangaListView(LoginRequiredMixin, ListView):
+    model = MangaGatsu
+    template_name = 'favorite_manga.html'
+    context_object_name = 'user_favorites'
+
+    def get_queryset(self):
+        return MangaGatsu.objects.filter(favorito=self.request.user)
+    
+
+def add_to_favorite(request):
+    if request.method == 'POST':
+        form = AddToFavoriteForm(request.POST)
+        if form.is_valid():
+            manga_id = form.cleaned_data['manga_id']
+            manga = MangaGatsu.objects.get(pk=manga_id)
+            Favorite.objects.create(user=request.user, manga=manga)
+            return redirect('add_to_favorite')  # Change 'comics_list' to your comics list view name
+    else:
+         return render(request, 'add_to_favorite.html')    
+    
+
+class ComicsListView(View):
+    template_name = 'listaMangaGatsu.html'
+
+    def get(self, request, *args, **kwargs):
+        manga = MangaGatsu.objects.all()
+        form = AddToFavoriteForm()
+        return render(request, self.template_name, {'mangas': manga, 'form': form})
+
+class AddToFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        form = AddToFavoriteForm(request.POST)
+        if form.is_valid():
+            favorite = form.save(commit=False)
+            favorite.user = request.user
+            favorite.save()
+        return redirect('/listaMangaGatsu')
+
+class FavoriteComicsView(LoginRequiredMixin, View):
+    template_name = 'favorite_manga.html'
+
+    def get(self, request, *args, **kwargs):
+        favorite = Favorite.objects.all()
+        user_favorites = Favorite.objects.filter(user=request.user)
+        return render(request, self.template_name, {'favorites': favorite})  
+    
+
+
+def manga_list(request):
+    mangas = MangaGatsu.objects.all()
+    user = request.user  # Get the logged-in user
+
+    context = {
+        'mangas': mangas,
+        'user': user,
+    }
+    return render(request, 'listaMangaGatsu.html', context)
+
+
+
+@login_required
+def add_favorite(request, manga_id):
+    manga = get_object_or_404(MangaGatsu, id=manga_id)
+    user = request.user
+
+    # Check if the manga is already in the user's favorites
+    if not Favorite.objects.filter(user=user, manga=manga).exists():
+        favorite = Favorite(user=user, manga=manga)
+        favorite.save()
+
+    return redirect('manga:detalle_capitulos', manga_id=manga_id)  
+
+
+
+@login_required
+def listaFavoritos(request):  
+    user = request.user
+    favorites = Favorite.objects.filter(user=user)
+    datos ={'favorites': favorites}
+    return render(request, 'MiBiblioteca.html', datos)   
+
+
+
+
+@login_required
+def update_progress(request, manga_id, chapter_id):
+    manga = MangaGatsu.objects.get(id=manga_id)
+    chapter = Capitulo.objects.get(id=chapter_id)
+
+    
+    # Update or create progress for the user and manga
+    progress, created = Progress.objects.get_or_create(user=request.user, manga=manga)
+    progress.last_read_chapter = chapter
+    progress.save()
+
+    return redirect('manga:detalle_capitulos', manga_id=manga_id)
+
+
+    
+
+
+
+
+#Backup   
+def formImagen2(request, m_id):
+    manga = MangaGatsu.objects.get(id=m_id)
+    v_capitulos = manga.capitulos.all()
+
+    if request.method == 'POST':
+        v_imagen = request.FILES.getlist('imagen')
+        v_capitulo = request.POST.get('capitulo')  
+        capitulo = Capitulo.objects.get(id=v_capitulo)
+
+        for imagen in v_imagen:
+            nuevo = Imagen(imagen=imagen)
+            nuevo.capitulo = capitulo
+            nuevo.save()
+
+        return redirect('/listaImagen')
+    else:
+        # Render the form page
+        capitulos = Capitulo.objects.all()
+        capitulos_con_info = [
+            {
+                'id': capitulo.id,
+                'numero': capitulo.numero,
+                'info_completa': f"{capitulo.manga.nombre_manga.nombreManga} - Capítulo {capitulo.numero} - {capitulo.titulo}"
+            }
+            for capitulo in capitulos
+        ]
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info, 'mangas': manga, 'capitulos': v_capitulos}) 
+    
+
+ 
+    
     
 
 #Metodo GET Imagen
@@ -494,4 +627,84 @@ def formManga(request):
     #defreturn render(request, 'loginC.html')    
 
 
+
+    nuevo=Manga2()
+    nuevo.idManga=v_idManga
+    nuevo.nombreManga=v_nombreM
+    nuevo.ano_publicacion=v_anoP
+    nuevo.tsubida=tSubidas
+    nuevo.mangaka=v_mangaka
+    nuevo.sinopsis=v_sinopsis
+    nuevo.editorial=v_editorial
+    nuevo.genero=v_genero
+    nuevo.estado=tEstados
+    
+
+    Manga2.save(nuevo)
+
+    return render(request, 'loginC.html')    
+
+#vista para gestionar subscripcion
+
+def suscribirse(request):
+    if request.method == 'POST':
+
+        # Crear instancia del SDK de Mercado Pago
+        mercadopago = mercadopago()
+        mercadopago.client_id = 7720091870954518
+        mercadopago.client_secret = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
+        # Datos de la suscripción
+        subscription_data = {
+            "payer_email": request.user.email,
+            "back_url": "Home.html",
+            # Otros datos necesarios para la suscripción
+            # Ejemplo: 
+             "auto_recurring": {
+                 "frequency": 1,
+                 "frequency_type": "months",
+                 "transaction_amount": 4000.00,
+                 "currency": "CLP",}
+        }
+
+        try:
+            # Realizar la solicitud de creación de la suscripción a Mercado Pago
+            response = mercadopago.post("/preapproval", subscription_data)
+
+            if response["status"] == 201:  # Verificar si la suscripción fue creada exitosamente
+                monto = 4000.00  # Definir el monto de la suscripción (esto puede variar según tu lógica)
+                
+                # Crear un registro en HistorialCompras
+                HistorialCompras.objects.create(
+                    usuario=request.user,
+                    monto=monto,
+                )
+
+                return redirect('página_de_confirmación_de_suscripción')
+            else:
+                # Manejar el caso si la suscripción no se creó correctamente
+                # Puedes mostrar un mensaje de error o redirigir a otra página
+                error_message = "La suscripción no se creó correctamente."
+                # Aquí puedes enviar un mensaje de error o redirigir a una página de error
+                # return render(request, 'error.html', {'error_message': error_message})
+
+        except Exception as e:
+            # Manejar excepciones en caso de errores durante la solicitud a Mercado Pago
+            error_message = f"Error al procesar la suscripción: {str(e)}"
+            # Aquí puedes registrar los detalles del error en algún registro o mostrar un mensaje de error al usuario
+            # return render(request, 'error.html', {'error_message': error_message})
+
+    return render(request, 'pago.html')
+
+
+def add_favorite2(request):
+    if request.method == 'POST':
+        user = request.user
+        manga_id = request.POST.get('manga_id')
+        manga = MangaGatsu.objects.get(id=manga_id)
+
+        # Check if the manga is not already in favorites to avoid duplicates
+        if not Favorite.objects.filter(user=user, manga=manga).exists():
+            Favorite.objects.create(user=user, manga=manga)
+
+    return redirect('comics_list')  # Redirect back to the comics list after adding to favorites
 

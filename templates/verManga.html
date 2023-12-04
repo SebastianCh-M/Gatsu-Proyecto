@@ -43,12 +43,27 @@
             <td>{{ c.fecha_publicacion }}</td>
             <td>{{ c.manga }}</td>
             <td>
-                <a class="btn btn-danger" href="/verCapitulo/{{c.id}}">Ver</a>
+                <a href="{% url 'manga:update_progress' manga_id=c.manga.id chapter_id=c.id %}">Mark as Read</a>
             </td>
         </tr>
         {% endfor %}
     </table>
 </body>
+
+
+<!-----
+{% for c in manga.capitulos_set.all %}
+        <tr>
+            <td>{{ c.titulo }}</td>
+            <td>{{ c.numero }}</td>
+            <td>{{ c.fecha_publicacion }}</td>
+            <td>{{ c.manga }}</td>
+            <li>
+                <a href="{% url 'manga:update_progress' manga_id=manga.id chapter_id=c.id %}">Mark as Read</a>
+            </li>
+        </tr>
+        {% endfor %}
+-->        
 </html>
 
 {% endblock %}
