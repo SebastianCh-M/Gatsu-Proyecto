@@ -3,9 +3,9 @@ from django.urls import path, include
 from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
-from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga
-from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas,Filtroprueba
-from manga.views import formRevista, libreriaGatsu, listaRevista, deleR, updaR, formNombreManga, listaNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, listaCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
+from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga, mangaFavorito, listaFavoritos
+from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas
+from manga.views import formRevista, libreriaGatsu, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas, pagoView
 
 urlpatterns = [
@@ -14,7 +14,6 @@ urlpatterns = [
     path('', include('manga.urls')),
     path('', include('django.contrib.auth.urls')),
     path('pago/', pagoView.as_view(), name='pago'),
-    path('', include('manga.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
@@ -37,11 +36,16 @@ urlpatterns = [
     path('deleN/<int:id>', deleN),
     path('updaN/<int:id>', updaN),
 
+    
+
     #Manga Gatsu
     path('formMangaGatsu',formMangaGatsu),
     path('listaMangaGatsu',listaMangaGatsu),
     path('deleM/<int:id>', deleM),
     path('updaM/<int:id>', updaM),
+
+    path('mangaFavorito/<int:id>', mangaFavorito, name='mangaFavorito'),
+    
 
     #Capitulo
     path('formCapitulo',formCapitulo),
@@ -50,7 +54,7 @@ urlpatterns = [
     path('updaC/<int:id>', updaC),
 
     #Imagen
-    path('formImagen/<int:m_id>',formImagen),
+    path('formImagen',formImagen),
     #path('cargar_capitulos/', cargar_capitulos, name='cargar_capitulos'),
 
     path('listaImagen',listaImagen),

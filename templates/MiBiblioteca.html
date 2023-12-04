@@ -16,6 +16,28 @@
 <body style="background-color: #202020; color: #fff;">
     <h1>Biblioteca</h1>
 
+    
+
+
+    <table class="table">
+      <tr>
+          <td>Manga</td>
+          <td>Usuario</td>
+          <td colspan="2">Opciones</td>
+      </tr>
+      {% for f in favorites %}
+      <tr>
+          <td>{{ f.manga.nombre_manga }}</td>
+          <td>{{ f.user }}</td>
+          <td>
+              <a class="btn btn-danger" href="/verCapitulo/{{c.id}}">Ver</a>
+          </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+
+
 </body>
 </html>
 {% endblock %}

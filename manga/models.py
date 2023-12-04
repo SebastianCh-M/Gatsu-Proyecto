@@ -8,6 +8,7 @@ from datetime import timedelta
 from django.db.models import Avg
 from django.utils import timezone
 from django.db.models.signals import post_save
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -16,6 +17,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+
     
 class tipoSubida(models.Model):
     subida=models.CharField(max_length=30)
@@ -91,15 +94,27 @@ class MangaGatsu(models.Model):
 
     estado = models.CharField(max_length=20, choices=OPCIONES_ESTADO)
     portada = models.ImageField(upload_to='manga/portadas/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
+    favorito = models.ManyToManyField(User, related_name='favorito', blank= True)
 
     # Otras informaciones del manga que puedan ser relevantes
 
     def __str__(self):
         return str(self.nombre_manga.nombreManga)
     
+    def get_absolute_url(self):
+        return reverse('detalle_capitulos', args=[str(self.id)])
+    
     @property
     def valoracion_promedio(self):
         return Valoracion.objects.filter(manga=self).aggregate(promedio=Avg('valoracion'))['promedio']
+    
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE) 
+
+
+
+
 
 #POST,DELETE,UPDATE
 class Capitulo(models.Model):
@@ -110,6 +125,12 @@ class Capitulo(models.Model):
 
     def __str__(self):
         return str(f"Capítulo {self.numero} - {self.titulo}")
+    
+class Progress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    last_read_chapter = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True)
+
 
 class Imagen(models.Model):
     imagen = models.ImageField(upload_to='manga/capitulos/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
@@ -136,6 +157,17 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return f"Valoración de {self.usuario.username} en {self.manga.nombre_manga}"
+    
+
+
+
+
+class perfilUsuario(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, related_name='mangas', on_delete=models.CASCADE) 
+    imagenPerfil = models.ImageField(upload_to='perfil/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
+
+
     
 
 #NO TOMAR EN CUENTA
