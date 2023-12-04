@@ -72,6 +72,8 @@ class ComentarioForm(forms.ModelForm):
         model = Comentario
         fields = ["contenido", "manga"]
         widgets = {'manga': forms.HiddenInput()}
+
+         
         
 
 

@@ -9,6 +9,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ConfigMangas</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
@@ -23,31 +24,10 @@
       </head>
     <title>Registar Nuevo Capitulo</title>
 </head>
-<style>
-    button{
-        background-color: #202020;
-        color: #fff;
-    }
-</style>
 <body style="background-color: #202020; color: #fff;">
-    <br>    <br>    <br>    <br>
-    <h2 style="text-align: center;">Añadir Capítulo</h2>
-    <br>  
-    <div class="d-flex justify-content-center">
-        <div class="card" style="background-color: #161616; color: #fff; border-color: #fff;">
-            <br>
-            <form class="container" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <br>
-                <div class="d-flex justify-content-start">
-                    <button style="width: 70%;" type="submit">Añadir Capitulo</button>
-                    <button style="width: 70%;" onclick="window.location.href='{% url 'ConfigMangas' %}'">Cancelar</button>
-                </div>
-            </form>
-            <br>
-        </div>
-    </div>
+    <br>
+    <h2>Capitulo</h2>
+    <br>
     <table class="table">
         <tr>
             <td>titulo</td>
@@ -63,14 +43,11 @@
             <td>{{ c.fecha_publicacion }}</td>
             <td>{{ c.manga }}</td>
             <td>
-                <a class="btn btn-danger" href="/deleC/{{c.id}}">Borrar</a>
-                <a class="btn btn-danger" href="/updaC/{{c.id}}">Modificar</a>
                 <a class="btn btn-danger" href="/verCapitulo/{{c.id}}">Ver</a>
             </td>
         </tr>
         {% endfor %}
     </table>
-    <br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>
 
