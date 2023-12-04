@@ -12,7 +12,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-        <link rel="stylesheet" href="../static/css/styles.css">
         <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -48,6 +47,28 @@
             <br>
         </div>
     </div>
+    <table class="table">
+        <tr>
+            <td>titulo</td>
+            <td>numero</td>
+            <td>fecha_publicacion</td>
+            <td>manga</td>
+            <td colspan="2">Opciones</td>
+        </tr>
+        {% for c in capitulos %}
+        <tr>
+            <td>{{ c.titulo }}</td>
+            <td>{{ c.numero }}</td>
+            <td>{{ c.fecha_publicacion }}</td>
+            <td>{{ c.manga }}</td>
+            <td>
+                <a class="btn btn-danger" href="/deleC/{{c.id}}">Borrar</a>
+                <a class="btn btn-danger" href="/updaC/{{c.id}}">Modificar</a>
+                <a class="btn btn-danger" href="/verCapitulo/{{c.id}}">Ver</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
     <br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>

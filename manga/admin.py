@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2
+from .models import tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
 
@@ -15,13 +15,25 @@ class estadoAdmin(admin.ModelAdmin):
     list_display = ["estado"]
 
 class editorialAdmin(admin.ModelAdmin):
-    list_display = ["editorial_id","editoriales"]    
+    list_display = ["editorial_id","editoriales"] 
+
+class favoriteAdmin(admin.ModelAdmin):
+    list_display = ["id","user","manga"]      
+
+class progressAdmin(admin.ModelAdmin):
+    list_display = ["id","user","manga", "last_read_chapter"]    
+
+    
 
 admin.site.register(Revista2, editorialAdmin)    
 admin.site.register(tipoSubida, subidaAdmin)
 admin.site.register(tipoEstado, estadoAdmin)     
 admin.site.register(Manga3)
 admin.site.register(Revista)  # Registrar la tabla Revista
+
+admin.site.register(Favorite, favoriteAdmin)
+admin.site.register(Progress, progressAdmin)
+
 
 
 @admin.register(MangaGatsu)
@@ -50,12 +62,12 @@ class CapituloAdmin(admin.ModelAdmin):
     inlines = [ImagenInLine]
 
     def __str__(self):
-        return f"Capítulo {self.numero} - {self.titulo}"
+        return f"CapÃ­tulo {self.numero} - {self.titulo}"
 
 
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'contenido', 'fecha_creado', 'fecha_modificado', 'usuario', 'capitulo')
+    list_display = ('usuario', 'contenido', 'fecha_creado', 'fecha_modificado', 'manga')
 
 @admin.register(Valoracion)
 class ValoracionAdmin(admin.ModelAdmin):
