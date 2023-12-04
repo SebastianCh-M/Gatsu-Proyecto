@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView
-from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
-from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
+from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -218,18 +218,45 @@ def detalle_capitulo(request, capitulo_id):
 
 
 def detalle_capitulos(request, manga_id):
-    try:
-        manga = MangaGatsu.objects.get(pk=manga_id)
-        capitulos = Capitulo.objects.filter(manga=manga)
-    except MangaGatsu.DoesNotExist:
-        raise Http404("Manga no encontrado.")
+    manga = get_object_or_404(MangaGatsu, pk=manga_id)
+    capitulos = Capitulo.objects.filter(manga=manga)
 
-    # Verificar si el usuario ha pagado la suscripción
-    user_is_subscribed = False
-    if request.user.is_authenticated:
-        user_is_subscribed = request.user.groups.filter(name='UsuarioSuscrito').exists()
+    user_is_subscribed = request.user.is_authenticated and request.user.groups.filter(name='UsuarioSuscrito').exists()
 
-    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos, 'user_is_subscribed': user_is_subscribed})
+    comentarios = Comentario.objects.filter(manga=manga)
+    rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.manga = manga
+            comentario.save()
+            form = ComentarioForm()
+
+            rating = request.POST.get('rating')
+            if rating:
+                rating = float(rating)
+                valoracion_existente = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+                if valoracion_existente:
+                    valoracion_existente.valoracion = rating
+                    valoracion_existente.save()
+                else:
+                    Valoracion.objects.create(valoracion=rating, usuario=request.user, manga=manga)
+
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'detalle_capitulo.html', {
+        'manga': manga,
+        'capitulos': capitulos,
+        'user_is_subscribed': user_is_subscribed,
+        'form': form,
+        'comentarios': comentarios,
+        'rating_actual': rating_actual.valoracion if rating_actual else None,
+    })
+
 
     
 @user_passes_test(is_admin)
@@ -361,37 +388,52 @@ def formManga(request):
 
     return render(request, 'registrarM.html', datos)
 
+@login_required
+def create_comentario(request):
+    if request.method == 'POST':
+        form =  ComentarioForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.usuario = request.user
+            post.save()
+            return redirect('/detalle_capitulos')
+    else:
+        form = ComentarioForm()
+
+        return render(request, '/detalle_capitulos', {'form': form})
+
+
 
 #def guardarManga(request):
-    v_idManga=request.POST.get('idManga')
-    v_nombreM=request.POST.get('nombreManga')
-    v_anoP=request.POST.get('ano_publicacion')
-    v_subida=request.POST.get('tsubida')
-    v_mangaka=request.POST.get('mangaka')
-    v_sinopsis=request.POST.get('sinopsis')
-    v_editorial=request.POST.get('editorial')
-    v_genero=request.POST.get('genero')
-    v_estado=request.POST.get('estado')
+ #def   v_idManga=request.POST.get('idManga')
+  #def  v_nombreM=request.POST.get('nombreManga')
+   #def v_anoP=request.POST.get('ano_publicacion')
+  #def  v_subida=request.POST.get('tsubida')
+  #def  v_mangaka=request.POST.get('mangaka')
+   #def v_sinopsis=request.POST.get('sinopsis')
+   #def v_editorial=request.POST.get('editorial')
+   #def v_genero=request.POST.get('genero')
+  #def  v_estado=request.POST.get('estado')
+#def
 
+  #def  tEstados=tipoEstado.objects.get(estado=v_estado)
+   #def tSubidas=tipoSubida.objects.get(subida=v_subida)
 
-    tEstados=tipoEstado.objects.get(estado=v_estado)
-    tSubidas=tipoSubida.objects.get(subida=v_subida)
+   #def nuevo=Manga2()
+   #def nuevo.idManga=v_idManga
+  #def  nuevo.nombreManga=v_nombreM
+   #def nuevo.ano_publicacion=v_anoP
+   #def nuevo.tsubida=tSubidas
+  #def nuevo.mangaka=v_mangaka
+   #def nuevo.sinopsis=v_sinopsis
+   #def nuevo.editorial=v_editorial
+   #def nuevo.genero=v_genero
+    #defnuevo.estado=tEstados
+   #def 
 
-    nuevo=Manga2()
-    nuevo.idManga=v_idManga
-    nuevo.nombreManga=v_nombreM
-    nuevo.ano_publicacion=v_anoP
-    nuevo.tsubida=tSubidas
-    nuevo.mangaka=v_mangaka
-    nuevo.sinopsis=v_sinopsis
-    nuevo.editorial=v_editorial
-    nuevo.genero=v_genero
-    nuevo.estado=tEstados
-    
+    #defManga2.save(nuevo)
 
-    Manga2.save(nuevo)
-
-    return render(request, 'loginC.html')    
+    #defreturn render(request, 'loginC.html')    
 
 
 
