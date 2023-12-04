@@ -7,33 +7,24 @@
 
 <head>
     {% load static %}
-
+  
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ manga.nombre_manga.nombreManga }}</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet"
+      href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-dfW+qcVpLh6NB3uV2a3/jNFqzL2lTXs99BUhZe8Q78tj8efl0mF3dIp/Wm2I5fDx" crossorigin="anonymous">
-
-    <!-- Otros estilos -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
-
-    <!-- Favicon -->
     <meta name="msapplication-TileColor" content="#2957ba">
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
-
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-
+  
+  </head>
 <style>
     .img-fluid {
         width: 250px;
@@ -232,7 +223,7 @@
                 <!-- Contenido de la primera columna (imagen y sinopsis) -->
                 <div class="box2">
                     <div class="sinopsis card"
-                        style="background-color: #202020; color: #fff; border-color: #fff; padding-left: 60px; padding-top: 20px; padding-bottom: 20px; padding-right: 60px;">
+                        style="background-color: #202020; color: #fff; border-color: #fff; padding-left: 30px; padding-top: 20px; padding-bottom: 20px; padding-right: 30px;">
                         <div class="content d-flex align-items-center align-img">
                             <img class="img-fluid col-md" src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
                         </div>

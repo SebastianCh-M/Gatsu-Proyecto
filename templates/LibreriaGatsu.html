@@ -9,16 +9,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librería Gatsu</title>
-
+    <meta name="trafficjunky-site-verification" content="vnrwaw9t0" />
+    <meta name="exoclick-site-verification" content="043e4ac6d429fc45736a2571151745ed">
+    <meta name="csrf-token" content="urU5jPKA3HW5bz1XrQhSsSjUuYNtjJn0YjMJ4OSH">
     <!-- Enlaces a bibliotecas externas -->
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="../static/css/stylesLibreria.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/stylesLibreria.css' %}">
     <link rel="stylesheet"
         href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
 
     <!-- Scripts externos -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -28,7 +36,6 @@
     <!-- Tu script personalizado -->
     <script
         src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
-
 </head>
 
 <body style="background-color: #202020; color: #fff;">
@@ -47,25 +54,40 @@
             <br>
         </div>
     </div>
-    <div class="container">
-        <div class="grid">
-            {% for manga in mangas %}
-            <div class="card">
-                <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-                    <!-- Contenido del manga -->
-                    <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
-                    <h2 style="color: #fff;">{{ manga.nombre_manga.nombreManga }}</h2>
-                    <p>Género: {{ manga.genero }}</p>
-                    <p>Editorial: {{ manga.nombre_manga.revista.editoriales }}</p>
-                    <p>Mangaka: {{ manga.nombre_manga.mangaka }}</p>
-                    <p>Estado: {{ manga.estado }}</p>
-                    <!-- Puedes agregar más campos según tus necesidades -->
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+<style>
+    .thumbnail-image {
+    width: 100%; /* O el ancho deseado */
+    height: auto; /* Esto mantiene la proporción original de la imagen */
+}
 
+</style>
+<!-- Contenido organizado por filas -->
+<div class="container">
+    <div class="row">
+        {% for manga in mangas %}
+        <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
+            <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                <!-- Contenido-->
+                <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
+                <div class="thumbnail-title">
+                    <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
+                </div>
+                <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
+                <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
+                <span class="demography shounen"> {{ manga.genero }}</span>
+                <p style="display: none;" class="demography shounen"><span>{{ manga.nombre_manga.revista.editoriales
+                        }}</span></p>
+                <p style="display: none;" class="demography shounen"><span>{{ manga.estado }}</span></p>
+            </a>
+            <!-- Puedes agregar más campos según tus necesidades -->
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+    <!-- Filtrado y Búsqueda Scripts -->
     <!-- Filtrado y Búsqueda Scripts -->
     <script>
         $(document).ready(function () {
@@ -99,10 +121,10 @@
                 }).get();
 
                 // Lógica de filtrado
-                $(".grid .card").each(function () {
-                    var mangaGenre = $(this).find("p:contains('Género')").text().toLowerCase();
-                    var mangaEditorial = $(this).find("p:contains('Editorial')").text().toLowerCase();
-                    var mangaEstado = $(this).find("p:contains('Estado')").text().toLowerCase();
+                $(".row .col-6").each(function () {
+                    var mangaGenre = $(this).find(".demography.shounen").text().toLowerCase();
+                    var mangaEditorial = $(this).find("span:contains('Editorial')").text().toLowerCase();
+                    var mangaEstado = $(this).find("span:contains('Estado')").text().toLowerCase();
 
                     // Verifica si el manga cumple con los filtros seleccionados
                     var showManga = true;
@@ -138,36 +160,46 @@
                 $("input[name='editorial']").prop("checked", false);
                 $("input[name='Estado']").prop("checked", false);
 
-                // Lógica de filtrado
-                $(".grid .card").show();
+                // Muestra todos los mangas al limpiar los filtros
+                $(".row .col-6").show();
             });
         });
 
         // Script para la búsqueda
         $(document).ready(function () {
-            var $grid = $('.grid').isotope({
-                itemSelector: '.card',
-                layoutMode: 'fitRows'
-            });
+            var $grid = $('.row');
+
             $('#search-input').on('input', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $grid.isotope({
-                    filter: function () {
-                        var title = $(this).find('h2').text().toLowerCase();
-                        var mangaka = $(this).find('p').text().toLowerCase();
-                        var editorial = $(this).find('p').text().toLowerCase();
-                        var genre = $(this).find('p').text().toLowerCase();
+                $(".row .col-6").each(function () {
+                    var title = $(this).find('.thumbnail-title h4').text().toLowerCase();
+                    var mangaka = $(this).find('.book-type').text().toLowerCase();
+                    var editorial = $(this).find('span:contains("Editorial")').text().toLowerCase();
+                    var genre = $(this).find('.demography.shounen').text().toLowerCase();
 
-                        return title.indexOf(searchTerm) > -1 || mangaka.indexOf(
-                            searchTerm) > -1 || editorial.indexOf(searchTerm) > -1 || genre
-                                .indexOf(
-                                    searchTerm) > -1;
+                    // Filtra los mangas según el término de búsqueda
+                    var showManga = title.indexOf(searchTerm) > -1 || mangaka.indexOf(searchTerm) > -1 ||
+                        editorial.indexOf(searchTerm) > -1 || genre.indexOf(searchTerm) > -1;
+
+                    // Aplica animaciones para mostrar u ocultar los mangas
+                    if (showManga) {
+                        $(this).slideDown();  // Muestra el manga con animación
+                    } else {
+                        $(this).slideUp();    // Oculta el manga con animación
                     }
                 });
             });
         });
     </script>
 
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
