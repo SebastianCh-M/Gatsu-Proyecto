@@ -238,10 +238,13 @@
                         </div>
                         <div class="col-md-12">
                             <h1 style="text-align: center;">{{ manga.nombre_manga.nombreManga }}</h1>
+
+                            <a href="{% url 'manga:add_favorite' manga.id %}" class="btn btn-outline-primary"> Agregar Favorito</a>
                             <h2>Sinopsis:</h2>
                             <p>{{ manga.sinopsis }}</p>
                             <p class="Mangaka">Mangaka: {{ manga.nombre_manga.mangaka }}</p>
                             <p class="Genero">Género: {{ manga.genero }}</p>
+
                         </div>
                     </div>
                 </div>
@@ -261,6 +264,8 @@
                                         href="/verCapitulo/{{capitulo.id}}">
                                         <small>Cap: {{capitulo.numero}}</small>
                                         <h4>{{ capitulo.titulo }}</h4>
+                                        <a href="{% url 'manga:update_progress' manga_id=capitulo.manga.id chapter_id=capitulo.id %}">Marcar como leido</a>
+
                                     </a>
                                 {% else %}
                                     <!-- Mostrar ventana emergente solo cuando se selecciona un capítulo -->
