@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView
-from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
-from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
+from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -203,8 +203,23 @@ def libreriaGatsu(request):
 def verCapitulo(request, id):
     capitulo = Capitulo.objects.get(id=id)
     imagen = capitulo.imagenes.all()
-    
-    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
+    # Verifica si el usuario pertenece al grupo "UsuarioRegistrado" y "UsuarioSuscrito"
+    usuario_registrado = request.user.groups.filter(name='UsuarioRegistrado').exists()
+    usuario_suscrito = request.user.groups.filter(name='UsuarioSuscrito').exists()
+
+    # Verifica si es el primer capítulo
+    primer_capitulo = capitulo.numero == 1
+
+    # Pasa el estado de suscripción del usuario al contexto
+    user_is_subscribed = usuario_suscrito
+
+    # Si pertenece al grupo "UsuarioRegistrado" y no es el primer capítulo, muestra un mensaje de advertencia
+    if usuario_registrado and not primer_capitulo:
+        return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': True, 'user_is_subscribed': user_is_subscribed})
+
+    # Si todo está bien, muestra el capítulo
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': False, 'user_is_subscribed': user_is_subscribed})
 
 
 def detalle_manga(request, manga_id):
@@ -225,13 +240,44 @@ def detalle_capitulo(request, capitulo_id):
 
 
 def detalle_capitulos(request, manga_id):
-    try:
-        manga = MangaGatsu.objects.get(pk=manga_id)
-        capitulos = Capitulo.objects.filter(manga=manga)
-    except MangaGatsu.DoesNotExist:
-        raise Http404("Manga no encontrado.")
+    manga = get_object_or_404(MangaGatsu, pk=manga_id)
+    capitulos = Capitulo.objects.filter(manga=manga)
 
-    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos})
+    user_is_subscribed = request.user.is_authenticated and request.user.groups.filter(name='UsuarioSuscrito').exists()
+
+    comentarios = Comentario.objects.filter(manga=manga)
+    rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.manga = manga
+            comentario.save()
+            form = ComentarioForm()
+
+            rating = request.POST.get('rating')
+            if rating:
+                rating = float(rating)
+                valoracion_existente = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+                if valoracion_existente:
+                    valoracion_existente.valoracion = rating
+                    valoracion_existente.save()
+                else:
+                    Valoracion.objects.create(valoracion=rating, usuario=request.user, manga=manga)
+
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'detalle_capitulo.html', {
+        'manga': manga,
+        'capitulos': capitulos,
+        'user_is_subscribed': user_is_subscribed,
+        'form': form,
+        'comentarios': comentarios,
+        'rating_actual': rating_actual.valoracion if rating_actual else None,
+    })
 
 
 #Metodo DELETE MangaGatsu    
@@ -417,83 +463,35 @@ def formManga(request):
 
 
 #def guardarManga(request):
-    v_idManga=request.POST.get('idManga')
-    v_nombreM=request.POST.get('nombreManga')
-    v_anoP=request.POST.get('ano_publicacion')
-    v_subida=request.POST.get('tsubida')
-    v_mangaka=request.POST.get('mangaka')
-    v_sinopsis=request.POST.get('sinopsis')
-    v_editorial=request.POST.get('editorial')
-    v_genero=request.POST.get('genero')
-    v_estado=request.POST.get('estado')
+ #def   v_idManga=request.POST.get('idManga')
+  #def  v_nombreM=request.POST.get('nombreManga')
+   #def v_anoP=request.POST.get('ano_publicacion')
+  #def  v_subida=request.POST.get('tsubida')
+  #def  v_mangaka=request.POST.get('mangaka')
+   #def v_sinopsis=request.POST.get('sinopsis')
+   #def v_editorial=request.POST.get('editorial')
+   #def v_genero=request.POST.get('genero')
+  #def  v_estado=request.POST.get('estado')
+#def
+
+  #def  tEstados=tipoEstado.objects.get(estado=v_estado)
+   #def tSubidas=tipoSubida.objects.get(subida=v_subida)
+
+   #def nuevo=Manga2()
+   #def nuevo.idManga=v_idManga
+  #def  nuevo.nombreManga=v_nombreM
+   #def nuevo.ano_publicacion=v_anoP
+   #def nuevo.tsubida=tSubidas
+  #def nuevo.mangaka=v_mangaka
+   #def nuevo.sinopsis=v_sinopsis
+   #def nuevo.editorial=v_editorial
+   #def nuevo.genero=v_genero
+    #defnuevo.estado=tEstados
+   #def 
+
+    #defManga2.save(nuevo)
+
+    #defreturn render(request, 'loginC.html')    
 
 
-    tEstados=tipoEstado.objects.get(estado=v_estado)
-    tSubidas=tipoSubida.objects.get(subida=v_subida)
 
-    nuevo=Manga2()
-    nuevo.idManga=v_idManga
-    nuevo.nombreManga=v_nombreM
-    nuevo.ano_publicacion=v_anoP
-    nuevo.tsubida=tSubidas
-    nuevo.mangaka=v_mangaka
-    nuevo.sinopsis=v_sinopsis
-    nuevo.editorial=v_editorial
-    nuevo.genero=v_genero
-    nuevo.estado=tEstados
-    
-
-    Manga2.save(nuevo)
-
-    return render(request, 'loginC.html')    
-
-#vista para gestionar subscripcion
-
-def suscribirse(request):
-    if request.method == 'POST':
-
-        # Crear instancia del SDK de Mercado Pago
-        mercadopago = mercadopago()
-        mercadopago.client_id = 7720091870954518
-        mercadopago.client_secret = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
-        # Datos de la suscripción
-        subscription_data = {
-            "payer_email": request.user.email,
-            "back_url": "Home.html",
-            # Otros datos necesarios para la suscripción
-            # Ejemplo: 
-             "auto_recurring": {
-                 "frequency": 1,
-                 "frequency_type": "months",
-                 "transaction_amount": 4000.00,
-                 "currency": "CLP",}
-        }
-
-        try:
-            # Realizar la solicitud de creación de la suscripción a Mercado Pago
-            response = mercadopago.post("/preapproval", subscription_data)
-
-            if response["status"] == 201:  # Verificar si la suscripción fue creada exitosamente
-                monto = 4000.00  # Definir el monto de la suscripción (esto puede variar según tu lógica)
-                
-                # Crear un registro en HistorialCompras
-                HistorialCompras.objects.create(
-                    usuario=request.user,
-                    monto=monto,
-                )
-
-                return redirect('página_de_confirmación_de_suscripción')
-            else:
-                # Manejar el caso si la suscripción no se creó correctamente
-                # Puedes mostrar un mensaje de error o redirigir a otra página
-                error_message = "La suscripción no se creó correctamente."
-                # Aquí puedes enviar un mensaje de error o redirigir a una página de error
-                # return render(request, 'error.html', {'error_message': error_message})
-
-        except Exception as e:
-            # Manejar excepciones en caso de errores durante la solicitud a Mercado Pago
-            error_message = f"Error al procesar la suscripción: {str(e)}"
-            # Aquí puedes registrar los detalles del error en algún registro o mostrar un mensaje de error al usuario
-            # return render(request, 'error.html', {'error_message': error_message})
-
-    return render(request, 'pago.html')
