@@ -39,6 +39,27 @@
     <div class="d-flex justify-content-center">
         <div class="card" style="background-color: #161616; color: #fff; border-color: #fff;">
             <br>
+            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Editorial</button>
+        </form>
+        <table class="table">
+            <tr>
+                <td>Editorial</td>
+                <td>Nombre</td>
+                <td>Mangaka</td>
+                <td colspan="2">Opciones</td>
+            </tr>
+            {% for n in nombres %}
+                    <tr>
+                        <td>{{ n.revista }}</td>
+                        <td>{{ n.nombreManga }}</td>
+                        <td>{{ n.mangaka }}</td>
+                            <td>
+                                <a class="btn btn-danger" href="/deleN/{{n.id}}">Borrar</a>
+                                <a class="btn btn-danger" href="/updaN/{{n.id}}">Modificar</a>
+                            </td>
+                    </tr>
+            {% endfor %}
+        </table>
             <form class="container" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}

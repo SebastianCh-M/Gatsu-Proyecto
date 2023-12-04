@@ -8,6 +8,10 @@ from datetime import timedelta
 from django.db.models import Avg
 from django.utils import timezone
 from django.db.models.signals import post_save
+from django.contrib.auth.models import Group
+
+
+group, created = Group.objects.get_or_create(name='UsuarioSuscrito')
 
 
 class Post(models.Model):
@@ -124,18 +128,19 @@ class Comentario(models.Model):
     contenido = models.TextField()
     fecha_creado = models.DateTimeField(default=timezone.now, editable=False)
     fecha_modificado = models.DateTimeField(auto_now=True)
-    capitulo = models.ForeignKey(Capitulo, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"Comentario de {self.usuario.username} en {self.capitulo}"
+        return f"Comentario de {self.usuario.username} en {self.manga}"
 
 class Valoracion(models.Model):
     valoracion = models.DecimalField(max_digits=3, decimal_places=1)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE, related_name='valoraciones')
 
     def __str__(self):
         return f"Valoración de {self.usuario.username} en {self.manga.nombre_manga}"
+
     
 
 #NO TOMAR EN CUENTA

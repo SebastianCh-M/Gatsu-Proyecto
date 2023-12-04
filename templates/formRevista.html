@@ -45,6 +45,32 @@
             <br>
         </div>
     </div>
+    <h2>Lista de Editoriales</h2>
+    <br>
+    <ul>
+        <div class="container">
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <td>ID</td>
+                        <td>Nombre Editorial</td>
+                        <td colspan="2">Opciones</td>
+                    </tr>
+                    {% for e in editoriales %}
+                    <tr>
+                        <td>{{ e.id }}</td>
+                        <td>{{ e.editoriales }}</td>
+                        </td>
+                        <td>
+                        <a class="btn btn-danger" href="/deleR/{{e.id}}">Borrar</a>
+                        <a class="btn btn-danger" href="/updaR/{{e.id}}">Modificar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </ul>
     <br>    <br>    <br> <br>    <br> <br>    <br> <br>    <br> <br>    <br> <br>    <br>
 </body>
 </html>

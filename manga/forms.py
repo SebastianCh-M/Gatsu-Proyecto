@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Revista, NombreManga, MangaGatsu, Capitulo, Imagen
+from .models import Comentario, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from multiupload.fields import MultiFileField
 
 
@@ -66,6 +66,14 @@ class imagenForm(forms.ModelForm):
     class Meta:
         model = Imagen
         fields = ['imagen', 'capitulo']
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ["contenido", "manga"]
+        widgets = {'manga': forms.HiddenInput()}
+
+         
         
 
 
