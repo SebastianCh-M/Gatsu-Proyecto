@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView, ListView
 from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
-from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
+from .models import  HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
 from django.views.generic import View, DeleteView
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
@@ -14,7 +14,7 @@ from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 import mercadopago
 from django.http import JsonResponse, HttpResponse
-
+from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
 
@@ -271,6 +271,9 @@ def detalle_capitulos(request, manga_id):
                 else:
                     Valoracion.objects.create(valoracion=rating, usuario=request.user, manga=manga)
 
+            # Redirige a la vista de detalle después de procesar el formulario
+            return redirect(reverse('manga:detalle_capitulos', args=[manga_id]))
+
     else:
         form = ComentarioForm()
 
@@ -282,6 +285,32 @@ def detalle_capitulos(request, manga_id):
         'comentarios': comentarios,
         'rating_actual': rating_actual.valoracion if rating_actual else None,
     })
+
+def procesar_formulario(request, manga_id):
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.manga = get_object_or_404(MangaGatsu, pk=manga_id)
+            comentario.save()
+            form = ComentarioForm()
+
+            rating = request.POST.get('rating')
+            if rating:
+                rating = float(rating)
+                valoracion_existente = Valoracion.objects.filter(usuario=request.user, manga=comentario.manga).first()
+                if valoracion_existente:
+                    valoracion_existente.valoracion = rating
+                    valoracion_existente.save()
+                else:
+                    Valoracion.objects.create(valoracion=rating, usuario=request.user, manga=comentario.manga)
+
+            # Redirige a la vista de detalle después de procesar el formulario
+            return redirect(reverse('detalle_capitulos', args=[manga_id]))
+
+    # Manejo adicional si el formulario no es válido o si la solicitud no es POST
+    return redirect(reverse('detalle_capitulos', args=[manga_id]))
 
 
 #Metodo DELETE MangaGatsu    
