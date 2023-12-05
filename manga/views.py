@@ -613,12 +613,6 @@ def formManga(request):
 
     return render(request, 'registrarM.html', datos)
 
-@login_required
-def perfil_usuario(request):
-    usuario = request.user
-    perfil_usuario = CustomUser.objects.get(user=usuario)
-    return render(request, 'perfil_usuario.html', {'usuario': usuario, 'perfil_usuario': perfil_usuario})
-
 #def verManga(request):
 #    mangas = MangaGatsu.objects.all()
 
