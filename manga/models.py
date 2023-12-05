@@ -164,9 +164,6 @@ class Valoracion(models.Model):
 
     
 
-
-
-
 class perfilUsuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     manga = models.ForeignKey(MangaGatsu, related_name='mangas', on_delete=models.CASCADE) 
@@ -207,6 +204,8 @@ class PreferenciasLectura(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
     preferencias_lectura = models.TextField(blank=True, null=True)
+
+
 
 
 @receiver(post_save, sender=User)
