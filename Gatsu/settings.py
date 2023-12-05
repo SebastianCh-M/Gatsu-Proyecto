@@ -81,6 +81,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'Gatsu.context_processors.is_admin',
+                'Gatsu.context_processors.is_usuario_registrado',
+                'Gatsu.context_processors.is_usuario_suscrito',
+                'Gatsu.context_processors.user_type',  # Agregado aquí
             ],
         },
     },
