@@ -156,3 +156,5 @@ class pagoView(View):
         except Exception as e:
             # Registra o imprime detalles del error
             print(f"Error en el callback de pago: {str(e)}")
+
+
