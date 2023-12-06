@@ -384,7 +384,36 @@ def updaC(request, id):
 
 @user_passes_test(is_admin)
 #Metodo POST Imagen
-def formImagen(request):
+def formImagen(request, manga_id):
+    if request.method == 'POST':
+        v_imagen = request.FILES.getlist('imagen')
+        v_capitulo = request.POST.get('capitulo')
+        capitulo = Capitulo.objects.get(id=v_capitulo)
+
+        for imagen in v_imagen:
+            nuevo = Imagen(imagen=imagen)
+            nuevo.capitulo = capitulo
+            nuevo.save()
+
+        return redirect('/listaImagen')
+    else:
+        # Render the form page
+        capitulos = Capitulo.objects.filter(manga__id=manga_id)
+        capitulos_con_info = [
+            {
+                'id': capitulo.id,
+                'numero': capitulo.numero,
+                'info_completa': f"{capitulo.manga.nombre_manga.nombreManga} - Capítulo {capitulo.numero} - {capitulo.titulo}"
+            }
+            for capitulo in capitulos
+        ]
+
+
+        
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info, })
+
+
+def formImagen3(request):
     if request.method == 'POST':
         v_imagen = request.FILES.getlist('imagen')
         v_capitulo = request.POST.get('capitulo')  
@@ -408,6 +437,13 @@ def formImagen(request):
             for capitulo in capitulos
         ]
         return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})
+    
+
+def getManga(request):  
+    mangas = MangaGatsu.objects.all()
+    datos ={'mangas': mangas}
+    return render(request, 'getManga.html', datos)
+    
     
 
 
@@ -505,6 +541,9 @@ def listaFavoritos(request):
     favorites = Favorite.objects.filter(user=user)
     datos ={'favorites': favorites}
     return render(request, 'MiBiblioteca.html', datos)   
+
+
+
 
 
 
