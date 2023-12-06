@@ -15,6 +15,32 @@ from django.contrib.auth.models import Group
 group, created = Group.objects.get_or_create(name='UsuarioSuscrito')
 
 
+
+class CustomUser(AbstractUser):
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    foto_perfil = models.ImageField(upload_to='profile/', null=True, blank=True)
+    genero = models.CharField(max_length=20, choices=[('Masculino', 'Masculino'), ('Femenino', 'Femenino'), ('No especificado', 'No especificado')], default='No especificado')
+
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_name='user_custom_groups',  # Nombre descriptivo para las relaciones inversas
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='user_custom_permissions',  # Nombre descriptivo para las relaciones inversas
+    )
+
+    def __str__(self):
+        return self.username
+
+
+
 class Post(models.Model):
     title=models.CharField(max_length=250)
     content=models.TextField()
@@ -162,15 +188,6 @@ class Valoracion(models.Model):
     def __str__(self):
         return f"Valoración de {self.usuario.username} en {self.manga.nombre_manga}"
 
-    
-
-
-
-
-class perfilUsuario(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    manga = models.ForeignKey(MangaGatsu, related_name='mangas', on_delete=models.CASCADE) 
-    imagenPerfil = models.ImageField(upload_to='perfil/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
 
 
     
@@ -207,6 +224,8 @@ class PreferenciasLectura(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
     preferencias_lectura = models.TextField(blank=True, null=True)
+
+
 
 
 @receiver(post_save, sender=User)

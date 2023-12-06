@@ -69,38 +69,40 @@
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'ConfigMangas' %}">Configurar</a></li>
                     {% endif %}
                 </div>
-                    {% if request.user.is_authenticated %}
-                    <li class="dropdown ms-auto">
-                        <a href="#" class="btn btn-secondary dropdown-toggle" style="background-color: #202020;"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- AGREGAR AVATAR USUARIO-->
-                            <span style="color: #fff;">{{ user.username | upper }}, Bienvenido</span><span
-                                class="caret"></span>
-                        </a>
-                        <div class="dropdown">
-                            <ul class="dropdown-menu" style="background-color: #202020;">
-                                <li><a href="#" style="color: #fff;">Mi Cuenta</a></li>
-                                <li><a href="{% url 'manga:listaFavoritos' %}" style="color: #fff;">Mi Biblioteca</a></li>
-                                <li><a href="#" style="color: #fff;">Subscripción</a></li>
-                                <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    {% else %}
-
-                    <!-- MODALS INICIAR - REGISTRAR  -->
-                    <div class="nav-item ms-auto" id="navbarNavAltMarkup">
-                        <div class="d-flex  ms-auto">
-                            <div class="d-flex ms-auto">
-                                <li class="nav-item"><a class="nav-link" style="color: #fff;"
-                                        href="{% url 'login' %}">Iniciar sesión</a></li>
-                                <li class="nav-item"><a class="nav-link" style="color: #fff;"
-                                        href="{% url 'manga:sign_up' %}">Registrarse</a></li>
-                            </div>
-
+                {% if request.user.is_authenticated %}
+                <li class="nav-item ms-auto position-relative">
+                    <a href="#" class="btn btn-secondary" style="background-color: #202020;"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- AGREGAR AVATAR USUARIO-->
+                        {% if user_type %}
+                        <span style="color: #fff; left: 0;">
+                            {{ user_type }}
+                        </span>
+                    {% endif %}
+                        <span style="color: #fff;">Bienvenido {{ user.username | upper }}</span><span
+                            class="caret"></span>
+                    </a>
+                    <div class="dropdown">
+                        <ul class="dropdown-menu" style="background-color: #202020;">
+                            <li><a href="{% url 'manga:perfil_usuario' %}" style="color: #fff;">Mi Cuenta</a></li>
+                            <li><a href="{% url 'manga:listaFavoritos' %}" style="color: #fff;">Mi Biblioteca</a></li>
+                            <li><a href="{% url 'pago' %}" style="color: #fff;">Subscripción</a></li>
+                            <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
+                        </ul>
+                    </div>
+            {% else %}
+                <!-- Iniciar sesión  -->
+                <div class="nav-item ms-auto" id="navbarNavAltMarkup">
+                    <div class="d-flex  ms-auto">
+                        <div class="d-flex ms-auto">
+                            <li class="nav-item"><a class="nav-link" style="color: #fff;"
+                                    href="{% url 'login' %}">Iniciar sesión</a></li>
+                            <li class="nav-item"><a class="nav-link" style="color: #fff;"
+                                    href="{% url 'manga:sign_up' %}">Registrarse</a></li>
                         </div>
                     </div>
-                    {% endif %}
+                </div>
+            {% endif %}
                 </div>
             </div>
         </nav>

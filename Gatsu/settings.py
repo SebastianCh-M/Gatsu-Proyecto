@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['51.20.78.108', '0.0.0.0', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -81,6 +81,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'Gatsu.context_processors.is_admin',
+                'Gatsu.context_processors.is_usuario_registrado',
+                'Gatsu.context_processors.is_usuario_suscrito',
+                'Gatsu.context_processors.user_type',  # Agregado aquí
             ],
         },
     },
