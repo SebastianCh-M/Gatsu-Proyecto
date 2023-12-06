@@ -1,26 +1,117 @@
 {% extends 'index.html' %}
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  #perfil-info {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #303030;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  #perfil-info p {
+    margin: 10px 0;
+  }
+  
+  #editar-btn,
+  #cancelar-btn {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #editar-btn:hover,
+  #cancelar-btn:hover {
+    background-color: #45a049;
+  }
+  
+  #perfil-form {
+    display: none;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #303030;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  #perfil-form button {
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #perfil-form button:hover {
+    background-color: #45a049;
+  }
+</style>
+<head>
 
-<h2>Perfil de {{ user.username }}</h2>
+  {% load static %}
 
-<div id="perfil-info">
-  <!-- Muestra la información del perfil de forma no editable -->
-  <p>Nombre de usuario: {{ user.username }}</p>
-  <p>Email: {{ user.email }}</p>
-  <p>Fecha de nacimiento: {{ user.fecha_nacimiento }}</p>
-  <p>Género: {{ user.genero }}</p>
-  <!-- Otros campos de perfil... -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil</title>
+  <meta name="trafficjunky-site-verification" content="vnrwaw9t0" />
+  <meta name="exoclick-site-verification" content="043e4ac6d429fc45736a2571151745ed">
+  <meta name="csrf-token" content="urU5jPKA3HW5bz1XrQhSsSjUuYNtjJn0YjMJ4OSH">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet"
+    href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <button id="editar-btn">Editar perfil</button>
-</div>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <meta name="msapplication-TileColor" content="#2957ba">
+  <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+  <meta name="msapplication-config" content="/favicon/browserconfig.xml">
 
-<form id="perfil-form" method="post" enctype="multipart/form-data" style="display: none;">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar cambios</button>
-  <button type="button" id="cancelar-btn">Cancelar</button>
-</form>
+</head>
+<body style="background-color: #202020; color: #fff;">
+  <br>
+  <h2>Perfil de {{ user.username }}</h2>
+<br>
+  <div id="perfil-info">
+    <!-- Muestra la información del perfil de forma no editable -->
+    <p>Nombre de usuario: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Fecha de nacimiento: {{ user.fecha_nacimiento }}</p>
+    <p>Género: {{ user.genero }}</p>
+    <!-- Otros campos de perfil... -->
 
+    <button id="editar-btn">Editar perfil</button>
+  </div>
+
+  <form id="perfil-form" method="post" enctype="multipart/form-data" style="display: none;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar cambios</button>
+    <button type="button" id="cancelar-btn">Cancelar</button>
+  </form>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script
+  src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
 <script>
   // Script para alternar entre la información no editable y el formulario editable
   const perfilInfo = document.getElementById('perfil-info');
