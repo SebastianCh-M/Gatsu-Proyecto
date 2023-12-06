@@ -261,6 +261,12 @@ def detalle_capitulos(request, manga_id):
     comentarios = Comentario.objects.filter(manga=manga)
     rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
 
+    if request.method == "POST":
+        comentarios_id = request.POST.get("comentarios_id")
+        comentario = Comentario.objects.filter(id=comentarios_id).first()
+        comentario.delete()
+
+
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
         if form.is_valid():
