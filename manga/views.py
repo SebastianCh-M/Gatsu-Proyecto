@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView, ListView
-from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
+from .forms import CustomUserChangeForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
 from .models import  HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
 from django.views.generic import View, DeleteView
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
@@ -244,13 +244,14 @@ def detalle_manga(request, manga_id):
     return render(request, 'detalle_manga.html', {'manga': manga, 'capitulo': primer_capitulo})
 
 #METODO GET Para poder leer el capitulo por manga.
+@login_required
 def detalle_capitulo(request, capitulo_id):
     capitulo = get_object_or_404(Capitulo, id=capitulo_id)
     imagenes = capitulo.imagenes.all()  # Utiliza el related_name 'imagenes' para obtener todas las imágenes del capítulo
 
     return render(request, 'detalle_capitulo.html', {'capitulo': capitulo, 'imagenes': imagenes})
 
-
+@login_required
 def detalle_capitulos(request, manga_id):
     manga = get_object_or_404(MangaGatsu, pk=manga_id)
     capitulos = Capitulo.objects.filter(manga=manga)
@@ -392,7 +393,36 @@ def updaC(request, id):
 
 @user_passes_test(is_admin)
 #Metodo POST Imagen
-def formImagen(request):
+def formImagen(request, manga_id):
+    if request.method == 'POST':
+        v_imagen = request.FILES.getlist('imagen')
+        v_capitulo = request.POST.get('capitulo')
+        capitulo = Capitulo.objects.get(id=v_capitulo)
+
+        for imagen in v_imagen:
+            nuevo = Imagen(imagen=imagen)
+            nuevo.capitulo = capitulo
+            nuevo.save()
+
+        return redirect('/listaImagen')
+    else:
+        # Render the form page
+        capitulos = Capitulo.objects.filter(manga__id=manga_id)
+        capitulos_con_info = [
+            {
+                'id': capitulo.id,
+                'numero': capitulo.numero,
+                'info_completa': f"{capitulo.manga.nombre_manga.nombreManga} - Capítulo {capitulo.numero} - {capitulo.titulo}"
+            }
+            for capitulo in capitulos
+        ]
+
+
+        
+        return render(request, 'formImagen.html', {'capitulos': capitulos_con_info, })
+
+
+def formImagen3(request):
     if request.method == 'POST':
         v_imagen = request.FILES.getlist('imagen')
         v_capitulo = request.POST.get('capitulo')  
@@ -416,6 +446,13 @@ def formImagen(request):
             for capitulo in capitulos
         ]
         return render(request, 'formImagen.html', {'capitulos': capitulos_con_info})
+    
+
+def getManga(request):  
+    mangas = MangaGatsu.objects.all()
+    datos ={'mangas': mangas}
+    return render(request, 'getManga.html', datos)
+    
     
 
 
@@ -513,6 +550,9 @@ def listaFavoritos(request):
     favorites = Favorite.objects.filter(user=user)
     datos ={'favorites': favorites}
     return render(request, 'MiBiblioteca.html', datos)   
+
+
+
 
 
 
@@ -620,6 +660,7 @@ def formManga(request):
     datos = {'tipoEstados':tEstado,'tipoSubidas': tSubida}
 
     return render(request, 'registrarM.html', datos)
+
 
 #def verManga(request):
 #    mangas = MangaGatsu.objects.all()
@@ -745,3 +786,14 @@ def add_favorite2(request):
 
     return redirect('comics_list')  # Redirect back to the comics list after adding to favorites
 
+@login_required
+def perfil_usuario(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil_usuario')  # Redirige al perfil después de guardar cambios
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+
+    return render(request, 'perfil_usuario.html', {'form': form})

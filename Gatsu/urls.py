@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
-from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga, mangaFavorito, listaFavoritos
+from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo, listaMangaGatsu, verManga, mangaFavorito, listaFavoritos, getManga
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas
 from manga.views import formRevista, libreriaGatsu, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas, pagoView
@@ -43,6 +43,7 @@ urlpatterns = [
     path('listaMangaGatsu',listaMangaGatsu),
     path('deleM/<int:id>', deleM),
     path('updaM/<int:id>', updaM),
+    path('getManga', getManga, name='getManga'),
 
     path('mangaFavorito/<int:id>', mangaFavorito, name='mangaFavorito'),
     
@@ -54,7 +55,7 @@ urlpatterns = [
     path('updaC/<int:id>', updaC),
 
     #Imagen
-    path('formImagen',formImagen),
+    path('formImagen/<int:manga_id>',formImagen, name='formImagen'),
     #path('cargar_capitulos/', cargar_capitulos, name='cargar_capitulos'),
 
     path('listaImagen',listaImagen),
