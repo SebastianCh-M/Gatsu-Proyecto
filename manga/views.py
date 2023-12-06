@@ -88,6 +88,14 @@ def deleR(request, id):
     return redirect('/formRevista')   
 
 @user_passes_test(is_admin)
+#Metodo DELETE Favorito    
+def deleF(request, id):
+    dele = Favorite.objects.get(id=id)
+    dele.delete()
+    return redirect('/LibreriaGatsu')   
+
+
+@user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
     data = Revista.objects.get(id=id)
@@ -481,7 +489,7 @@ def manga_list(request):
         'mangas': mangas,
         'user': user,
     }
-    return render(request, 'listaMangaGatsu.html', context)
+    return render(request, 'MiBiblioteca.html', context)
 
 
 
@@ -495,7 +503,7 @@ def add_favorite(request, manga_id):
         favorite = Favorite(user=user, manga=manga)
         favorite.save()
 
-    return redirect('manga:detalle_capitulos', manga_id=manga_id)  
+    return redirect('manga:listaFavoritos')  
 
 
 
