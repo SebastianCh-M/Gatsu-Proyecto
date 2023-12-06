@@ -32,9 +32,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['51.20.78.108', '0.0.0.0','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['51.20.78.108', '0.0.0.0', '127.0.0.1', 'localhost'] 
 
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True
 
+# Enforce secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
     'manga.apps.MangaConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'sslserver',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

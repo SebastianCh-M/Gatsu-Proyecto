@@ -122,13 +122,6 @@
                 <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="img-fluid">
               </a>
             </div>
-            <div class="tranding-slide-content">
-              <div class="tranding-slide-content-bottom">
-                <h2 class="Manga_name">{{ manga.nombre_manga.nombreManga }}</h2>
-                <p class="Mangaka_name">Autor: {{ manga.nombre_manga.mangaka }}</p>
-                <p class="Genero">Género: {{ manga.genero }}</p>
-              </div>
-            </div>
           </div>
           <!-- Slide-end -->
           {% endfor %}
@@ -144,7 +137,7 @@
 
   <div class="container">
     <div class="row">
-      {% for manga in mangas|slice:":10" %}
+      {% for manga in mangas|slice:":6" %}
       <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
         <a href="{% url 'manga:detalle_capitulos' manga.id %}">
           <!-- Contenido-->
