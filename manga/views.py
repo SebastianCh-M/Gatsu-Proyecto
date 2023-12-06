@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, DeleteView, ListView
 from .forms import RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
 from .models import HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
+from django.views.generic import View, DeleteView
+from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
+from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -199,13 +202,28 @@ def libreriaGatsu(request):
 
     return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
 
-@user_passes_test(is_admin)
+
 #METODO GET Para ver todos los capitulos por manga
 def verCapitulo(request, id):
     capitulo = Capitulo.objects.get(id=id)
     imagen = capitulo.imagenes.all()
-    
-    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen})
+
+    # Verifica si el usuario pertenece al grupo "UsuarioRegistrado" y "UsuarioSuscrito"
+    usuario_registrado = request.user.groups.filter(name='UsuarioRegistrado').exists()
+    usuario_suscrito = request.user.groups.filter(name='UsuarioSuscrito').exists()
+
+    # Verifica si es el primer capítulo
+    primer_capitulo = capitulo.numero == 1
+
+    # Pasa el estado de suscripción del usuario al contexto
+    user_is_subscribed = usuario_suscrito
+
+    # Si pertenece al grupo "UsuarioRegistrado" y no es el primer capítulo, muestra un mensaje de advertencia
+    if usuario_registrado and not primer_capitulo:
+        return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': True, 'user_is_subscribed': user_is_subscribed})
+
+    # Si todo está bien, muestra el capítulo
+    return render(request, 'verCapitulo.html', {'capitulos': capitulo, 'imagenes': imagen, 'advertencia': False, 'user_is_subscribed': user_is_subscribed})
 
 
 def detalle_manga(request, manga_id):
@@ -226,18 +244,44 @@ def detalle_capitulo(request, capitulo_id):
 
 
 def detalle_capitulos(request, manga_id):
-    try:
-        manga = MangaGatsu.objects.get(pk=manga_id)
-        capitulos = Capitulo.objects.filter(manga=manga)
-        user = request.user
+    manga = get_object_or_404(MangaGatsu, pk=manga_id)
+    capitulos = Capitulo.objects.filter(manga=manga)
 
-    except MangaGatsu.DoesNotExist:
-        raise Http404("Manga no encontrado.")
+    user_is_subscribed = request.user.is_authenticated and request.user.groups.filter(name='UsuarioSuscrito').exists()
 
-    return render(request, 'detalle_capitulo.html', {'manga': manga, 'capitulos': capitulos, 'user':user})
+    comentarios = Comentario.objects.filter(manga=manga)
+    rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
 
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.manga = manga
+            comentario.save()
+            form = ComentarioForm()
 
+            rating = request.POST.get('rating')
+            if rating:
+                rating = float(rating)
+                valoracion_existente = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+                if valoracion_existente:
+                    valoracion_existente.valoracion = rating
+                    valoracion_existente.save()
+                else:
+                    Valoracion.objects.create(valoracion=rating, usuario=request.user, manga=manga)
 
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'detalle_capitulo.html', {
+        'manga': manga,
+        'capitulos': capitulos,
+        'user_is_subscribed': user_is_subscribed,
+        'form': form,
+        'comentarios': comentarios,
+        'rating_actual': rating_actual.valoracion if rating_actual else None,
+    })
 
 
 #Metodo DELETE MangaGatsu    
@@ -591,19 +635,37 @@ def formManga(request):
 
 
 #def guardarManga(request):
-    v_idManga=request.POST.get('idManga')
-    v_nombreM=request.POST.get('nombreManga')
-    v_anoP=request.POST.get('ano_publicacion')
-    v_subida=request.POST.get('tsubida')
-    v_mangaka=request.POST.get('mangaka')
-    v_sinopsis=request.POST.get('sinopsis')
-    v_editorial=request.POST.get('editorial')
-    v_genero=request.POST.get('genero')
-    v_estado=request.POST.get('estado')
+ #def   v_idManga=request.POST.get('idManga')
+  #def  v_nombreM=request.POST.get('nombreManga')
+   #def v_anoP=request.POST.get('ano_publicacion')
+  #def  v_subida=request.POST.get('tsubida')
+  #def  v_mangaka=request.POST.get('mangaka')
+   #def v_sinopsis=request.POST.get('sinopsis')
+   #def v_editorial=request.POST.get('editorial')
+   #def v_genero=request.POST.get('genero')
+  #def  v_estado=request.POST.get('estado')
+#def
+
+  #def  tEstados=tipoEstado.objects.get(estado=v_estado)
+   #def tSubidas=tipoSubida.objects.get(subida=v_subida)
+
+   #def nuevo=Manga2()
+   #def nuevo.idManga=v_idManga
+  #def  nuevo.nombreManga=v_nombreM
+   #def nuevo.ano_publicacion=v_anoP
+   #def nuevo.tsubida=tSubidas
+  #def nuevo.mangaka=v_mangaka
+   #def nuevo.sinopsis=v_sinopsis
+   #def nuevo.editorial=v_editorial
+   #def nuevo.genero=v_genero
+    #defnuevo.estado=tEstados
+   #def 
+
+    #defManga2.save(nuevo)
+
+    #defreturn render(request, 'loginC.html')    
 
 
-    tEstados=tipoEstado.objects.get(estado=v_estado)
-    tSubidas=tipoSubida.objects.get(subida=v_subida)
 
     nuevo=Manga2()
     nuevo.idManga=v_idManga

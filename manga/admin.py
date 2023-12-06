@@ -67,7 +67,7 @@ class CapituloAdmin(admin.ModelAdmin):
 
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'contenido', 'fecha_creado', 'fecha_modificado', 'usuario', 'capitulo')
+    list_display = ('usuario', 'contenido', 'fecha_creado', 'fecha_modificado', 'manga')
 
 @admin.register(Valoracion)
 class ValoracionAdmin(admin.ModelAdmin):
