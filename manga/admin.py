@@ -1,7 +1,9 @@
 from django.contrib import admin
+from .models import  CustomUser, tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from .models import tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
 
 
@@ -67,7 +69,7 @@ class CapituloAdmin(admin.ModelAdmin):
 
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'contenido', 'fecha_creado', 'fecha_modificado', 'manga')
+    list_display = ('id', 'contenido', 'fecha_creado', 'fecha_modificado', 'usuario')
 
 @admin.register(Valoracion)
 class ValoracionAdmin(admin.ModelAdmin):
@@ -76,3 +78,9 @@ class ValoracionAdmin(admin.ModelAdmin):
 @admin.register(NombreManga)
 class NombreMangaAdmin(admin.ModelAdmin):
     list_display = ('id', 'revista', 'nombreManga', 'mangaka')
+
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = ['username', 'email', 'fecha_nacimiento', 'foto_perfil', 'genero']
+
+admin.site.register(CustomUser, CustomUserAdmin)
