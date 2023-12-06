@@ -74,6 +74,11 @@
                     <a href="#" class="btn btn-secondary" style="background-color: #202020;"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- AGREGAR AVATAR USUARIO-->
+                        {% if user_type %}
+                        <span style="color: #fff; left: 0;">
+                            {{ user_type }}
+                        </span>
+                    {% endif %}
                         <span style="color: #fff;">Bienvenido {{ user.username | upper }}</span><span
                             class="caret"></span>
                     </a>
@@ -81,16 +86,10 @@
                         <ul class="dropdown-menu" style="background-color: #202020;">
                             <li><a href="{% url 'manga:perfil_usuario' %}" style="color: #fff;">Mi Cuenta</a></li>
                             <li><a href="{% url 'manga:listaFavoritos' %}" style="color: #fff;">Mi Biblioteca</a></li>
-                            <li><a href="#" style="color: #fff;">Subscripción</a></li>
+                            <li><a href="{% url 'pago' %}" style="color: #fff;">Subscripción</a></li>
                             <li><a href="{% url 'logout' %}" style="color: #fff;">Desconectar</a></li>
                         </ul>
                     </div>
-                    {% if user_type %}
-                        <span class="position-absolute top-0 start-0 translate-middle p-2" style="color: #fff; left: 0;">
-                            {{ user_type }}
-                        </span>
-                    {% endif %}
-                </li>
             {% else %}
                 <!-- Iniciar sesión  -->
                 <div class="nav-item ms-auto" id="navbarNavAltMarkup">
