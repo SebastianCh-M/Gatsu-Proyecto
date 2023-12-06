@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+from crispy_forms.bootstrap import *
+from crispy_forms.layout import *
 
 env = environ.Env()
 environ.Env.read_env()
@@ -30,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['51.20.78.108', '0.0.0.0']
 
 
 # Application definition
@@ -44,8 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'Gatsu',
-    'manga',
+    'manga.apps.MangaConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,6 +80,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Gatsu.context_processors.is_admin',
+                'Gatsu.context_processors.is_usuario_registrado',
+                'Gatsu.context_processors.is_usuario_suscrito',
+                'Gatsu.context_processors.user_type',  # Agregado aquí
             ],
         },
     },
@@ -114,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -150,3 +161,7 @@ LOGOUT_REDIRECT_URL = 'Home'
 
 MERCADO_PAGO_CLIENT_ID = '7720091870954518'
 MERCADO_PAGO_CLIENT_SECRET = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
+
+
+MERCADOPAGO_PUBLIC_KEY = 'TEST-9378860e-754e-4844-960e-1ce0855a2411'
+MERCADOPAGO_ACCESS_TOKEN = 'TEST-7720091870954518-111620-ee20b51bc828f7fd65db0b38a30a101f-1551574777'

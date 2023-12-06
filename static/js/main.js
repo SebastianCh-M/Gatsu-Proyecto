@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+import { loadMercadoPago } from "@mercadopago/sdk-js";
+
 
 
 const firebaseConfig = {
@@ -13,7 +15,8 @@ const firebaseConfig = {
   appId: "1:330110714731:web:222876623105373d21c22e"
 };
 
-const mp = new MercadoPago('TEST-9378860e-754e-4844-960e-1ce0855a2411');
+await loadMercadoPago();
+const mp = new window.MercadoPago('TEST-9378860e-754e-4844-960e-1ce0855a2411');
 const bricksBuilder = mp.bricks();
 
 const app = initializeApp(firebaseConfig);

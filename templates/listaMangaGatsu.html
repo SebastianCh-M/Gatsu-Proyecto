@@ -11,10 +11,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lista Mangas</title>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://kit.fontawesome.com/960b784d40.js" crossorigin="anonymous"></script>
     <link rel="stylesheet"
         href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <!-- Bootstrap CSS -->
@@ -22,6 +24,7 @@
     <meta name="msapplication-TileColor" content="#2957ba">
     <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+
 
 </head>
 <style>
@@ -60,31 +63,48 @@
             <div class="row">
                 <table class="table">
                     <tr>
+
                         <td>Nombre Manga</td>
                         <td>Año</td>
-                        <td>tipo subida</td>
-                        <td>sinopsis</td>
                         <td>genero</td>
-                        <td>estado</td>
-                        <td>portada</td>
                         <td colspan="2">Opciones</td>
                     </tr>
-                    {% for m in mangas %}
-                    <tr>
-                        <td>{{ m.nombre_manga }}</td>
-                        <td>{{ m.anio_publicacion }}</td>
-                        <td>{{ m.tipo_subida }}</td>
-                        <td>{{ m.sinopsis }}</td>
-                        <td>{{ m.genero }}</td>
-                        <td>{{ m.estado }}</td>
-                        <td>{{ m.portada }}</td>
-                        <td>
-                            <a class="btn btn-danger" href="/deleM/{{m.id}}">Borrar</a>
-                            <a class="btn btn-danger" href="/updaM/{{m.id}}">Modificar</a>
-                        </td>
-                    </tr>
+                    
+                    {% for manga in mangas %}
+                        <tr>
+                            <td>{{ manga.nombre_manga }}</td>
+                            <td>{{ manga.anio_publicacion }}</td>
+                            <td>{{ manga.genero }}</td>
+                            <!-- Add other comic fields as needed -->
+                            <td>
+                                <form method="post" action="{% url 'manga:chapter_list' manga.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">chapter</button>
+                                </form>
+                            </td>
+
+                            <td>
+                                <form method="post" action="{% url 'manga:add_favorite' manga.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Add to Favorites</button>
+                                </form>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </table>
+
+               <!-- favorite_comics.html 
+                {% for manga in mangas %}
+                        {{ manga.title }}
+                        <form method="post" action="{% url 'manga:add_to_favorite' %}">
+                            {% csrf_token %}
+                            {{ form.manga }}
+                            <button type="submit">Add to Favorites</button>
+                        </form>
+                {% endfor %} 
+                
+                -->
+                
             </div>
         </div>
     </ul>

@@ -202,7 +202,7 @@
 
 <body style="background-color: #202020; color: #fff;">
 
-<br>
+    <br>
     <h1 style="text-align: center;">{{ capitulos.titulo }}, Cap: #{{capitulos.numero}}</h1>
 
     <div class="container align-items-center" style="align-items: center; align-content: center;">
@@ -215,33 +215,50 @@
         <button id="libro-button" type="button"  onclick="changeView('libro')"
             style="background-color:  black; color: #fff; border-color: #fff;">Vista Libro</button>
     </div>
+
     <br>
     <div class="cascada-view">
         <ul class="image-list">
             <br>
-            {% for i in imagenes %}
-            <li>
-                <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
-            </li>
-            {% endfor %}
+            {% if request.user.is_authenticated %}
+                {% if advertencia %}
+                    <div class="alert alert-warning" role="alert"> 
+                        Debes suscribirte para acceder a capítulos adicionales. 
+                    </div>
+                {% else %}
+                    {% for i in imagenes %}
+                        <li>
+                            <img src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning" role="alert"> 
+                    Debes iniciar sesión para acceder a este contenido. 
+                </div>
+            {% endif %}
         </ul>
     </div>
+
     <div class="libro-view">
         <div class="swiper-container">
             <div class="swiper-wrapper image-list">
+                {% if usuario_registrado and not primer_capitulo %}
+                    <div style="color: red; text-align: center; font-size: 18px;">
+                        Solo puedes acceder al primer capítulo. ¡Suscríbete para disfrutar de todo el catálogo!
+                    </div>
+                {% endif %}
                 {% for i in imagenes %}
-                <li class="swiper-slide">
-                    <img style="display: block;" src="{{ i.imagen.url }}" alt="Imagen del capítulo">
-                </li>
+                    <li class="swiper-slide">
+                        <img style="display: block;" src="{{ i.imagen.url }}" alt="Imagen del capítulo">
+                    </li>
                 {% endfor %}
             </div>
             <div class="swiper-button-next" style="color: white;"></div>
             <div class="swiper-button-prev" style="color: white;"></div>
-
         </div>
     </div>
 </body>
-
 </html>
 
 {% endblock %}
