@@ -70,7 +70,16 @@ def deleF(request, id):
     dele.delete()
     return redirect('/LibreriaGatsu')   
 
+class LibreriaGatsuView(View):
+    def get(self, request, *args, **kwargs):
+        # Obtener la lista de mangas
+        mangas = MangaGatsu.objects.all()
 
+        # Ordenar la lista de mangas por el título alfabéticamente
+        mangas = sorted(mangas, key=lambda manga: manga.nombre_manga.nombreManga)
+
+        context = {'mangas': mangas}
+        return render(request, 'LibreriaGatsu.html', context)
 @user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
