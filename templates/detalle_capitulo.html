@@ -11,21 +11,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ manga.nombre_manga.nombreManga }}</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet"
-        href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
-    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <meta name="msapplication-TileColor" content="#2957ba">
-    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
-    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        integrity="sha512-x8N2T7/Gj0t8crFSh61wNT2l5WU0cJPe30Q6zV6WTaJ+P84KssV0UweSVzwRb6lKnW1jLiD0XtA5OtU5DB8dVg=="
-        crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3eYFvsn7qBvggKtA6j6O9L+YbxONpWqC79r+NV6cF7byA6t8t/YyC1u+bEm4QI5xUmBb3l4/WAUn0o1Cqp7v3A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>
     .img-fluid {
@@ -206,6 +196,21 @@
         color: #ffd700;
         /* Color de las estrellas llenas */
     }
+    .score {
+        font-size: 24px;
+        color: #ffd700;
+    }
+
+    .score a {
+        text-decoration: none;
+        color: inherit;
+        margin: 0 5px;
+    }
+
+    .icon-filled {
+        color: #ffd700;
+    }
+</style>
 </style>
 
 <body style="background-color: #202020; color: #fff;">
@@ -216,8 +221,7 @@
         <h3>Valora el manga</h3>
         <div class="score" data-manga-id="{{ manga.id }}">
             {% for i in "12345" %}
-            <a href="#" class="icon {% if rating_actual and i <= rating_actual|default:" 0" %}icon-filled{% endif %}"
-                data-rating="{{ i }}">
+            <a href="#" class="icon {% if rating_actual and i|add:"0" <= rating_actual %} icon-filled{% endif %}" data-rating="{{ i }}">
                 <i class="fas fa-star fa-fw"></i>
             </a>
             {% endfor %}
@@ -423,8 +427,8 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script
-        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+    
 </body>
 <script>
     function actualizarEstadoFavorito() {
@@ -433,6 +437,18 @@
             botonFavorito.innerHTML = "Guardado En Favoritos";
         }
     }
+    document.addEventListener('DOMContentLoaded', function () {
+            var scoreContainer = document.querySelector('.score');
+            scoreContainer.addEventListener('click', function (event) {
+                var target = event.target;
+                if (target.classList.contains('icon')) {
+                    var rating = target.getAttribute('data-rating');
+                    // Aquí puedes realizar alguna acción con la calificación seleccionada
+                    console.log('Calificación seleccionada:', rating);
+                }
+            });
+        });
+    
 </script>
 
 </html>
