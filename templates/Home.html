@@ -137,21 +137,26 @@
 
   <div class="container">
     <div class="row">
+      {% if mangas %}
       {% for manga in mangas|slice:":6" %}
-      <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
-        <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-          <!-- Contenido-->
-          <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
-          <div class="thumbnail-title">
-            <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
-          </div>
-          <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
-          <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
-          <span class="demography shounen"> {{ manga.genero }}</span>
-        </a>
-        <!-- Puedes agregar más campos según tus necesidades -->
-      </div>
+        <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
+          <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+            <!-- Contenido -->
+            <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
+            <div class="thumbnail-title">
+              <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
+            </div>
+            <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
+            <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
+            <span class="demography shounen"> {{ manga.genero }}</span>
+          </a>
+          <!-- Puedes agregar más campos según tus necesidades -->
+        </div>
       {% endfor %}
+    {% else %}
+      <p>No hay mangas disponibles.</p>
+    {% endif %}
+    
     </div>
   </div>
 

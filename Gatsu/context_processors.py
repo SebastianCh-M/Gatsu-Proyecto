@@ -42,7 +42,7 @@ def user_type(request):
         elif request.user.groups.filter(name='UsuarioRegistrado').exists():
             user_type = 'Free'
             user_image = 'free.png'
-            user_color = '#fff'
+            user_color = '#999999'
         elif request.user.groups.filter(name='UsuarioSuscrito').exists():
             user_type = 'Premium'
             user_image = 'premium.png'
