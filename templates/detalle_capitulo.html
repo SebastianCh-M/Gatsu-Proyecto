@@ -307,10 +307,10 @@
                 <p style="color: #fff;">{{comentario.contenido}}</p>
             </div>
             <div>
-                {% if user == comentario.usuario %}
+                {% if user == comentario.usuario or is_admin %}
                     <form method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger" name="comentarios-id" value="{{comentarios.id}}">Borrar</button>
+                        <button type="submit" class="btn btn-danger" name="comentarios-id" value="{{comentario.id}}">Borrar</button>
                     </form>
                 {% endif %}
             </div>
