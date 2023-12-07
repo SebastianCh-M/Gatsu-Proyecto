@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 #from .views import MangaListView, MangaCreateView, mangaForm
 from . import views
-from manga.views import detalle_capitulo, detalle_capitulos, detalle_manga, formManga, libreriaGatsu, perfil_usuario, procesar_formulario, verCapitulo, mangaFavorito,add_to_favorite, AddToFavoriteView, listaFavoritos, manga_list, add_favorite, update_progress
+from manga.views import detalle_capitulo, detalle_capitulos, detalle_manga, formManga, libreriaGatsu, perfil_usuario, procesar_formulario, verCapitulo, mangaFavorito,add_to_favorite, AddToFavoriteView, listaFavoritos, manga_list, add_favorite, update_progress,score_selection
 from manga.views import detalle_capitulo, detalle_capitulos, detalle_manga, formManga, libreriaGatsu, procesar_formulario, verCapitulo, mangaFavorito,add_to_favorite, AddToFavoriteView, listaFavoritos, manga_list, add_favorite, update_progress,deleF
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -35,6 +35,7 @@ urlpatterns = [
     path('update_progress/<int:manga_id>/<int:chapter_id>/', update_progress, name='update_progress'),
     path('perfil/', perfil_usuario, name='perfil_usuario'),
     path('deleF/<int:id>', deleF, name='deleF'),
+    path('manga/<int:manga_id>/score/', score_selection, name='score_selection'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
