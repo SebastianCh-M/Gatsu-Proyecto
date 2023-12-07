@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import login
-
+from django.http import JsonResponse
 
 # Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
 def is_admin(user):
@@ -63,14 +63,23 @@ def deleR(request, id):
     dele.delete()
     return redirect('/formRevista')   
 
-@user_passes_test(is_admin)
+@login_required
 #Metodo DELETE Favorito    
 def deleF(request, id):
     dele = Favorite.objects.get(id=id)
     dele.delete()
     return redirect('/LibreriaGatsu')   
 
+class LibreriaGatsuView(View):
+    def get(self, request, *args, **kwargs):
+        # Obtener la lista de mangas
+        mangas = MangaGatsu.objects.all()
 
+        # Ordenar la lista de mangas por el título alfabéticamente
+        mangas = sorted(mangas, key=lambda manga: manga.nombre_manga.nombreManga)
+
+        context = {'mangas': mangas}
+        return render(request, 'LibreriaGatsu.html', context)
 @user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
@@ -102,15 +111,6 @@ def formNombreManga(request):
         form = nomMangaForm()
 
     return render(request, 'formNombreManga.html',{'form': form, 'nombres': nombres})
-
-@user_passes_test(is_admin)
-#METODO GET nombreManga
-#def listaNombreManga(request):  
-#    nombres = NombreManga.objects.all()
-#    datos ={'nombres': nombres}
-#    return render(request, 'listaNombreManga.html', datos)
-
-
 @user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleN(request, id):
@@ -270,6 +270,16 @@ def detalle_capitulos(request, manga_id):
         'comentarios': comentarios,
         'rating_actual': rating_actual.valoracion if rating_actual else None,
     })
+
+@login_required
+def marcar_leido(request, capitulo_id):
+    # Obtener el capítulo
+    capitulo = get_object_or_404(Capitulo, id=capitulo_id)
+
+    # Marcar el capítulo como leído para el usuario actual
+    request.user.profile.capitulos_leidos.add(capitulo)
+
+    return JsonResponse({'success': True})
 
 def procesar_formulario(request, manga_id):
     if request.method == 'POST':
@@ -460,12 +470,6 @@ def mangaFavorito(request, id):
     else:
         manga.favorito.add(request.user)
     return redirect('/Home')        
-
-
-#def favorite_manga(request):
-#    user_favorites = MangaGatsu.objects.filter(favorito=request.user)
-#    return render(request, 'favoritos.html', {'user_favorites': user_favorites})
-
 
 class FavoriteMangaListView(LoginRequiredMixin, ListView):
     model = MangaGatsu
