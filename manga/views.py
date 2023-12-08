@@ -530,7 +530,7 @@ def manga_list(request):
     return render(request, 'MiBiblioteca.html', context)
 
 
-
+#Metodo favoritos
 @login_required
 def add_favorite(request, manga_id):
     manga = get_object_or_404(MangaGatsu, id=manga_id)
