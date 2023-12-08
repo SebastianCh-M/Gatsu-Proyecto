@@ -47,37 +47,37 @@
 
 </style>
 <body style="background-color: #202020; color: #fff;">
-    <hr><hr>
-    <div class="container-form">
-        <form method="post" action="">
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}" class="avatar img-logo" alt="Avatar Image">
-                </div>
-                <div class="col">
-                    <h1>Iniciar sesión</h1>
-                </div>
-            </div>
-            <div>
-              <hr>
-              {% csrf_token %}
-              {{ form|crispy }}
-              <p>No tienes cuenta? registrate en Gatsu <a href="{% url 'manga:sign_up' %}">Aquí</a></p>
-              <button type="submit" class="btn btn-success">Iniciar sesión</button>
-              <hr>
+  <hr><hr>
+  <div class="container-form">
+      <form method="post" action="">
+          <div class="row align-items-center">
+              <div class="col-auto">
+                  <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}" class="avatar img-logo" alt="Avatar Image">
+              </div>
+              <div class="col">
+                  <h1>Iniciar sesión</h1>
+              </div>
           </div>
-          <div class="auth_actions">
-            <input class="btn btn--sub btn--lg" type="submit" value="Restablecer contraseña">
-            <a href="{% url 'reset_password' %}">¿Olvidaste tu contraseña?</a>
+          <div>
+            <hr>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <p>No tienes cuenta? registrate en Gatsu <a href="{% url 'manga:sign_up' %}">Aquí</a></p>
+            <button type="submit" class="btn btn-success">Iniciar sesión</button>
+            <hr>
         </div>
-        </form>
-    </div>
+        <div class="auth_actions">
+          <input class="btn btn--sub btn--lg" type="submit" value="Restablecer contraseña">
+          <a href="{% url 'reset_password' %}">¿Olvidaste tu contraseña?</a>
+      </div>
+      </form>
+  </div>
 
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-  <script
-    src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script
+  src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 </body>
 
 </html>
