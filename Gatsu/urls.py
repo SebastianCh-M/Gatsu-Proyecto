@@ -7,6 +7,7 @@ from manga.views import formRevista, deleR, updaR, formNombreManga, deleN, updaN
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas
 from manga.views import formRevista, libreriaGatsu, deleR, updaR, formNombreManga, deleN, updaN, formMangaGatsu, listaMangaGatsu, deleM, updaM, formCapitulo, deleC, updaC, formImagen, listaImagen, deleI, updaI, verCapitulo
 from .views import HomeView, RecientesView, TopMangasView, SobreGatsuView, MiBibliotecaView, ConfigMangas, pagoView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 
@@ -15,6 +16,13 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('pago/', pagoView.as_view(), name='pago'),
     path('accounts/', include('django.contrib.auth.urls')),
+
+    #Path para Reestablecer contraseña
+    path('reset_password/', auth_views.PasswordResetView.as_view(), name="reset_password"),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path('reset_password_complete', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
+    
     path('', HomeView.as_view(), name = "Home"),
     path('Home', HomeView.as_view(), name='Home'),
     path('ConfigMangas', ConfigMangas.as_view(), name='ConfigMangas'),

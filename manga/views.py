@@ -1,18 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import View, ListView
-from .forms import CustomUserChangeForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm
+from django.views.generic import View, DeleteView, ListView
+from .forms import CustomUserChangeForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
 from .models import  HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
+from django.views.generic import View, DeleteView
+from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm, ScoreForm
+from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Score
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404, HttpResponseRedirect
 from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
+import mercadopago
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login, logout
+from django.db.models import Avg
 from django.http import JsonResponse
 
 # Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
@@ -56,6 +64,26 @@ def formRevista(request):
 
     return render(request, 'formRevista.html',{'form': form, 'editoriales': editoriales})    
     
+#Metodo POST REVISTA
+#def formRevista2(request):
+#    if request.method == 'POST':
+#        form = revistaForm(request.POST)
+#        if form.is_valid():
+#            # Si el formulario es valido, se guardan los datos en la tabla
+#            form.save()
+#            return redirect('/listaRevista')
+#    else:
+#        form = revistaForm()
+
+#    return render(request, 'formRevista.html',{'form': form})    
+
+@user_passes_test(is_admin)
+#METODO GET REVISTA
+#def listaRevista(request):  
+#    editoriales = Revista.objects.all()
+#    datos ={'editoriales': editoriales}
+#    return render(request, 'listaRevista.html', datos)  
+
 @user_passes_test(is_admin)
 #Metodo DELETE REVISTA    
 def deleR(request, id):
@@ -63,23 +91,14 @@ def deleR(request, id):
     dele.delete()
     return redirect('/formRevista')   
 
-@login_required
+@user_passes_test(is_admin)
 #Metodo DELETE Favorito    
 def deleF(request, id):
     dele = Favorite.objects.get(id=id)
     dele.delete()
     return redirect('/LibreriaGatsu')   
 
-class LibreriaGatsuView(View):
-    def get(self, request, *args, **kwargs):
-        # Obtener la lista de mangas
-        mangas = MangaGatsu.objects.all()
 
-        # Ordenar la lista de mangas por el título alfabéticamente
-        mangas = sorted(mangas, key=lambda manga: manga.nombre_manga.nombreManga)
-
-        context = {'mangas': mangas}
-        return render(request, 'LibreriaGatsu.html', context)
 @user_passes_test(is_admin)
 #METODO UPDATE REVISTA 
 def updaR(request, id):
@@ -111,6 +130,15 @@ def formNombreManga(request):
         form = nomMangaForm()
 
     return render(request, 'formNombreManga.html',{'form': form, 'nombres': nombres})
+
+@user_passes_test(is_admin)
+#METODO GET nombreManga
+#def listaNombreManga(request):  
+#    nombres = NombreManga.objects.all()
+#    datos ={'nombres': nombres}
+#    return render(request, 'listaNombreManga.html', datos)
+
+
 @user_passes_test(is_admin)
 #Metodo DELETE nombreManga    
 def deleN(request, id):
@@ -220,7 +248,7 @@ def detalle_manga(request, manga_id):
     return render(request, 'detalle_manga.html', {'manga': manga, 'capitulo': primer_capitulo})
 
 #METODO GET Para poder leer el capitulo por manga.
-@login_required
+
 def detalle_capitulo(request, capitulo_id):
     capitulo = get_object_or_404(Capitulo, id=capitulo_id)
     imagenes = capitulo.imagenes.all()  # Utiliza el related_name 'imagenes' para obtener todas las imágenes del capítulo
@@ -236,6 +264,23 @@ def detalle_capitulos(request, manga_id):
 
     comentarios = Comentario.objects.filter(manga=manga)
     rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+
+    if request.method == "POST":
+        comentarios_id = request.POST.get("comentarios-id")
+        comentario = Comentario.objects.filter(id=comentarios_id).first()
+
+        print(f"comentarios_id: {comentarios_id}")
+        print(f"comentario: {comentario}")
+        print(f"request.user: {request.user}")
+        print(f"is_admin: {request.user.groups.filter(name='Administrador').exists()}")
+
+        # Permitir que los administradores y el autor original del comentario borren el comentario
+        if comentario and (comentario.usuario == request.user or is_admin):
+            try:
+                comentario.delete()
+            except Exception as e:
+                # Maneja la excepción adecuadamente, por ejemplo, imprime el error
+                print(f"Error al eliminar el comentario: {e}")
 
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
@@ -270,16 +315,6 @@ def detalle_capitulos(request, manga_id):
         'comentarios': comentarios,
         'rating_actual': rating_actual.valoracion if rating_actual else None,
     })
-
-@login_required
-def marcar_leido(request, capitulo_id):
-    # Obtener el capítulo
-    capitulo = get_object_or_404(Capitulo, id=capitulo_id)
-
-    # Marcar el capítulo como leído para el usuario actual
-    request.user.profile.capitulos_leidos.add(capitulo)
-
-    return JsonResponse({'success': True})
 
 def procesar_formulario(request, manga_id):
     if request.method == 'POST':
@@ -333,8 +368,6 @@ def updaM(request, id):
     return render(request, 'modNombreManga.html', context)
 
 
-import requests
-
 @user_passes_test(is_admin)
 #Metodo POST Capitulo
 def formCapitulo(request):
@@ -342,32 +375,13 @@ def formCapitulo(request):
     if request.method == 'POST':
         form = capituloForm(request.POST)
         if form.is_valid():
-            # Guardar el capítulo en la base de datos
-            capitulo = form.save()
-
-            # Construir el mensaje para Discord
-            mensaje_discord = f'\n-----------------------------------------------\n¡Nuevo capítulo publicado!\n**Manga: {capitulo.manga}**\n**Capítulo {capitulo.numero}:** {capitulo.titulo}\n** Ya disponible en la página Web**\n-----------------------------------------------\n '
-
-            # URL del Webhook de Discord
-            url_webhook = 'https://discord.com/api/webhooks/1182047314274160740/mClrr9Cq1ihAmq8P9SQooewhHoSw7j4NbysgPy_sCGHba1IJdDXQYBps-5hxVE-Ox4YW'
-
-            # Envía el mensaje al servidor de Discord
-            response = requests.post(url_webhook, json={'content': mensaje_discord})
-
-            if response.status_code == 204:
-                # Éxito al enviar el mensaje
-                print('Mensaje enviado con éxito a Discord!')
-            else:
-                # Manejar cualquier error
-                print('Error al enviar el mensaje a Discord:', response.status_code)
-
+            # Si el formulario es valido, se guardan los datos en la tabla
+            form.save()
             return redirect('/formCapitulo')
-
     else:
         form = capituloForm()
 
-    return render(request, 'formCapitulo.html', {'form': form, 'capitulos': capitulos})
-
+    return render(request, 'formCapitulo.html',{'form': form,  'capitulos': capitulos})
 
 @user_passes_test(is_admin)
 #METODO GET Capitulo
@@ -471,6 +485,12 @@ def mangaFavorito(request, id):
         manga.favorito.add(request.user)
     return redirect('/Home')        
 
+
+#def favorite_manga(request):
+#    user_favorites = MangaGatsu.objects.filter(favorito=request.user)
+#    return render(request, 'favoritos.html', {'user_favorites': user_favorites})
+
+
 class FavoriteMangaListView(LoginRequiredMixin, ListView):
     model = MangaGatsu
     template_name = 'favorite_manga.html'
@@ -530,7 +550,7 @@ def manga_list(request):
     return render(request, 'MiBiblioteca.html', context)
 
 
-#Metodo favoritos
+
 @login_required
 def add_favorite(request, manga_id):
     manga = get_object_or_404(MangaGatsu, id=manga_id)
@@ -662,6 +682,51 @@ def formManga(request):
 
     return render(request, 'registrarM.html', datos)
 
+
+#def verManga(request):
+#    mangas = MangaGatsu.objects.all()
+
+#    if request.method == 'GET':
+#        form = filtroManga(request.GET)
+#        if form.is_valid() and form.cleaned_data['genero']:
+#            mangas = mangas.filter(genre__in=form.cleaned_data['genero'])
+
+#    return render(request, 'verManga.html', {'mangas': mangas, 'form': form})
+
+
+#def guardarManga(request):
+ #def   v_idManga=request.POST.get('idManga')
+  #def  v_nombreM=request.POST.get('nombreManga')
+   #def v_anoP=request.POST.get('ano_publicacion')
+  #def  v_subida=request.POST.get('tsubida')
+  #def  v_mangaka=request.POST.get('mangaka')
+   #def v_sinopsis=request.POST.get('sinopsis')
+   #def v_editorial=request.POST.get('editorial')
+   #def v_genero=request.POST.get('genero')
+  #def  v_estado=request.POST.get('estado')
+#def
+
+  #def  tEstados=tipoEstado.objects.get(estado=v_estado)
+   #def tSubidas=tipoSubida.objects.get(subida=v_subida)
+
+   #def nuevo=Manga2()
+   #def nuevo.idManga=v_idManga
+  #def  nuevo.nombreManga=v_nombreM
+   #def nuevo.ano_publicacion=v_anoP
+   #def nuevo.tsubida=tSubidas
+  #def nuevo.mangaka=v_mangaka
+   #def nuevo.sinopsis=v_sinopsis
+   #def nuevo.editorial=v_editorial
+   #def nuevo.genero=v_genero
+    #defnuevo.estado=tEstados
+   #def 
+
+    #defManga2.save(nuevo)
+
+    #defreturn render(request, 'loginC.html')    
+
+
+
     nuevo=Manga2()
     nuevo.idManga=v_idManga
     nuevo.nombreManga=v_nombreM
@@ -753,14 +818,3 @@ def perfil_usuario(request):
         form = CustomUserChangeForm(instance=request.user)
 
     return render(request, 'perfil_usuario.html', {'form': form})
-@login_required
-def guardar_cambios(request):
-    if request.method == 'POST':
-        form = perfil_usuario(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('perfil_usuario') # Redirige a la vista del perfil
-    else:
-        form = perfil_usuario(instance=request.user)
-    return render(request, 'perfil_usuario.html', {'form': form})
-

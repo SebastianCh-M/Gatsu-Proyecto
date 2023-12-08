@@ -28,15 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = env.bool('DEBUG', default=False)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['*'] if DEBUG else ['51.20.78.108', '0.0.0.0', '127.0.0.1', 'localhost'] 
+ALLOWED_HOSTS = ['51.20.78.108', '0.0.0.0', '127.0.0.1', 'localhost']
 
-# Redirect HTTP to HTTPS
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
 
 # Enforce secure cookies
 SESSION_COOKIE_SECURE = True
@@ -55,7 +52,6 @@ INSTALLED_APPS = [
     'manga.apps.MangaConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    'sslserver',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -139,6 +135,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'chirinosebastianmn@gmail.com' 
+EMAIL_HOST_PASSWORD = 'egbm wnju ozyu cqgt' 
 
 
 # Static files (CSS, JavaScript, Images)
