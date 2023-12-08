@@ -72,12 +72,13 @@
                 <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
                 <div class="thumbnail-title">
                     <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
-                </div>
                     {% if manga.average_score %}
                         <span class="score"><i class="fas fa-star fa-fw"></i><span>{{ manga.average_score|floatformat:1 }}</span></span>
                     {% else %}
                         <span>Sin nota</span>
                     {% endif %}
+                </div>
+            
                 <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
                 <span class="demography shounen"> {{ manga.genero }}</span>
                 <p style="display: none;" class="demography shounen"><span>{{ manga.nombre_manga.revista.editoriales }}</span></p>
