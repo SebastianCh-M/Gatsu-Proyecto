@@ -11,12 +11,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ manga.nombre_manga.nombreManga }}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <link rel="stylesheet"
+      href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-3eYFvsn7qBvggKtA6j6O9L+YbxONpWqC79r+NV6cF7byA6t8t/YyC1u+bEm4QI5xUmBb3l4/WAUn0o1Cqp7v3A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    <meta name="msapplication-TileColor" content="#2957ba">
+    <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-x8N2T7/Gj0t8crFSh61wNT2l5WU0cJPe30Q6zV6WTaJ+P84KssV0UweSVzwRb6lKnW1jLiD0XtA5OtU5DB8dVg==" crossorigin="anonymous" />
+
+  </head>
 <style>
     .img-fluid {
         width: 250px;
@@ -109,19 +117,18 @@
 
     .box2 {
         display: flex;
+
     }
 
     .sinopsis {
+
         padding-left: 5px;
     }
 
     .capitulo-bloqueado {
-        opacity: 0.6;
-        /* Hace que el capítulo se vea más oscuro */
-        pointer-events: none;
-        /* Evita que el botón sea clickeable */
-        position: relative;
-        /* Para que el icono de candado se posicione correctamente */
+        opacity: 0.6; /* Hace que el capítulo se vea más oscuro */
+        pointer-events: none; /* Evita que el botón sea clickeable */
+        position: relative; /* Para que el icono de candado se posicione correctamente */
     }
 
     .icono-candado {
@@ -129,8 +136,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 20px;
-        /* Puedes ajustar el tamaño según sea necesario */
+        font-size: 20px; /* Puedes ajustar el tamaño según sea necesario */
         color: #fff;
     }
 
@@ -143,17 +149,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Fondo oscuro semi-transparente */
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
         justify-content: center;
         align-items: center;
-        z-index: 1000;
-        /* Asegura que la ventana emergente esté sobre otros elementos */
+        z-index: 1000; /* Asegura que la ventana emergente esté sobre otros elementos */
     }
 
     .ventana-contenido {
-        background-color: #333;
-        /* Fondo oscuro */
+        background-color: #333; /* Fondo oscuro */
         padding: 20px;
         border-radius: 10px;
         text-align: center;
@@ -174,43 +177,23 @@
     }
 
     .btn-pagar {
-        background-color: #4CAF50;
-        /* Verde */
+        background-color: #4CAF50; /* Verde */
     }
 
     .btn-denegar {
-        background-color: #f44336;
-        /* Rojo */
+        background-color: #f44336; /* Rojo */
     }
 
     .icon {
-        color: #ffffff;
-        /* Color de las estrellas no llenas */
-        margin-right: 5px;
-        /* Ajusta el valor según sea necesario */
-        font-size: 24px;
-        /* Ajusta el valor según sea necesario */
+        color: #ffffff; /* Color de las estrellas no llenas */
+        margin-right: 5px; /* Ajusta el valor según sea necesario */
+        font-size: 24px; /* Ajusta el valor según sea necesario */
     }
 
     .icon-filled {
-        color: #ffd700;
-        /* Color de las estrellas llenas */
-    }
-    .score {
-        font-size: 24px;
-        color: #ffd700;
+        color: #ffd700; /* Color de las estrellas llenas */
     }
 
-    .score a {
-        text-decoration: none;
-        color: inherit;
-        margin: 0 5px;
-    }
-
-    .icon-filled {
-        color: #ffd700;
-    }
-</style>
 </style>
 
 <body style="background-color: #202020; color: #fff;">
@@ -221,19 +204,19 @@
         <h3>Valora el manga</h3>
         <div class="score" data-manga-id="{{ manga.id }}">
             {% for i in "12345" %}
-            <a href="#" class="icon {% if rating_actual and i|add:"0" <= rating_actual %} icon-filled{% endif %}" data-rating="{{ i }}">
-                <i class="fas fa-star fa-fw"></i>
-            </a>
+                <a href="#" class="icon {% if rating_actual and i <= rating_actual|default:"0" %}icon-filled{% endif %}" data-rating="{{ i }}">
+                    <i class="fas fa-star fa-fw"></i>
+                </a>
             {% endfor %}
         </div>
     </div>
-
+    
 
     <div class="container">
         {% if messages %}
-        <div class="alert alert-info" role="alert">
-            {{ messages }}
-        </div>
+            <div class="alert alert-info" role="alert">
+                {{ messages }}
+            </div>
         {% endif %}
         <div class="row">
             <div class="col-md-4">
@@ -260,12 +243,11 @@
                             <p>{{ manga.sinopsis }}</p>
                             <p class="Mangaka">Mangaka: {{ manga.nombre_manga.mangaka }}</p>
                             <p class="Genero">Género: {{ manga.genero }}</p>
+
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
             <div class="col-md-8">
                 <!-- Contenido de la segunda columna (capítulos) -->
@@ -275,50 +257,47 @@
                     {% for capitulo in capitulos %}
                     <div class="list">
                         <div class="content">
-                            {% if capitulo.numero == 1 or capitulo == capitulos.last or user_is_subscribed %}
-                            <!-- Permitir acceso al primer, último capítulo o si el usuario está suscrito -->
-                            <a id="capitulo_{{ capitulo.id }}"
-                                class="btn btn-danger {% if capitulo.leido %}btn-leido{% endif %}"
-                                style="background-color: {% if capitulo.leido %}gray{% else %}black{% endif %}; border-color: #fff;"
-                                href="/verCapitulo/{{capitulo.id}}" onclick="marcarComoLeido('{{ capitulo.id }}')">
-                                <small>Cap: {{capitulo.numero}}</small>
-                                <h4>{{ capitulo.titulo }}</h4>
-                                {% if capitulo.leido %}
-                                <span class="marcado-leido">Leído</span>
-                                {% else %}
-                                <a
-                                    href="{% url 'manga:update_progress' manga_id=capitulo.manga.id chapter_id=capitulo.id %}"></a>
-                                {% endif %}
-                            </a>
+                            {% if capitulo.numero == 1 or user_is_subscribed %}
+                                <!-- Permitir acceso al primer capítulo o si el usuario está suscrito -->
+                                <a class="btn btn-danger {% if capitulo.leido %}btn-leido{% endif %}"
+                                    style="background-color: {% if capitulo.leido %}gray{% else %}black{% endif %}; border-color: #fff;"
+                                    href="/verCapitulo/{{capitulo.id}}">
+                                    <small>Cap: {{capitulo.numero}}</small>
+                                    <h4>{{ capitulo.titulo }}</h4>
+                                    {% if capitulo.leido %}
+                                        <span class="marcado-leido">Leído</span>
+                                    {% else %}
+                                        <a href="{% url 'manga:update_progress' manga_id=capitulo.manga.id chapter_id=capitulo.id %}" onclick="marcarComoLeido('{{ capitulo.id }}', event)">Marcar como leído</a>
+            
+                                    {% endif %}
+                                </a>
                             {% else %}
-                            <!-- Mostrar ventana emergente solo cuando se selecciona un capítulo -->
-                            <button class="btn btn-danger {% if capitulo.leido %}btn-leido{% endif %}"
-                                style="background-color: {% if capitulo.leido %}gray{% else %}black{% endif %}; border-color: #fff;"
-                                onclick="mostrarVentanaEmergente('{{capitulo.id}}')">
-                                <small>Cap: {{capitulo.numero}}</small>
-                                <h4>{{ capitulo.titulo }}</h4>
-                                {% if capitulo.leido %}
-                                <span class="marcado-leido">Leído</span>
+                                <!-- Mostrar ventana emergente solo cuando se selecciona un capítulo -->
+                                <button class="btn btn-danger {% if capitulo.leido %}btn-leido{% endif %}"
+                                    style="background-color: {% if capitulo.leido %}gray{% else %}black{% endif %}; border-color: #fff;"
+                                    onclick="mostrarVentanaEmergente('{{capitulo.id}}')">
+                                    <small>Cap: {{capitulo.numero}}</small>
+                                    <h4>{{ capitulo.titulo }}</h4>
+                                    {% if capitulo.leido %}
+                                        <span class="marcado-leido">Leído</span>
+                                    {% endif %}
+                                </button>
+                                {% if not capitulo.leido %}
+                                    <a href="{% url 'manga:update_progress' manga_id=capitulo.manga.id chapter_id=capitulo.id %}" onclick="marcarComoLeido('{{ capitulo.id }}', event)">Marcar como leído</a>
+            
                                 {% endif %}
-                            </button>
-                            {% if not capitulo.leido %}
-                            <a href="{% url 'manga:update_progress' manga_id=capitulo.manga.id chapter_id=capitulo.id %}"
-                                onclick="marcarComoLeido('{{ capitulo.id }}', event)">
-                            </a>
-                            {% endif %}
                             {% endif %}
                         </div>
                     </div>
-                    {% endfor %}
+                {% endfor %}
                 </div>
             </div>
-
         </div>
     </div>
-    <br>
+<br>
 
-
-
+    
+    
     <div class="box container">
         <h3>Comentarios</h3>
         <form method="post">
@@ -327,10 +306,10 @@
             <button type="submit" class="btn btn-success">Agregar Comentario</button>
         </form>
         {% for comentario in comentarios %}
-        <!-- ... Código para mostrar los comentarios existentes ... -->
-        {% endfor %}
+            <!-- ... Código para mostrar los comentarios existentes ... -->
+        {% endfor %}        
     </div>
-    <br>
+<br>
     {% for comentario in comentarios %}
     <div class="card mt-2 container container-fluid" style="background-color: rgba(0, 0, 0, 0.432);">
         <div style="color: #ffffff;" class="card-header"><strong>{{ comentario.usuario.username }}</strong></div>
@@ -363,7 +342,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Script para mostrar y cerrar la ventana emergente -->
     <script>
         function mostrarVentanaEmergente(capituloId) {
@@ -373,90 +352,25 @@
             // Por ejemplo, almacenarlo en una variable JavaScript o realizar alguna acción específica
             console.log("Capítulo seleccionado:", capituloId);
         }
-
+    
         function cerrarVentanaEmergente() {
             var ventanaEmergente = document.getElementById("ventanaEmergente");
             ventanaEmergente.style.display = "none";
         }
-
+    
         function redirigirAPago() {
             // Redirige a la URL de pago
             window.location.href = "/url-de-pago";
         }
     </script>
-    <script>
-        function marcarComoLeido(capituloId) {
-            // Aquí puedes realizar la lógica para marcar el capítulo como leído en tu base de datos si es necesario
-
-            // Cambiar el estilo del botón
-            var botonCapitulo = document.getElementById("capitulo_" + capituloId);
-            botonCapitulo.classList.add("btn-leido");
-            botonCapitulo.style.backgroundColor = "gray";
-
-            // Almacena el estado en una cookie
-            document.cookie = "capituloLeido_" + capituloId + "=true";
-
-            // Puedes agregar más acciones aquí según sea necesario
-        }
-    </script>
-
-    <script>
-        // Función para verificar las cookies y aplicar el estilo
-        function aplicarEstiloDesdeCookies() {
-            // Obtén todas las cookies
-            var cookies = document.cookie.split(";");
-
-            // Itera sobre las cookies
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-
-                // Verifica si la cookie comienza con "capituloLeido_"
-                if (cookie.startsWith("capituloLeido_")) {
-                    var capituloId = cookie.split("=")[0].replace("capituloLeido_", "");
-
-                    // Aplica el estilo al botón correspondiente
-                    var botonCapitulo = document.getElementById("capitulo_" + capituloId);
-                    if (botonCapitulo) {
-                        botonCapitulo.classList.add("btn-leido");
-                        botonCapitulo.style.backgroundColor = "gray";
-                    }
-                }
-            }
-        }
-
-        // Llama a la función al cargar la página
-        window.onload = aplicarEstiloDesdeCookies;
-    </script>
-
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
-    
+    <script
+        src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
 </body>
-<script>
-    function actualizarEstadoFavorito() {
-        var botonFavorito = document.getElementById("boton-favorito");
-        if (botonFavorito) {
-            botonFavorito.innerHTML = "Guardado En Favoritos";
-        }
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-            var scoreContainer = document.querySelector('.score');
-            scoreContainer.addEventListener('click', function (event) {
-                var target = event.target;
-                if (target.classList.contains('icon')) {
-                    var rating = target.getAttribute('data-rating');
-                    // Aquí puedes realizar alguna acción con la calificación seleccionada
-                    console.log('Calificación seleccionada:', rating);
-                }
-            });
-        });
-    
-</script>
-
 </html>
 
 {% endblock %}
