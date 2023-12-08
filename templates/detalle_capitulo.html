@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet"
       href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
     <!-- Bootstrap CSS -->
@@ -317,14 +317,20 @@
             <div>
                 <p style="color: #fff;">{{comentario.contenido}}</p>
             </div>
-            <div>Buttons</div>
+            <div>
+                {% if user == comentario.usuario or is_admin %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name="comentarios-id" value="{{comentario.id}}">Borrar</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
         <div class="card-footer text-muted">{{comentario.fecha_creado}}</div>
     </div>
-    {% empty %}
-    <p>Todavia no hay comentarios</p>
-    {% endfor %}
-
+{% empty %}
+    <p>Todavía no hay comentarios</p>
+{% endfor %}
 
     <!-- Ventana emergente mejorada -->
     <div id="ventanaEmergente" class="ventana-emergente">

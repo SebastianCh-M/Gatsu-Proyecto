@@ -58,12 +58,18 @@
                     <h1>Iniciar sesión</h1>
                 </div>
             </div>
-            <hr>
-            {% csrf_token %}
-            {{ form|crispy }}
-            <p>No tienes cuenta? registrate en Gatsu <a href="{% url 'manga:sign_up' %}">Aquí</a></p>
-            <button type="submit" class="btn btn-success">Iniciar sesión</button>
-            <hr>
+            <div>
+              <hr>
+              {% csrf_token %}
+              {{ form|crispy }}
+              <p>No tienes cuenta? registrate en Gatsu <a href="{% url 'manga:sign_up' %}">Aquí</a></p>
+              <button type="submit" class="btn btn-success">Iniciar sesión</button>
+              <hr>
+          </div>
+          <div class="auth_actions">
+            <input class="btn btn--sub btn--lg" type="submit" value="Restablecer contraseña">
+            <a href="{% url 'reset_password' %}">¿Olvidaste tu contraseña?</a>
+        </div>
         </form>
     </div>
 

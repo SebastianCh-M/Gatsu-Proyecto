@@ -248,7 +248,7 @@ def detalle_manga(request, manga_id):
     return render(request, 'detalle_manga.html', {'manga': manga, 'capitulo': primer_capitulo})
 
 #METODO GET Para poder leer el capitulo por manga.
-@login_required
+
 def detalle_capitulo(request, capitulo_id):
     capitulo = get_object_or_404(Capitulo, id=capitulo_id)
     imagenes = capitulo.imagenes.all()  # Utiliza el related_name 'imagenes' para obtener todas las imágenes del capítulo
@@ -264,6 +264,23 @@ def detalle_capitulos(request, manga_id):
 
     comentarios = Comentario.objects.filter(manga=manga)
     rating_actual = Valoracion.objects.filter(usuario=request.user, manga=manga).first()
+
+    if request.method == "POST":
+        comentarios_id = request.POST.get("comentarios-id")
+        comentario = Comentario.objects.filter(id=comentarios_id).first()
+
+        print(f"comentarios_id: {comentarios_id}")
+        print(f"comentario: {comentario}")
+        print(f"request.user: {request.user}")
+        print(f"is_admin: {request.user.groups.filter(name='Administrador').exists()}")
+
+        # Permitir que los administradores y el autor original del comentario borren el comentario
+        if comentario and (comentario.usuario == request.user or is_admin):
+            try:
+                comentario.delete()
+            except Exception as e:
+                # Maneja la excepción adecuadamente, por ejemplo, imprime el error
+                print(f"Error al eliminar el comentario: {e}")
 
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
