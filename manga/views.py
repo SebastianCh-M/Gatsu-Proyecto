@@ -2,10 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, ListView
 from .forms import CustomUserChangeForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm
 from .models import  HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
-from django.views.generic import View, DeleteView
-from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm, ScoreForm
-from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Score
-from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
@@ -16,9 +12,6 @@ from .models import MangaGatsu
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import authenticate, login, logout
-from django.db.models import Avg
-
 from django.contrib.auth import login
 from django.http import JsonResponse
 
@@ -238,12 +231,6 @@ def detalle_capitulo(request, capitulo_id):
 def detalle_capitulos(request, manga_id):
     manga = get_object_or_404(MangaGatsu, pk=manga_id)
     capitulos = Capitulo.objects.filter(manga=manga)
-    
-    # Retrieve all scores for the manga
-    scores = Score.objects.filter(manga=manga)
-
-    # Calculate the average score using Django's Avg aggregate function
-    average_score = scores.aggregate(Avg('score_value'))['score_value__avg']
 
     user_is_subscribed = request.user.is_authenticated and request.user.groups.filter(name='UsuarioSuscrito').exists()
 
@@ -282,7 +269,6 @@ def detalle_capitulos(request, manga_id):
         'form': form,
         'comentarios': comentarios,
         'rating_actual': rating_actual.valoracion if rating_actual else None,
-        'average_score': average_score
     })
 
 @login_required
@@ -441,36 +427,6 @@ def formImagen(request, manga_id):
 
         
         return render(request, 'formImagen.html', {'capitulos': capitulos_con_info, })
-    
-#Metodo Score
-
-def score_selection(request, manga_id):
-    manga = MangaGatsu.objects.get(id=manga_id)
-    user = request.user
-
-    # Check if the user has already scored this manga
-    existing_score = Score.objects.filter(user=user, manga=manga).first()
-
-    if existing_score:
-        if request.method == 'POST':
-            form = ScoreForm(request.POST, instance=existing_score)
-            if form.is_valid():
-                form.save()
-                return redirect('manga:detalle_capitulos', manga_id=manga_id)
-        else:
-            form = ScoreForm(instance=existing_score)
-
-    if request.method == 'POST':
-        form = ScoreForm(request.POST)
-        if form.is_valid():
-            score_value = form.cleaned_data['score_value']
-            Score.objects.create(user=user, manga=manga, score_value=score_value)
-            return redirect('manga:detalle_capitulos', manga_id=manga_id)
-    else:
-        form = ScoreForm()
-
-    return render(request, 'score_selection.html', {'form': form, 'manga': manga})
-    
 
 
 def formImagen3(request):

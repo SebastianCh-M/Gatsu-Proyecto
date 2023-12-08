@@ -218,7 +218,7 @@
     <br>
 
     <div class="container">
-        <h3>Detalle del manga</h3>
+        <h3>Valora el manga</h3>
         <div class="score" data-manga-id="{{ manga.id }}">
             {% for i in "12345" %}
             <a href="#" class="icon {% if rating_actual and i|add:"0" <= rating_actual %} icon-filled{% endif %}" data-rating="{{ i }}">
@@ -247,16 +247,15 @@
                         <div class="col-md-12">
                             <h1 style="text-align: center;">{{ manga.nombre_manga.nombreManga }}</h1>
 
-                            {% if average_score %}
-                                <p>Nota: {{ average_score|floatformat:1 }}</p>
+                            {% if manga_en_favoritos %}
+                            <p><b>Añadido a favoritos</b></p>
                             {% else %}
-                                <p>Sin nota</p>
+                            <a id="boton-favorito" href="{% url 'manga:add_favorite' manga.id %}"
+                                class="btn btn-outline-primary">Agregar Favoritos</a>
                             {% endif %}
 
-                            
 
-                            <a href="{% url 'manga:add_favorite' manga.id %}" class="btn btn-outline-primary"> Agregar Favorito</a>
-                            <a href="{% url 'manga:score_selection' manga_id=manga.id %}">agregar una valoracion</a>
+
                             <h2>Sinopsis:</h2>
                             <p>{{ manga.sinopsis }}</p>
                             <p class="Mangaka">Mangaka: {{ manga.nombre_manga.mangaka }}</p>

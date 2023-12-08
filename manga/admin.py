@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  CustomUser, tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress, Score
+from .models import  CustomUser, tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from .models import tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
@@ -23,10 +23,7 @@ class favoriteAdmin(admin.ModelAdmin):
     list_display = ["id","user","manga"]      
 
 class progressAdmin(admin.ModelAdmin):
-    list_display = ["id","user","manga", "last_read_chapter"]   
-
-class scoreAdmin(admin.ModelAdmin):
-    list_display = ["id", "user", "manga", "score_value"]     
+    list_display = ["id","user","manga", "last_read_chapter"]    
 
     
 
@@ -38,7 +35,6 @@ admin.site.register(Revista)  # Registrar la tabla Revista
 
 admin.site.register(Favorite, favoriteAdmin)
 admin.site.register(Progress, progressAdmin)
-admin.site.register(Score, scoreAdmin)
 
 
 

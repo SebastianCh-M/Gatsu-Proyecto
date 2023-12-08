@@ -41,6 +41,7 @@ if not DEBUG:
 # Enforce secure cookies
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
