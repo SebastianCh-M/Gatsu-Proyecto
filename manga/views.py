@@ -3,12 +3,9 @@ from django.views.generic import View, DeleteView, ListView
 from .forms import CustomUserChangeForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm,AddToFavoriteForm ,User
 from .models import  HistorialCompras, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite,Progress
 from django.views.generic import View, DeleteView
-from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm, ScoreForm
-from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Score
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import View
 from .forms import ComentarioForm, RegisterForm, revistaForm, m_revistaForm, nomMangaForm, m_nomMangaForm, mangaGatsuForm, m_mangaGatsuForm, capituloForm, m_CapituloForm, imagenForm
 from .models import Comentario, HistorialCompras, Valoracion, tipoEstado, tipoSubida, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -20,8 +17,7 @@ from django.http import JsonResponse, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Avg
-from django.http import JsonResponse
+
 
 # Definir una función de prueba para verificar si el usuario pertenece al grupo "Administrador"
 def is_admin(user):
