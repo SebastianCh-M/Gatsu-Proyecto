@@ -76,11 +76,14 @@
                         <!-- AGREGAR AVATAR USUARIO-->
                         {% if user_type %}
                         <span style="color: #fff; left: 0;">
-                            {{ user_type }}
+                            <img src="{% static 'images/UserType/'|add:user_image %}" alt="User_Image" style="width: 20px; height: 20px;">
                         </span>
                     {% endif %}
-                        <span style="color: #fff;">Bienvenido {{ user.username | upper }}</span><span
-                            class="caret"></span>
+                    
+                    <span style="color: #FFF">| Bienvenido, <span style="color: {{ user_color }}">{{ user.username | upper }}</span></span><span class="caret"></span>
+
+                    
+
                     </a>
                     <div class="dropdown">
                         <ul class="dropdown-menu" style="background-color: #202020;">
