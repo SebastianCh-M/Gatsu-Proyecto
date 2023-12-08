@@ -45,7 +45,7 @@ def index(request):
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         # Obtener los primeros 5 mangas con sus detalles de autor y capítulo
-        mangas = MangaGatsu.objects.select_related('nombre_manga').prefetch_related('capitulos').all()[:10]
+        mangas = MangaGatsu.objects.select_related('nombre_manga').prefetch_related('capitulos').all()[:5]
 
         for manga in mangas:
             # Obtener el último capítulo asociado a cada manga

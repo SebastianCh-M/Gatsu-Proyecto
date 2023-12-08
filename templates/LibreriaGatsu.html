@@ -64,8 +64,7 @@
 <!-- Contenido organizado por filas -->
 <div class="container">
     <div class="row">
-        {% for manga in mangas|dictsort:'nombre_manga.nombreManga' %}
-
+        {% for manga in mangas %}
         <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
             <a href="{% url 'manga:detalle_capitulos' manga.id %}">
                 <!-- Contenido-->
@@ -76,7 +75,8 @@
                 <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
                 <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
                 <span class="demography shounen"> {{ manga.genero }}</span>
-                <p style="display: none;" class="demography shounen"><span>{{ manga.nombre_manga.revista.editoriales }}</span></p>
+                <p style="display: none;" class="demography shounen"><span>{{ manga.nombre_manga.revista.editoriales
+                        }}</span></p>
                 <p style="display: none;" class="demography shounen"><span>{{ manga.estado }}</span></p>
             </a>
             <!-- Puedes agregar más campos según tus necesidades -->
@@ -84,8 +84,6 @@
         {% endfor %}
     </div>
 </div>
-
-
 
 
 
