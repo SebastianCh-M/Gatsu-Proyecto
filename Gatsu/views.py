@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from manga.models import MangaGatsu, Manga3, Valoracion
+from manga.models import MangaGatsu, Manga3, Valoracion, Score
 from manga.models import Valoracion
 from manga.models import HistorialCompras
 from django.http import HttpResponse
@@ -31,7 +31,7 @@ from mercadopago import SDK
 from requests.exceptions import HTTPError
 from django.http import JsonResponse
 from django.conf import settings
-
+from django.db.models import Avg
 def is_admin(user):
     return user.is_authenticated and user.groups.filter(name='Administrador').exists()
 
@@ -44,17 +44,25 @@ def index(request):
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        # Obtener los primeros 5 mangas con sus detalles de autor y capítulo
+        # Obtener los primeros 10 mangas con sus detalles de autor y capítulo
         mangas = MangaGatsu.objects.select_related('nombre_manga').prefetch_related('capitulos').all()[:10]
-
+        
         for manga in mangas:
+            # Obtener todos los puntajes para el manga actual
+            scores = Score.objects.filter(manga=manga)
+            
+            # Calcular la puntuación promedio para el manga actual
+            average_score = scores.aggregate(Avg('score_value'))['score_value__avg']
+            
             # Obtener el último capítulo asociado a cada manga
             ultimo_capitulo = manga.capitulos.last()
             manga.ultimo_capitulo_numero = ultimo_capitulo.numero if ultimo_capitulo else None
+            
+            # Asignar la puntuación promedio y el último capítulo al manga actual
+            manga.average_score = average_score if average_score else None
 
         context = {'mangas': mangas}
         return render(request, 'Home.html', context)
-    
 class RecientesView(View):
     def get(self, request, *args, **kwargs):
         context = {}

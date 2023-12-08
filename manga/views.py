@@ -189,10 +189,13 @@ def listaMangaGatsu(request):
 
 #METODO GET Para Libreria Gatsu
 # Asegúrate de que tu vista envía los géneros disponibles a la plantilla
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Avg
+
 def libreriaGatsu(request):
-    mangas = MangaGatsu.objects.all()
+    all_mangas = MangaGatsu.objects.all()
     genres = MangaGatsu.OPCIONES_GENERO
-    paginator = Paginator(mangas, 10)
+    paginator = Paginator(all_mangas, 10)
     page = request.GET.get('page')
     editoriales = Revista.objects.all()
     Estado = MangaGatsu.OPCIONES_ESTADO
@@ -203,17 +206,28 @@ def libreriaGatsu(request):
         page = 1
 
     try:
-        mangas = paginator.page(page)
+        mangas_paginated = paginator.page(page)
     except PageNotAnInteger:
-        mangas = paginator.page(1)
+        mangas_paginated = paginator.page(1)
     except EmptyPage:
-        mangas = paginator.page(paginator.num_pages)
-        context = {'mangas': mangas, 'genres': genres}
+        mangas_paginated = paginator.page(paginator.num_pages)
+        context = {'mangas': mangas_paginated, 'genres': genres}
         return render(request, 'libreriaGatsu.html', context)
-    context = {'mangas': mangas, 'genres': genres}
-    
 
-    return render(request, 'LibreriaGatsu.html', {'mangas': mangas, 'genres': genres, 'editoriales': editoriales, 'Estado': Estado})
+    # Calcular la puntuación promedio para cada manga
+    for manga in mangas_paginated:
+        scores = Score.objects.filter(manga=manga)
+        average_score = scores.aggregate(Avg('score_value'))['score_value__avg']
+        manga.average_score = average_score if average_score else None
+
+    context = {
+        'mangas': mangas_paginated,
+        'genres': genres,
+        'editoriales': editoriales,
+        'Estado': Estado,
+    }
+
+    return render(request, 'LibreriaGatsu.html', context)
 
 
 #METODO GET Para ver todos los capitulos por manga
