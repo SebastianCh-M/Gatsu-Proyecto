@@ -137,13 +137,18 @@ class MangaGatsu(models.Model):
     @property
     def valoracion_promedio(self):
         return Valoracion.objects.filter(manga=self).aggregate(promedio=Avg('valoracion'))['promedio']
-    
+
+
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE) 
 
 
 
+class Score(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    score_value = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
 
 
 #POST,DELETE,UPDATE

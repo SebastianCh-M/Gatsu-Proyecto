@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import CustomUser, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite
+from .models import CustomUser, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite, Score
 from .models import Comentario, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from multiupload.fields import MultiFileField
 from django.contrib.auth.forms import UserChangeForm
@@ -85,37 +85,7 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         fields = ('username', 'email', 'fecha_nacimiento', 'foto_perfil', 'genero')
 
-         
-        
-
-
-
-
-
-#class PostCreateForm(forms.ModelForm):
-#    class Meta:
-#        model=Post
-#        fields=('title', 'content')
-
-#class mangaForm(forms.ModelForm):
-#    class Meta:
-#        model = Manga3
-#        fields = ['idManga', 'nombreManga', 'ano_publicacion','tsubida','mangaka','sinopsis','editorial','genero','estado','imagen'] 
-
-       
-
-
-#class imagenForm(forms.ModelForm):
-#    class Meta:
-#        model = SetImagen    
-#        fields = ['idLote', 'capitulo', 'manga','grupoImagen']
-
-        
-
-
-
-#class imagenForm2(forms.ModelForm):     
-#        idLote = forms.CharField(max_length=255)
-#        capitulo = forms.CharField(max_length=255)
-#        manga = forms.ModelChoiceField(queryset=Manga3.objects.all())       
-#        grupoImagen = MultiFileField(min_num=1, max_num=10)
+class ScoreForm(forms.ModelForm):
+    class Meta:
+        model = Score
+        fields = ['score_value']      
