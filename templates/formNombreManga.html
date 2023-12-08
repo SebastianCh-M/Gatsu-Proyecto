@@ -30,6 +30,36 @@
         background-color: #202020;
         color: #fff;
     }
+
+    button {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    .table {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    .tr {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    .table td {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    .row {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: black;
+        border-color: #fff;
+    }
 </style>
 
 <body style="background-color: #202020; color: #fff;">
@@ -39,27 +69,6 @@
     <div class="d-flex justify-content-center">
         <div class="card" style="background-color: #161616; color: #fff; border-color: #fff;">
             <br>
-            <button style="background-color: rgb(41, 41, 41) ;color: #fff;"type="submit">Añadir Editorial</button>
-        </form>
-        <table class="table">
-            <tr>
-                <td>Editorial</td>
-                <td>Nombre</td>
-                <td>Mangaka</td>
-                <td colspan="2">Opciones</td>
-            </tr>
-            {% for n in nombres %}
-                    <tr>
-                        <td>{{ n.revista }}</td>
-                        <td>{{ n.nombreManga }}</td>
-                        <td>{{ n.mangaka }}</td>
-                            <td>
-                                <a class="btn btn-danger" href="/deleN/{{n.id}}">Borrar</a>
-                                <a class="btn btn-danger" href="/updaN/{{n.id}}">Modificar</a>
-                            </td>
-                    </tr>
-            {% endfor %}
-        </table>
             <form class="container" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -71,6 +80,33 @@
                 </div>
             </form>
             <br>
+        </div>
+        <br>
+    </div>
+    <br>
+    <h2>Lista de Editoriales</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <td>Editorial</td>
+                    <td>Nombre</td>
+                    <td>Mangaka</td>
+                    <td colspan="2">Opciones</td>
+                </tr>
+                {% for n in nombres %}
+                <tr>
+                    <td>{{ n.revista }}</td>
+                    <td>{{ n.nombreManga }}</td>
+                    <td>{{ n.mangaka }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="/deleN/{{n.id}}">Borrar</a>
+                        <a class="btn btn-danger" href="/updaN/{{n.id}}">Modificar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br>
