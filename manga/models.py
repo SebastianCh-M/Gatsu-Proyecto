@@ -169,11 +169,6 @@ class Imagen(models.Model):
     def __str__(self):
         return self.imagen.url  # O alguna otra representación de la imagen
     
-class Score(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
-    score_value = models.IntegerField(choices=[(i, i) for i in range(1, 6)])    
-    
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

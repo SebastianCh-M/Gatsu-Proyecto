@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import CustomUser, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite, Score
+from .models import CustomUser, Revista, NombreManga, MangaGatsu, Capitulo, Imagen, Favorite
 from .models import Comentario, Revista, NombreManga, MangaGatsu, Capitulo, Imagen
 from multiupload.fields import MultiFileField
 from django.contrib.auth.forms import UserChangeForm
@@ -84,11 +84,6 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'fecha_nacimiento', 'foto_perfil', 'genero')
-
-class ScoreForm(forms.ModelForm):
-    class Meta:
-        model = Score
-        fields = ['score_value']        
 
          
         
