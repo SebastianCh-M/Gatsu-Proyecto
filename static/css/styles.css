@@ -322,12 +322,6 @@ body {
   background: var(--bg);
 }
 
-.container {
-  max-width: 124rem;
-  padding: 0 1rem;
-  margin: 0 auto;
-}
-
 .text-center {
   text-align: center;
 }
@@ -410,11 +404,6 @@ body {
 
 .rating ion-icon {
   color: var(--primary);
-}
-
-.swiper-slide-shadow-left,
-.swiper-slide-shadow-right {
-  display: none;
 }
 
 .tranding-slider-control {

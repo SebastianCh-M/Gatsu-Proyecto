@@ -10,7 +10,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home</title>
+  <title>Gatsu</title>
   <meta name="trafficjunky-site-verification" content="vnrwaw9t0" />
   <meta name="exoclick-site-verification" content="043e4ac6d429fc45736a2571151745ed">
   <meta name="csrf-token" content="urU5jPKA3HW5bz1XrQhSsSjUuYNtjJn0YjMJ4OSH">
@@ -31,80 +31,7 @@
 </head>
 
 <body style="background-color: #202020; color: #fff;">
-  <style>
-    .Genero .Mangaka_name,
-    .Manga_name,
-    .Manga_rate,
-    .N_chp {
-      font-weight: bold;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding-bottom: 0rem;
-      display: flex;
-      gap: 0rem;
-    }
 
-    .Genero {
-      font-weight: bold;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding-bottom: 0rem;
-      display: flex;
-      gap: 0rem;
-    }
-
-    .imagen {
-      background-color: black;
-      color: #fff;
-      max-width: auto;
-      max-height: auto;
-      width: 100%;
-      height: 100%;
-      border: 1px solid gray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: ease-in-out .2s;
-      margin: auto;
-    }
-
-    .imagen img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
-    }
-
-    .imagen:hover {
-      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    }
-
-    .card {
-      background-color: black;
-      color: #fff;
-      max-width: 150px;
-      max-height: 350px;
-      width: 100%;
-      height: 100%;
-      border: 1px solid gray;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: ease-in-out .2s;
-      margin: auto;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
-    }
-
-    .card:hover {
-      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    }
-  </style>
   <section id="tranding">
     <div class="container">
       <hr>
@@ -117,7 +44,17 @@
           {% for manga in mangas|slice:":5" %}
           <!-- Slide-start -->
           <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
+            <div class="contenido-carrusel">
+              <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                <h4>{{ manga.nombre_manga }}</h4>
+                {% if manga.average_score %}
+                <span class=".Manga_rate"><i class="fas fa-star fa-fw"></i><span>{{ manga.average_score|floatformat:1}}</span></span>
+                {% else %}
+                <span>Sin nota</span>
+                {% endif %}
+              </a>
+            </div>
+            <div class="tranding-slide-img" style="  max-width: 90%;">
               <a href="{% url 'manga:detalle_capitulos' manga.id %}">
                 <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="img-fluid">
               </a>
@@ -138,25 +75,29 @@
   <div class="container">
     <div class="row">
       {% if mangas %}
-      {% for manga in mangas|slice:":6" %}
-        <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
-          <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-            <!-- Contenido -->
-            <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
-            <div class="thumbnail-title">
-              <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
-            </div>
-            <span class="score"><i class="fas fa-star fa-fw"></i><span>9.69</span></span>
-            <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
-            <span class="demography shounen"> {{ manga.genero }}</span>
-          </a>
-          <!-- Puedes agregar más campos según tus necesidades -->
-        </div>
+      {% for manga in mangas|slice:":12" %}
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
+        <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+          <!-- Contenido -->
+          <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
+          <div class="thumbnail-title">
+            <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
+          </div>
+          {% if manga.average_score %}
+          <span class="score"><i class="fas fa-star fa-fw"></i><span>{{ manga.average_score|floatformat:1}}</span></span>
+          {% else %}
+          <span>Sin nota</span>
+          {% endif %}
+          <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
+          <span class="demography shounen"> {{ manga.genero }}</span>
+        </a>
+        <!-- Puedes agregar más campos según tus necesidades -->
+      </div>
       {% endfor %}
-    {% else %}
+      {% else %}
       <p>No hay mangas disponibles.</p>
-    {% endif %}
-    
+      {% endif %}
+
     </div>
   </div>
 

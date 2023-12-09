@@ -52,7 +52,7 @@
             <div class="container-fluid">
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse"
                     data-bs-target="#navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon" style="background-color: rgb(134, 86, 86); color: #000000;"></span>
                 </button>
                 <a class="navbar-brand" href="{% url 'Home' %}">
                     <img src="{% static 'images/DreamShaper_v5_Transform_the_infamous_curse_mark_from_Berserk_3.png' %}"
@@ -64,10 +64,11 @@
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'LibreriaGatsu' %}">Librería</a></li>
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'SobreGatsu' %}">Gatsu</a></li>
                         <!-- SOLO ADMIN -->
-                    </ul>
+                    
                     {% if request.user.is_authenticated and is_admin %}
                         <li class="nav-item"><a class="nav-link" style="color: #fff;" href="{% url 'ConfigMangas' %}">Configurar</a></li>
                     {% endif %}
+                </ul>
                 </div>
                 {% if request.user.is_authenticated %}
                 <li class="nav-item ms-auto position-relative">
