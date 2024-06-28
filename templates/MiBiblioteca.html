@@ -2,20 +2,105 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="static\css\styles.css">
+  {% load static %}
 
-    <title>Mi Bibioteca</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Biblioteca</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet"
+    href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <meta name="msapplication-TileColor" content="#2957ba">
+  <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+  <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+
 </head>
-<body style="background-color: #202020; color: #fff;">
-    <h1>Biblioteca</h1>
+<style>
+  .manga-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+  }
 
+  .manga-cover {
+    width: 100px;
+    /* Ajusta el tamaño según sea necesario */
+    height: 150px;
+    /* Ajusta la altura según sea necesario */
+    object-fit: cover;
+    /* Hace que la imagen se ajuste dentro del contenedor manteniendo la proporción */
+    margin-right: auto;
+    /* Empuja la imagen hacia la izquierda */
+    margin-left: auto;
+    /* Empuja la imagen hacia la derecha */
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+
+  .manga-options {
+    display: flex;
+    flex-direction: row;
+    /* Cambiado de column a row */
+    width: 100%;
+    justify-content: space-between;
+    /* Añadido para que los botones se separen */
+  }
+
+  .manga-options a {
+    width: 48%;
+    /* Ajustado al 48% para dejar espacio entre los botones */
+  }
+</style>
+
+<body style="background-color: #202020; color: #fff;">
+
+  <h1 class="text-align: center">Biblioteca</h1><br>
+  <br>
+  <ul>
+  <div class="container">
+    <div class="row">
+      {% for f in favorites %}
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
+        <div class="manga-info">
+          <img src="{{ f.manga.portada.url }}" alt="{{ f.manga.nombre_manga }}" class="manga-cover">
+          <div class="thumbnail-title">
+            <h4>{{ f.manga.nombre_manga }}</h4>
+          </div>
+          <div class="manga-options">
+            <a class="btn btn-primary" href="{% url 'manga:detalle_capitulos' f.manga.id %}">Ver</a>
+            <a class="btn btn-danger" href="/deleF/{{f.id}}">Borrar</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  </ul>
+
+
+  <br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br>
 </body>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script
+  src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
 </html>
 {% endblock %}

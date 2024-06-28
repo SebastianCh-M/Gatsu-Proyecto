@@ -10,7 +10,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home</title>
+  <title>Gatsu</title>
+  <meta name="trafficjunky-site-verification" content="vnrwaw9t0" />
+  <meta name="exoclick-site-verification" content="043e4ac6d429fc45736a2571151745ed">
+  <meta name="csrf-token" content="urU5jPKA3HW5bz1XrQhSsSjUuYNtjJn0YjMJ4OSH">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
@@ -18,6 +21,8 @@
   <link rel="stylesheet"
     href="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/Styles.css?alt=media&token=5036f23e-a456-4dc4-9b81-7da2f7a40599">
   <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <meta name="msapplication-TileColor" content="#2957ba">
   <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
@@ -26,74 +31,7 @@
 </head>
 
 <body style="background-color: #202020; color: #fff;">
-  <style>
-    .Genero
-    .Mangaka_name,
-    .Manga_name,
-    .Manga_rate,
-    .N_chp {
-      font-weight: bold;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding-bottom: 0rem;
-      display: flex;
-      gap: 0rem;
-    }
-    .Genero{
-      font-weight: bold;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding-bottom: 0rem;
-      display: flex;
-      gap: 0rem;
-    }
-    .imagen{
-      background-color: black;
-        color: #fff;
-        max-width: auto;
-        max-height: auto;
-        width: 100%;
-        height: 100%;
-        border: 1px solid gray;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: ease-in-out .2s;
-        margin: auto;
-    }
-    .imagen img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
-    }
-    .imagen:hover{
-      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    }
-    .card {
-        background-color: black;
-        color: #fff;
-        max-width: 150px;
-        max-height: 250px;
-        width: 100%;
-        height: 100%;
-        border: 1px solid gray;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: ease-in-out .2s;
-        margin: auto;
-    }
 
-    .card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Utiliza 'cover' para llenar el contenedor sin distorsionar la imagen */
-    }
-
-    .card:hover {
-        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    }
-  </style>
   <section id="tranding">
     <div class="container">
       <hr>
@@ -106,48 +44,64 @@
           {% for manga in mangas|slice:":5" %}
           <!-- Slide-start -->
           <div class="swiper-slide tranding-slide">
-            <div class="tranding-slide-img">
+            <div class="contenido-carrusel">
               <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-                <img class="imagen" src="{{ manga.portada.url }}">
-                  </div>
-                  <div class="tranding-slide-content">
-                    <div class="tranding-slide-content-bottom">
-                      <h2 class="Manga_name">{{ manga.nombre_manga.nombreManga }}</h2>
-                      <p class="Mangaka_name">Autor: {{ manga.nombre_manga.mangaka }}</p>
-                      <p class ="Genero">Género: {{ manga.genero }}</p>
-                    </div>
-                  </div>
-                 </div>
+                <h4>{{ manga.nombre_manga }}</h4>
+                {% if manga.average_score %}
+                <span class=".Manga_rate"><i class="fas fa-star fa-fw"></i><span>{{ manga.average_score|floatformat:1}}</span></span>
+                {% else %}
+                <span>Sin nota</span>
+                {% endif %}
               </a>
+            </div>
+            <div class="tranding-slide-img" style="  max-width: 90%;">
+              <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+                <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="img-fluid">
+              </a>
+            </div>
+          </div>
           <!-- Slide-end -->
           {% endfor %}
         </div>
       </div>
     </div>
   </section>
+
+  <hr>
+
+  <h2 style="display: flex; padding-left: 10%;">Recientes</h2>
+  <br>
+
   <div class="container">
-    <hr>
-    <h2 style="display: flex; padding-left: 10%;">Recientes</h2>
-    <br>
-    <div class="container container-fluid">
-      <div class="row">
-        {% for manga in mangas|slice:":10" %}
-          <div class="col-md-2">
-              <a href="{% url 'manga:detalle_capitulos' manga.id %}">
-                  <!-- Contenido del manga -->
-                  <div class="card" id="card1">
-                      <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}">
-                      <h2>{{ manga.nombre_manga.nombreManga }}</h2>
-                  </div>
-                  <!-- Puedes agregar más campos según tus necesidades -->
-              </a>
+    <div class="row">
+      {% if mangas %}
+      {% for manga in mangas|slice:":12" %}
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mt-2">
+        <a href="{% url 'manga:detalle_capitulos' manga.id %}">
+          <!-- Contenido -->
+          <img src="{{ manga.portada.url }}" alt="{{ manga.nombre_manga }}" class="thumbnail-image img-fluid">
+          <div class="thumbnail-title">
+            <h4 class="text-truncate">{{ manga.nombre_manga.nombreManga }}</h4>
           </div>
-          {% endfor %}
+          {% if manga.average_score %}
+          <span class="score"><i class="fas fa-star fa-fw"></i><span>{{ manga.average_score|floatformat:1}}</span></span>
+          {% else %}
+          <span>Sin nota</span>
+          {% endif %}
+          <span class="book-type badge badge-manga">{{ manga.nombre_manga.mangaka }}</span>
+          <span class="demography shounen"> {{ manga.genero }}</span>
+        </a>
+        <!-- Puedes agregar más campos según tus necesidades -->
       </div>
-  </div>
-    <hr>
+      {% endfor %}
+      {% else %}
+      <p>No hay mangas disponibles.</p>
+      {% endif %}
+
+    </div>
   </div>
 
+  <hr>
 
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -155,6 +109,8 @@
   <script src="{% static 'js/main.js' %}"></script>
   <script
     src="https://firebasestorage.googleapis.com/v0/b/gatsu-fbddf.appspot.com/o/main.js?alt=media&token=ff3947c9-5e68-4be6-8ca1-9bcbc97fa406"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

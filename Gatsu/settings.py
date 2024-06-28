@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+from crispy_forms.bootstrap import *
+from crispy_forms.layout import *
 
 env = environ.Env()
 environ.Env.read_env()
@@ -26,12 +28,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
+DEBUG = env.bool('DEBUG', default=False)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] if DEBUG else ['51.20.78.108', '0.0.0.0', '127.0.0.1', 'localhost'] 
 
+# Redirect HTTP to HTTPS
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
 
 # Application definition
 
@@ -44,8 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'Gatsu',
-    'manga',
+    'manga.apps.MangaConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'sslserver',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,6 +84,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Gatsu.context_processors.is_admin',
+                'Gatsu.context_processors.is_usuario_registrado',
+                'Gatsu.context_processors.is_usuario_suscrito',
+                'Gatsu.context_processors.user_type',  # Agregado aquí
             ],
         },
     },
@@ -114,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -122,6 +137,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'chirinosebastianmn@gmail.com' 
+EMAIL_HOST_PASSWORD = 'egbm wnju ozyu cqgt' 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -147,3 +168,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'Home'
 
 LOGOUT_REDIRECT_URL = 'Home'
+
+MERCADO_PAGO_CLIENT_ID = '7720091870954518'
+MERCADO_PAGO_CLIENT_SECRET = 'Rk06ELc1XzVZeihc0NXer8PGkxBbJao4'
+
+
+MERCADOPAGO_PUBLIC_KEY = 'TEST-9378860e-754e-4844-960e-1ce0855a2411'
+MERCADOPAGO_ACCESS_TOKEN = 'TEST-7720091870954518-111620-ee20b51bc828f7fd65db0b38a30a101f-1551574777'

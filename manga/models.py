@@ -1,9 +1,45 @@
+from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.dispatch import receiver
 from multiselectfield import MultiSelectField
+from datetime import timedelta
+from django.db.models import Avg
+from django.utils import timezone
+from django.db.models.signals import post_save
+from django.urls import reverse
+from django.contrib.auth.models import Group
 
-# Create your models here.
+
+group, created = Group.objects.get_or_create(name='UsuarioSuscrito')
+
+
+
+class CustomUser(AbstractUser):
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    foto_perfil = models.ImageField(upload_to='profile/', null=True, blank=True)
+    genero = models.CharField(max_length=20, choices=[('Masculino', 'Masculino'), ('Femenino', 'Femenino'), ('No especificado', 'No especificado')], default='No especificado')
+
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_name='user_custom_groups',  # Nombre descriptivo para las relaciones inversas
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='user_custom_permissions',  # Nombre descriptivo para las relaciones inversas
+    )
+
+    def __str__(self):
+        return self.username
+
+
 
 class Post(models.Model):
     title=models.CharField(max_length=250)
@@ -11,6 +47,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+
     
 class tipoSubida(models.Model):
     subida=models.CharField(max_length=30)
@@ -31,38 +69,12 @@ class Manga3(models.Model):
     imagen = models.ImageField(upload_to='images', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
 
 
-
-
-class Usuario(models.Model):
-    nombre = models.CharField(max_length=100)
-    fecha_registro = models.DateField()
-    correo = models.EmailField()
-    contraseña = models.CharField(max_length=100)
-
-    # Otras informaciones de usuario que necesites
-
-    def __str__(self):
-        return self.nombre
-
-class Administrador(models.Model):
-    nombre = models.CharField(max_length=100)
-    fecha_registro = models.DateField()
-    correo = models.EmailField()
-    contraseña = models.CharField(max_length=100)
-
-    # Otras informaciones de administrador que puedan ser necesarias
-
-    def __str__(self):
-        return self.nombre
-
 #POST,DELETE,UPDATE    
 class Revista(models.Model):
     editoriales = models.CharField(max_length=100)
 
     def __str__(self):
         return self.editoriales
-
-
 
 class NombreManga(models.Model):
     revista = models.ForeignKey(Revista, on_delete=models.CASCADE)
@@ -78,11 +90,13 @@ class NombreManga(models.Model):
 class MangaGatsu(models.Model):
     nombre_manga = models.ForeignKey(NombreManga, on_delete=models.CASCADE, default=1)
     anio_publicacion = models.DateField()
+
     OPCIONES_SUBIDA = [
         ('Semanal', 'Semanal'),
         ('Mensual', 'Mensual'),
         ('Otro', 'Otro'),
     ]
+    
     tipo_subida = models.CharField(max_length=20, choices=OPCIONES_SUBIDA)
     sinopsis = models.TextField()
     
@@ -110,11 +124,32 @@ class MangaGatsu(models.Model):
 
     estado = models.CharField(max_length=20, choices=OPCIONES_ESTADO)
     portada = models.ImageField(upload_to='manga/portadas/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
+    favorito = models.ManyToManyField(User, related_name='favorito', blank= True)
 
     # Otras informaciones del manga que puedan ser relevantes
 
     def __str__(self):
         return str(self.nombre_manga.nombreManga)
+    
+    def get_absolute_url(self):
+        return reverse('detalle_capitulos', args=[str(self.id)])
+    
+    @property
+    def valoracion_promedio(self):
+        return Valoracion.objects.filter(manga=self).aggregate(promedio=Avg('valoracion'))['promedio']
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE) 
+
+
+
+class Score(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    score_value = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+
 
 #POST,DELETE,UPDATE
 class Capitulo(models.Model):
@@ -125,6 +160,12 @@ class Capitulo(models.Model):
 
     def __str__(self):
         return str(f"Capítulo {self.numero} - {self.titulo}")
+    
+class Progress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    last_read_chapter = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True)
+
 
 class Imagen(models.Model):
     imagen = models.ImageField(upload_to='manga/capitulos/', storage=FileSystemStorage(location=settings.MEDIA_ROOT))
@@ -133,35 +174,27 @@ class Imagen(models.Model):
     def __str__(self):
         return self.imagen.url  # O alguna otra representación de la imagen
     
-class RegistroPago(models.Model):
-    tipo_usuario = models.CharField(max_length=50)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-
-    # Otras informaciones relacionadas con el registro de pago, si es necesario
-
-    def __str__(self):
-        return f"{self.usuario.nombre} - {self.tipo_usuario}"
 
 class Comentario(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     contenido = models.TextField()
-    fecha_hora = models.DateTimeField()
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    capitulo = models.ForeignKey(Capitulo, on_delete=models.CASCADE)
-
-    # Otras informaciones relacionadas con el comentario, si es necesario
+    fecha_creado = models.DateTimeField(default=timezone.now, editable=False)
+    fecha_modificado = models.DateTimeField(auto_now=True)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"Comentario de {self.usuario.nombre} en {self.capitulo}"
+        return f"Comentario de {self.usuario.username} en {self.manga}"
 
 class Valoracion(models.Model):
-    valoracion = models.IntegerField()
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
-
-    # Otras informaciones relacionadas con la valoración, si es necesario
+    valoracion = models.DecimalField(max_digits=3, decimal_places=1)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE, related_name='valoraciones')
 
     def __str__(self):
-        return f"Valoración de {self.usuario.nombre} en {self.manga.nombre}"
+        return f"Valoración de {self.usuario.username} en {self.manga.nombre_manga}"
+
+
+
     
 
 #NO TOMAR EN CUENTA
@@ -173,3 +206,35 @@ class Revista2(models.Model):
         return self.editoriales
 
 
+class EstadisticasLecturaManga(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    total_capitulos_leidos = models.IntegerField(default=0)
+    tiempo_total_lectura = models.DurationField(default=timedelta())
+
+class EstadisticasLecturaCapitulo(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    capitulo = models.ForeignKey(Capitulo, on_delete=models.CASCADE)
+    tiempo_lectura = models.DurationField(default=timedelta())
+
+class HistorialCompras(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha_compra = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - ${self.monto} - {self.fecha_compra}"
+
+class PreferenciasLectura(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    manga = models.ForeignKey(MangaGatsu, on_delete=models.CASCADE)
+    preferencias_lectura = models.TextField(blank=True, null=True)
+
+
+
+
+@receiver(post_save, sender=User)
+def asignar_grupo_por_defecto(sender, instance, created, **kwargs):
+    if created:
+        grupo_usuario_registrado = Group.objects.get(name='UsuarioRegistrado')
+        instance.groups.add(grupo_usuario_registrado)

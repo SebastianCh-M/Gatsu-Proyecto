@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import tipoEstado, tipoSubida, Manga3, Usuario, Administrador, MangaGatsu, Capitulo, Imagen, RegistroPago, Comentario, Valoracion, Revista, NombreManga, Revista2
+from .models import  CustomUser, tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
+from .models import tipoEstado, tipoSubida, Manga3, MangaGatsu, Capitulo, Imagen, Comentario, Valoracion, Revista, NombreManga, Revista2, Favorite,Progress
 from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+
 
 
 class ImagenInLine(admin.TabularInline):
@@ -13,20 +17,26 @@ class estadoAdmin(admin.ModelAdmin):
     list_display = ["estado"]
 
 class editorialAdmin(admin.ModelAdmin):
-    list_display = ["editorial_id","editoriales"]    
+    list_display = ["editorial_id","editoriales"] 
+
+class favoriteAdmin(admin.ModelAdmin):
+    list_display = ["id","user","manga"]      
+
+class progressAdmin(admin.ModelAdmin):
+    list_display = ["id","user","manga", "last_read_chapter"]    
+
+    
 
 admin.site.register(Revista2, editorialAdmin)    
-
-
-
 admin.site.register(tipoSubida, subidaAdmin)
 admin.site.register(tipoEstado, estadoAdmin)     
 admin.site.register(Manga3)
 admin.site.register(Revista)  # Registrar la tabla Revista
 
-@admin.register(Administrador)
-class AdministradorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'fecha_registro', 'correo')
+admin.site.register(Favorite, favoriteAdmin)
+admin.site.register(Progress, progressAdmin)
+
+
 
 @admin.register(MangaGatsu)
 class MangaAdmin(admin.ModelAdmin):
@@ -54,25 +64,23 @@ class CapituloAdmin(admin.ModelAdmin):
     inlines = [ImagenInLine]
 
     def __str__(self):
-        return f"Capítulo {self.numero} - {self.titulo}"
+        return f"CapÃ­tulo {self.numero} - {self.titulo}"
 
-
-@admin.register(RegistroPago)
-class RegistroPagoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'tipo_usuario', 'usuario')
 
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'contenido', 'fecha_hora', 'usuario', 'capitulo')
+    list_display = ('id', 'contenido', 'fecha_creado', 'fecha_modificado', 'usuario')
 
 @admin.register(Valoracion)
 class ValoracionAdmin(admin.ModelAdmin):
     list_display = ('id', 'valoracion', 'usuario', 'manga')
 
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'fecha_registro', 'correo')
-
 @admin.register(NombreManga)
 class NombreMangaAdmin(admin.ModelAdmin):
     list_display = ('id', 'revista', 'nombreManga', 'mangaka')
+
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = ['username', 'email', 'fecha_nacimiento', 'foto_perfil', 'genero']
+
+admin.site.register(CustomUser, CustomUserAdmin)
